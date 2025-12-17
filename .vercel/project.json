@@ -1,0 +1,16 @@
+{
+  "projectId": "prj_U3934j69S5zvR7jRrrw6leJHTeWj",
+  "orgId": "team_YCcCXsmeYBtWqDxxrTfgbCTy",
+  "projectName": "portfoliogabriel",
+  "settings": {
+    "createdAt": 1765841291591,
+    "framework": "astro",
+    "devCommand": null,
+    "installCommand": null,
+    "buildCommand": null,
+    "outputDirectory": null,
+    "rootDirectory": null,
+    "directoryListing": false,
+    "nodeVersion": "24.x"
+  }
+}

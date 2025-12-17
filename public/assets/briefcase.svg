@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+	 viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#BBBBBB;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+</style>
+<rect class="st0" x="6" y="16" width="36" height="26" rx="2"/>
+<path class="st0" d="M16,16V10c0-1.1,0.9-2,2-2h12c1.1,0,2,0.9,2,2v6"/>
+<line class="st0" x1="6" y1="28" x2="42" y2="28"/>
+</svg>

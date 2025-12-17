@@ -4,8 +4,7 @@
 <style type="text/css">
 	.st0{fill:none;stroke:#999999;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
 </style>
-<polygon class="st0" points="24,4 6,14 6,34 24,44 42,34 42,14"/>
-<line class="st0" x1="24" y1="24" x2="24" y2="44"/>
-<line class="st0" x1="6" y1="14" x2="24" y2="24"/>
-<line class="st0" x1="42" y1="14" x2="24" y2="24"/>
+<polygon class="st0" points="24,6 4,16 24,26 44,16"/>
+<path class="st0" d="M12,21v16c0,3,5.4,6,12,6s12-3,12-6V21"/>
+<line class="st0" x1="40" y1="18" x2="40" y2="32"/>
 </svg>

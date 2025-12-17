@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+	 viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#BBBBBB;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+</style>
+<polygon class="st0" points="24,6 4,16 24,26 44,16"/>
+<path class="st0" d="M12,21v16c0,3,5.4,6,12,6s12-3,12-6V21"/>
+<line class="st0" x1="40" y1="18" x2="40" y2="32"/>
+</svg>

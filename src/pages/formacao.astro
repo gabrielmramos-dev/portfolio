@@ -1,0 +1,59 @@
+---
+import Header from "../components/Header.astro";
+import Sidebar from "../components/Sidebar.astro";
+---
+
+<!DOCTYPE html>
+<html>
+  <Header title="Formação Acadêmica | Gabriel Ramos" />
+  <body>
+    <div class="content">
+      <Sidebar selectedItem="formacao" />
+      <nav class="main">
+        <div class="container">
+          <div class="back-nav-container">
+            <a href="/" class="back-nav-button w-inline-block">
+              <img src="/assets/back.svg" loading="lazy" alt="" class="back-nav-img" />
+              <div>Voltar</div>
+            </a>
+          </div>
+          <div class="content-container">
+            <h1>Formação Acadêmica</h1>
+            <section class="items-container">
+              <div class="resouce-items">
+                <div class="single-item">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="margin: 0;">Análise e Desenvolvimento de Sistemas</h3>
+                  </div>
+                  <p style="color: #a8a8a8; font-size: 16px; margin-bottom: 8px;">
+                    <strong>Universidade Braz Cubas</strong> — Cursando, 2º semestre
+                  </p>
+                  <div class="project-desc w-richtext" style="margin-bottom: 16px;">
+                    <p style="color: #888; font-size: 15px; line-height: 1.7;">
+                      Formação com foco em fundamentos de desenvolvimento de software, lógica de programação e sistemas computacionais, aliando teoria à prática por meio de projetos.
+                    </p>
+                  </div>
+                  <div class="mini-label-white">Principais Disciplinas</div>
+                  <div class="chips-container">
+                    <div class="single-chip">Programação Web</div>
+                    <div class="single-chip">Técnicas e Desenvolvimento de Algoritmos</div>
+                    <div class="single-chip">Programação Orientada a Objetos</div>
+                    <div class="single-chip">Fundamentos de Estruturas de Dados</div>
+                    <div class="single-chip">Banco de Dados</div>
+                    <div class="single-chip">Sistemas Operacionais</div>
+                    <div class="single-chip">Engenharia de Software</div>
+                    <div class="single-chip">Sistemas Cliente/Servidor</div>
+                    <div class="single-chip">Computação em Nuvem</div>
+                    <div class="single-chip">Análise e Projeto de Sistemas I</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <!--[if lte IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif]-->
+  </body>
+</html>

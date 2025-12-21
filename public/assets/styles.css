@@ -455,7 +455,7 @@ p {
 
 .nav-link-image {
   width: 24px;
-  opacity: 1;
+  opacity: 0.8;
 }
 
 .nav-link-container {

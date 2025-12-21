@@ -1,0 +1,103 @@
+---
+import Header from '../components/Header.astro';
+import Sidebar from '../components/Sidebar.astro';
+import BlogCard from '../components/BlogCard.astro';
+import { getAllPosts } from '../lib/notion';
+
+// Busca todos os posts
+let posts = [];
+let error = null;
+
+try {
+  posts = await getAllPosts();
+} catch (e) {
+  error = 'Não foi possível carregar os posts. Verifique a configuração do Notion.';
+  console.error('Erro ao buscar posts:', e);
+}
+---
+
+<!DOCTYPE html>
+<html>
+  <Header title="Blog | Gabriel Ramos" />
+  <body>
+    <div class="content">
+      <Sidebar selectedItem="blog" />
+      <nav class="main">
+        <div class="container">
+          <a href="/" class="back-nav-button">
+            <div class="back-nav-container">
+              <img src="/assets/back.svg" loading="eager" alt="" class="back-nav-img" />
+              <div>Home</div>
+            </div>
+          </a>
+
+          <main class="fold-content-container">
+            <div class="fold-content">
+              <h1>Blog</h1>
+              <p class="lead">
+                Artigos, reflexões e aprendizados sobre tecnologia, desenvolvimento e o que mais eu estiver estudando.
+              </p>
+            </div>
+
+            {error ? (
+              <div class="blog-error">
+                <p>{error}</p>
+                <p class="blog-error-hint">
+                  Se você é o dono do site, configure as variáveis de ambiente NOTION_API_KEY e NOTION_DATABASE_ID.
+                </p>
+              </div>
+            ) : posts.length === 0 ? (
+              <div class="blog-empty">
+                <p>Nenhum post publicado ainda.</p>
+                <p class="blog-empty-hint">Em breve novos conteúdos!</p>
+              </div>
+            ) : (
+              <div class="blog-grid">
+                {posts.map((post) => (
+                  <BlogCard post={post} />
+                ))}
+              </div>
+            )}
+          </main>
+        </div>
+      </nav>
+    </div>
+  </body>
+</html>
+
+<style>
+  .blog-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    width: 100%;
+  }
+
+  .blog-error,
+  .blog-empty {
+    background-color: rgba(53, 53, 53, 0.12);
+    border: 1px solid #353535;
+    border-radius: 12px;
+    padding: 32px;
+    text-align: center;
+  }
+
+  .blog-error p,
+  .blog-empty p {
+    color: #fff;
+    margin: 0;
+  }
+
+  .blog-error-hint,
+  .blog-empty-hint {
+    color: #a8a8a8 !important;
+    font-size: 14px;
+    margin-top: 8px !important;
+  }
+
+  @media screen and (min-width: 768px) {
+    .blog-grid {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+</style>

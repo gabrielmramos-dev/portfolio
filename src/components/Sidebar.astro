@@ -59,6 +59,57 @@ const { selectedItem } = Astro.props;
         />
         <div>Projetos</div>
       </a>
+      <a
+        href="/formacao"
+        class={`nav-link-container w-inline-block ${
+          selectedItem === 'formacao' ? 'w--current' : ''
+        }`}
+        aria-current={
+          selectedItem === 'formacao' ? 'page' : undefined
+        }
+      >
+        <img
+          src="/assets/graduation.svg"
+          loading="eager"
+          alt=""
+          class="nav-link-image"
+        />
+        <div>Formação</div>
+      </a>
+      <a
+        href="/experiencia"
+        class={`nav-link-container w-inline-block ${
+          selectedItem === 'experiencia' ? 'w--current' : ''
+        }`}
+        aria-current={
+          selectedItem === 'experiencia' ? 'page' : undefined
+        }
+      >
+        <img
+          src="/assets/briefcase.svg"
+          loading="eager"
+          alt=""
+          class="nav-link-image"
+        />
+        <div>Experiência</div>
+      </a>
+      <a
+        href="/blog"
+        class={`nav-link-container w-inline-block ${
+          selectedItem === 'blog' ? 'w--current' : ''
+        }`}
+        aria-current={
+          selectedItem === 'blog' ? 'page' : undefined
+        }
+      >
+        <img
+          src="/assets/blog.svg"
+          loading="eager"
+          alt=""
+          class="nav-link-image"
+        />
+        <div>Blog</div>
+      </a>
     </nav>
 
     <div

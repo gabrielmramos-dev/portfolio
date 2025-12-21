@@ -1,0 +1,58 @@
+---
+import Header from "../components/Header.astro";
+import Sidebar from "../components/Sidebar.astro";
+---
+
+<!DOCTYPE html>
+<html>
+  <Header title="Experiência Profissional | Gabriel Ramos" />
+  <body>
+    <div class="content">
+      <Sidebar selectedItem="experiencia" />
+      <nav class="main">
+        <div class="container">
+          <div class="back-nav-container">
+            <a href="/" class="back-nav-button w-inline-block">
+              <img src="/assets/back.svg" loading="lazy" alt="" class="back-nav-img" />
+              <div>Voltar</div>
+            </a>
+          </div>
+          <div class="content-container">
+            <h1>Experiência Profissional</h1>
+            <section class="items-container">
+              <div class="resouce-items">
+                <div class="single-item">
+                  <h3>Instrutor de Informática Pleno</h3>
+                  <p style="color: #a8a8a8; font-size: 16px; margin-bottom: 16px;">
+                    <strong>Microlins</strong> — Suzano/SP
+                  </p>
+                  <div class="project-desc project-desc-list w-richtext">
+                    <ul role="list">
+                      <li>Iniciei como estagiário, fui promovido a instrutor júnior e atualmente atuo como pleno</li>
+                      <li>Ministrei aulas de informática e programação, orientando alunos em projetos práticos</li>
+                      <li>Conduzi workshops e palestras sobre tecnologia e aplicações práticas</li>
+                      <li>Desenvolvi automações internas para apoio educacional e organizacional</li>
+                      <li>Implementei sistema de visualização de pontuação para eventos internos da escola</li>
+                      <li>Apoiei equipe e alunos na resolução de problemas técnicos reais</li>
+                    </ul>
+                  </div>
+                  <div class="mini-label-white">Tecnologias &amp; Práticas Utilizadas</div>
+                  <div class="chips-container">
+                    <div class="single-chip">Node.js</div>
+                    <div class="single-chip">JavaScript</div>
+                    <div class="single-chip">TypeScript</div>
+                    <div class="single-chip">Python (Flask)</div>
+                    <div class="single-chip">Automação</div>
+                    <div class="single-chip">Scraping com Selenium</div>
+                    <div class="single-chip">Lógica de Programação</div>
+                    <div class="single-chip">Integração de Dados</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </body>
+</html>

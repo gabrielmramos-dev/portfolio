@@ -1,0 +1,63 @@
+---
+// Comentários usando Giscus (GitHub Discussions)
+// Configure os valores abaixo ou deixe vazios para desabilitar
+
+interface Props {
+  repo?: string;
+  repoId?: string;
+  category?: string;
+  categoryId?: string;
+}
+
+const {
+  repo = 'gabrieldotech/iam-microservice-node',
+  repoId = 'R_kgDOQqxh5w',
+  category = 'General',
+  categoryId = 'DIC_kwDOQqxh584C0Dzb',
+} = Astro.props;
+
+const isEnabled = repo && repoId && category && categoryId;
+---
+
+{isEnabled && (
+  <section class="comments-section">
+    <h2>Comentários</h2>
+    <div class="giscus-container">
+      <script
+        src="https://giscus.app/client.js"
+        data-repo={repo}
+        data-repo-id={repoId}
+        data-category={category}
+        data-category-id={categoryId}
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="dark"
+        data-lang="pt"
+        crossorigin="anonymous"
+        async
+      />
+    </div>
+  </section>
+)}
+
+<style>
+  .comments-section {
+    margin-top: 64px;
+    padding-top: 48px;
+    border-top: 1px solid #353535;
+  }
+
+  .comments-section h2 {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+
+  .giscus-container {
+    min-height: 200px;
+  }
+</style>

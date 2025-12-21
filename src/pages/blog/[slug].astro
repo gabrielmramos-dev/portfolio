@@ -1,6 +1,7 @@
 ---
 import Header from '../../components/Header.astro';
 import Sidebar from '../../components/Sidebar.astro';
+import Comments from '../../components/Comments.astro';
 import { getAllPosts, getPostBySlug, getPageContent, blocksToHtml } from '../../lib/notion';
 
 // Gera rotas estáticas para todos os posts
@@ -89,6 +90,8 @@ function formatDate(dateStr: string): string {
               </header>
 
               <div class="blog-post-content" set:html={content} />
+
+              <Comments />
             </article>
           )}
         </div>

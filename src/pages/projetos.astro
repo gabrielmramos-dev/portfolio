@@ -16,6 +16,30 @@ const projects = [
     githubUrl: "https://github.com/gabrieldotech/iam-microservice-node"
   },
   {
+    title: "AsyncFlow",
+    desc: [
+      "Sistema distribuído de processamento assíncrono de tarefas usando arquitetura orientada a mensagens",
+      "Implementa padrões de sistemas distribuídos usados em produção: message queuing, idempotência e tolerância a falhas",
+      "Arquitetura de 3 camadas: API Producer (Fastify) → RabbitMQ → Worker Consumer, com escalabilidade horizontal",
+      "Gerenciamento de estado persistente com PostgreSQL, graceful shutdown e connection pooling otimizado",
+      "Monorepo com Node.js Workspaces, Docker Compose para infraestrutura, e foco em boas práticas de sistemas distribuídos"
+    ],
+    tech: ["TypeScript", "RabbitMQ", "Fastify", "PostgreSQL", "Prisma", "Docker", "Sistemas Distribuídos"],
+    githubUrl: "https://github.com/gabrielmramos-dev/asyncflow"
+  },
+  {
+    title: "Alexa Finance Organizer",
+    desc: [
+      "Organizador financeiro pessoal controlado 100% por voz usando Amazon Alexa e arquitetura serverless AWS",
+      "Registro de transações (receitas/despesas) e consulta de saldo usando apenas comandos de voz",
+      "Arquitetura serverless: Alexa Skill → AWS Lambda (Node.js) → DynamoDB para persistência",
+      "Implementação de skill customizada com interaction model para processamento de linguagem natural",
+      "Projeto construído inteiramente com AWS Free Tier, demonstrando conhecimento de cloud computing"
+    ],
+    tech: ["Node.js", "AWS Lambda", "Amazon Alexa", "DynamoDB", "Serverless", "Voice UI"],
+    githubUrl: "https://github.com/gabrielmramos-dev/alexa-finance-organizer"
+  },
+  {
     title: "Nivalis-AI-Bot",
     desc: [
       "Aplicação backend em PHP que integra uma API de inteligência artificial para responder perguntas em tempo real",

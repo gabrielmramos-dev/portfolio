@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import GithubActivity from "../components/GithubActivity.astro";
 import { projects } from "../data/projects";
 
 const featured = projects.filter((p) => p.featured);
@@ -42,6 +43,8 @@ const sections = [
       ))}
     </div>
   </section>
+
+  <GithubActivity />
 
   <div class="projects-section">
     {sections.map((s) => (

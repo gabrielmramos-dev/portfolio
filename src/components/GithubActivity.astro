@@ -67,7 +67,8 @@ const { user = 'gabrielmramos-dev' } = Astro.props;
   }
 
   function renderEvents(list: HTMLElement, events: any[]) {
-    const items = events
+    const items = [...events]
+      .sort((a, b) => b.created_at.localeCompare(a.created_at))
       .filter((e) => e.type === 'PushEvent' || e.type === 'CreateEvent' || e.type === 'PullRequestEvent')
       .slice(0, 4)
       .map((e) => {

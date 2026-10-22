@@ -28,6 +28,7 @@ const isEnabled = repo && repoId && category && categoryId;
       data-category={category}
       data-category-id={categoryId}
     ></div>
+    <noscript>Ative o JavaScript para ver e deixar comentários.</noscript>
   </section>
 )}
 
@@ -36,9 +37,8 @@ const isEnabled = repo && repoId && category && categoryId;
     const container = document.querySelector('.giscus-container');
     if (!container) return;
 
-    // Remove iframe existente se houver
-    const existingFrame = container.querySelector('.giscus-frame, iframe');
-    if (existingFrame) existingFrame.remove();
+    // Limpa instância anterior (iframe e script) antes de recarregar
+    container.replaceChildren();
 
     const script = document.createElement('script');
     script.src = 'https://giscus.app/client.js';
@@ -52,6 +52,7 @@ const isEnabled = repo && repoId && category && categoryId;
     script.setAttribute('data-emit-metadata', '0');
     script.setAttribute('data-input-position', 'bottom');
     script.setAttribute('data-theme', 'transparent_dark');
+    script.setAttribute('data-loading', 'lazy');
     script.setAttribute('data-lang', 'pt');
     script.setAttribute('crossorigin', 'anonymous');
     script.async = true;
@@ -59,10 +60,7 @@ const isEnabled = repo && repoId && category && categoryId;
     container.appendChild(script);
   }
 
-  // Carrega na primeira vez
-  loadGiscus();
-
-  // Recarrega quando a página muda (View Transitions)
+  // Dispara na carga inicial e a cada navegação (ClientRouter)
   document.addEventListener('astro:page-load', loadGiscus);
 </script>
 

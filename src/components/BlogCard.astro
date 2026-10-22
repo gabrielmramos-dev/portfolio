@@ -1,16 +1,15 @@
 ---
-import type { BlogPost } from '../lib/notion';
+import { readingTime, type Post } from '../lib/posts';
 
 interface Props {
-  post: BlogPost;
+  post: Post;
 }
 
 const { post } = Astro.props;
+const { title, description, date, tags } = post.data;
 
 // Formata a data para português
-function formatDate(dateStr: string): string {
-  if (!dateStr) return '';
-  const date = new Date(dateStr);
+function formatDate(date: Date): string {
   return date.toLocaleDateString('pt-BR', {
     day: 'numeric',
     month: 'short',
@@ -19,25 +18,29 @@ function formatDate(dateStr: string): string {
 }
 ---
 
-<a href={`/blog/${post.slug}`} class="blog-card">
+<a href={`/blog/${post.id}`} class="blog-card" data-tags={tags.join('|')}>
   <div class="blog-card-content">
     <div class="blog-card-header">
-      <span class="blog-card-date">{formatDate(post.date)}</span>
-      {post.tags.length > 0 && (
+      <span class="blog-card-date">{formatDate(date)} · {readingTime(post)} min</span>
+      {tags.length > 0 && (
         <div class="blog-card-tags">
-          {post.tags.slice(0, 2).map((tag) => (
+          {tags.slice(0, 3).map((tag) => (
             <span class="blog-tag">{tag}</span>
           ))}
         </div>
       )}
     </div>
-    <h3 class="blog-card-title">{post.title}</h3>
-    <p class="blog-card-description">{post.description}</p>
+    <h3 class="blog-card-title">{title}</h3>
+    <p class="blog-card-description">{description}</p>
     <span class="blog-card-link">Ler mais →</span>
   </div>
 </a>
 
 <style>
+  .blog-card[hidden] {
+    display: none;
+  }
+
   .blog-card {
     display: block;
     background-color: rgba(53, 53, 53, 0.12);

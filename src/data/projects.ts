@@ -1,0 +1,86 @@
+export interface Project {
+  title: string;
+  desc: string[];
+  tech: string[];
+  githubUrl: string;
+  featured?: boolean;
+  summary?: string;
+}
+
+export const projects: Project[] = [
+  {
+    title: "ZelaSP",
+    featured: true,
+    summary: "API de reporte urbano com .NET 9, Clean Architecture e PostGIS.",
+    desc: [
+      "API de reporte urbano com .NET 9 e Clean Architecture",
+      "Arquitetura em camadas (Domain, Application, Infrastructure, Presentation)",
+      "Consultas geoespaciais com PostGIS e Entity Framework Core",
+      "Interface de mapa com React e Leaflet.js"
+    ],
+    tech: ["C#", ".NET 9", "Clean Architecture", "PostGIS", "Entity Framework Core", "React", "Leaflet.js", "TypeScript", "Docker"],
+    githubUrl: "https://github.com/gabrielmramos-dev/zelasp"
+  },
+  {
+    title: "IAM Microservice Node",
+    featured: true,
+    summary: "Autenticação JWT + RBAC com Fastify, Prisma e testes E2E.",
+    desc: [
+      "Microsserviço de autenticação e gerenciamento de identidade construído com Fastify e TypeScript",
+      "Implementa autenticação stateless com JWT e Refresh Token via httpOnly cookies para máxima segurança",
+      "Clean Architecture com separação estrita entre Routes, Controllers e Use Cases",
+      "RBAC (Role-Based Access Control) com níveis diferenciados de acesso para ADMIN e MEMBER",
+      "Suite completa de testes E2E com Vitest, validação de schemas com Zod, PostgreSQL com Prisma ORM"
+    ],
+    tech: ["TypeScript", "Fastify", "Prisma", "PostgreSQL", "JWT", "Clean Architecture"],
+    githubUrl: "https://github.com/gabrieldotech/iam-microservice-node"
+  },
+  {
+    title: "AsyncFlow",
+    featured: true,
+    summary: "Processamento assíncrono distribuído com RabbitMQ, Fastify e PostgreSQL.",
+    desc: [
+      "Sistema distribuído de processamento assíncrono de tarefas usando arquitetura orientada a mensagens",
+      "Implementa padrões de sistemas distribuídos usados em produção: message queuing, idempotência e tolerância a falhas",
+      "Arquitetura de 3 camadas: API Producer (Fastify) → RabbitMQ → Worker Consumer, com escalabilidade horizontal",
+      "Gerenciamento de estado persistente com PostgreSQL, graceful shutdown e connection pooling otimizado",
+      "Monorepo com Node.js Workspaces, Docker Compose para infraestrutura, e foco em boas práticas de sistemas distribuídos"
+    ],
+    tech: ["TypeScript", "RabbitMQ", "Fastify", "PostgreSQL", "Prisma", "Docker", "Sistemas Distribuídos"],
+    githubUrl: "https://github.com/gabrielmramos-dev/asyncflow"
+  },
+  {
+    title: "Alexa Finance Organizer",
+    desc: [
+      "Organizador financeiro pessoal controlado 100% por voz usando Amazon Alexa e arquitetura serverless AWS",
+      "Registro de transações (receitas/despesas) e consulta de saldo usando apenas comandos de voz",
+      "Arquitetura serverless: Alexa Skill → AWS Lambda (Node.js) → DynamoDB para persistência",
+      "Implementação de skill customizada com interaction model para processamento de linguagem natural",
+      "Projeto construído inteiramente com AWS Free Tier, demonstrando conhecimento de cloud computing"
+    ],
+    tech: ["Node.js", "AWS Lambda", "Amazon Alexa", "DynamoDB", "Serverless", "Voice UI"],
+    githubUrl: "https://github.com/gabrielmramos-dev/alexa-finance-organizer"
+  },
+  {
+    title: "Nivalis-AI-Bot",
+    desc: [
+      "Aplicação backend em PHP que integra uma API de inteligência artificial para responder perguntas em tempo real",
+      "Implementa requisições HTTP com tratamento de respostas e organização básica em camadas",
+      "Consumo de API externa com lógica backend clara e funcional",
+      "Projeto aplicável a casos reais de interação com IA"
+    ],
+    tech: ["PHP", "API REST", "Integração com IA"],
+    githubUrl: "https://github.com/gabrieldotech/nivalis-ai-bot"
+  },
+  {
+    title: "Brazcubas-AI-Bot",
+    desc: [
+      "Chatbot desenvolvido com Node.js e Express, utilizando arquitetura em camadas (controllers e services)",
+      "Implementa RAG (Retrieval-Augmented Generation) para respostas contextualizadas",
+      "Separação clara de responsabilidades com estrutura pronta para escalar",
+      "Uso prático de inteligência artificial aplicada a contextos educacionais"
+    ],
+    tech: ["Node.js", "Express", "JavaScript", "RAG"],
+    githubUrl: "https://github.com/gabrieldotech/brazcubas-ai-bot"
+  }
+];

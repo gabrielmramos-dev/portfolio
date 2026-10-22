@@ -1,44 +1,20 @@
 ---
-import Header from '../../components/Header.astro';
-import Sidebar from '../../components/Sidebar.astro';
+import { render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import BackLink from '../../components/BackLink.astro';
 import Comments from '../../components/Comments.astro';
-import { getAllPosts, getPostBySlug, getPageContent, blocksToHtml } from '../../lib/notion';
+import { getAllPosts, readingTime } from '../../lib/posts';
 
-// Gera rotas estáticas para todos os posts
 export async function getStaticPaths() {
-  try {
-    const posts = await getAllPosts();
-    return posts.map((post) => ({
-      params: { slug: post.slug },
-    }));
-  } catch (e) {
-    console.error('Erro ao gerar paths:', e);
-    return [];
-  }
+  const posts = await getAllPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
 }
 
-const { slug } = Astro.params;
+const { post } = Astro.props;
+const { title, description, date, tags } = post.data;
+const { Content } = await render(post);
 
-// Busca o post
-let post = null;
-let content = '';
-let error = null;
-
-try {
-  post = await getPostBySlug(slug!);
-  if (post) {
-    const blocks = await getPageContent(post.id);
-    content = blocksToHtml(blocks);
-  }
-} catch (e) {
-  error = 'Não foi possível carregar o post.';
-  console.error('Erro ao buscar post:', e);
-}
-
-// Formata data
-function formatDate(dateStr: string): string {
-  if (!dateStr) return '';
-  const date = new Date(dateStr);
+function formatDate(date: Date): string {
   return date.toLocaleDateString('pt-BR', {
     day: 'numeric',
     month: 'long',
@@ -47,58 +23,38 @@ function formatDate(dateStr: string): string {
 }
 ---
 
-<!DOCTYPE html>
-<html>
-  <Header title={post ? `${post.title} | Blog | Gabriel Ramos` : 'Post não encontrado'} />
-  <body>
-    <div class="content">
-      <Sidebar selectedItem="blog" />
-      <nav class="main">
-        <div class="container">
-          <a href="/blog" class="back-nav-button">
-            <div class="back-nav-container">
-              <img src="/assets/back.svg" loading="eager" alt="" class="back-nav-img" />
-              <div>Blog</div>
-            </div>
-          </a>
+<Layout
+  title={`${title} | Blog | Gabriel Ramos`}
+  description={description}
+  selectedItem="blog"
+  type="article"
+>
+  <BackLink href="/blog" label="Blog" />
 
-          {error || !post ? (
-            <main class="fold-content-container">
-              <div class="blog-error">
-                <h1>Post não encontrado</h1>
-                <p>O post que você está procurando não existe ou foi removido.</p>
-                <a href="/blog" class="button w-button">Voltar para o Blog</a>
-              </div>
-            </main>
-          ) : (
-            <article class="blog-post">
-              <header class="blog-post-header">
-                <div class="blog-post-meta">
-                  <time datetime={post.date}>{formatDate(post.date)}</time>
-                  {post.tags.length > 0 && (
-                    <div class="blog-post-tags">
-                      {post.tags.map((tag) => (
-                        <span class="blog-tag">{tag}</span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <h1>{post.title}</h1>
-                {post.description && (
-                  <p class="blog-post-description">{post.description}</p>
-                )}
-              </header>
+  <article class="blog-post">
+    <header class="blog-post-header">
+      <div class="blog-post-meta">
+        <time datetime={date.toISOString()}>{formatDate(date)}</time>
+        <span class="blog-reading-time">{readingTime(post)} min de leitura</span>
+        {tags.length > 0 && (
+          <div class="blog-post-tags">
+            {tags.map((tag) => (
+              <span class="blog-tag">{tag}</span>
+            ))}
+          </div>
+        )}
+      </div>
+      <h1>{title}</h1>
+      <p class="blog-post-description">{description}</p>
+    </header>
 
-              <div class="blog-post-content" set:html={content} />
-
-              <Comments />
-            </article>
-          )}
-        </div>
-      </nav>
+    <div class="blog-post-content">
+      <Content />
     </div>
-  </body>
-</html>
+
+    <Comments />
+  </article>
+</Layout>
 
 <style>
   .blog-post {
@@ -123,6 +79,29 @@ function formatDate(dateStr: string): string {
     color: #a8a8a8;
     font-size: 14px;
     font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .blog-reading-time {
+    color: #a8a8a8;
+    font-size: 14px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .blog-post-content :global(.table-wrapper) {
+    overflow-x: auto;
+    margin: 24px 0;
+  }
+
+  .blog-post-content :global(table) {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .blog-post-content :global(th),
+  .blog-post-content :global(td) {
+    border: 1px solid #353535;
+    padding: 8px 12px;
+    text-align: left;
   }
 
   .blog-post-tags {

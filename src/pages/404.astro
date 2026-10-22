@@ -1,32 +1,20 @@
 ---
-import Header from '../components/Header.astro';
-import Sidebar from '../components/Sidebar.astro';
+import Layout from '../layouts/Layout.astro';
 ---
 
-<!DOCTYPE html>
-<html>
-  <Header title="404 - Página não encontrada | Gabriel Ramos" />
-  <body>
-    <div class="content">
-      <Sidebar selectedItem="" />
-      <nav class="main">
-        <div class="container">
-          <main class="error-page">
-            <div class="error-content">
-              <span class="error-code">404</span>
-              <h1>Página não encontrada</h1>
-              <p>Parece que você se perdeu no caminho. A página que você está procurando não existe ou foi movida.</p>
-              <div class="error-actions">
-                <a href="/blog" class="button primary">Ver o blog</a>
-                <a href="/" class="button secondary">Voltar para o início</a>
-              </div>
-            </div>
-          </main>
-        </div>
-      </nav>
+<Layout title="404 - Página não encontrada | Gabriel Ramos" noindex>
+  <main class="error-page">
+    <div class="error-content">
+      <span class="error-code">404</span>
+      <h1>Página não encontrada</h1>
+      <p>Parece que você se perdeu no caminho. A página que você está procurando não existe ou foi movida.</p>
+      <div class="error-actions">
+        <a href="/blog" class="button primary">Ver o blog</a>
+        <a href="/" class="button secondary">Voltar para o início</a>
+      </div>
     </div>
-  </body>
-</html>
+  </main>
+</Layout>
 
 <style>
   .error-page {

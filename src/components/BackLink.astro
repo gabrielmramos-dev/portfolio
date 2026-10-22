@@ -1,0 +1,15 @@
+---
+interface Props {
+  href?: string;
+  label?: string;
+}
+
+const { href = '/', label = 'Voltar' } = Astro.props;
+---
+
+<a href={href} class="back-nav-button">
+  <div class="back-nav-container">
+    <img src="/assets/back.svg" alt="" class="back-nav-img" />
+    <div>{label}</div>
+  </div>
+</a>

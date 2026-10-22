@@ -1,51 +1,82 @@
 ---
+import { ClientRouter } from 'astro:transitions';
+import Sidebar from '../components/Sidebar.astro';
+
 interface Props {
-	title: string;
+  title: string;
+  description?: string;
+  selectedItem?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
 }
 
-const { title } = Astro.props;
+const {
+  title,
+  description = 'Gabriel Ramos — Software Developer Intern na PRODAM (Prefeitura de São Paulo). C#/.NET, React, Azure DevOps e IA generativa.',
+  selectedItem = '',
+  image = '/assets/gabriel.jpg',
+  type = 'website',
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const imageUrl = new URL(image, Astro.site);
 ---
 
 <!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content="Gabriel Ramos" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+
+    <link rel="alternate" type="application/rss+xml" title="Blog | Gabriel Ramos" href="/rss.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap"
+    />
+    <link rel="stylesheet" href="/assets/styles.css" />
+    <link rel="icon" href="/assets/favicon-32x32.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/assets/favicon-32x32.png" />
+    <ClientRouter />
+  </head>
+  <body>
+    <a href="#conteudo" class="skip-link">Pular para o conteúdo</a>
+    <div class="content">
+      <Sidebar selectedItem={selectedItem} />
+      <div class="main" id="conteudo">
+        <div class="container">
+          <slot />
+        </div>
+        <footer class="site-footer">
+          <span>© {new Date().getFullYear()} Gabriel Ramos</span>
+          <span class="site-footer-links">
+            <a href="https://github.com/gabrielmramos-dev" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://linkedin.com/in/ongabrielramos" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="mailto:gabrieldotech@gmail.com">Email</a>
+            <a href="/rss.xml">RSS</a>
+          </span>
+        </footer>
+      </div>
+    </div>
+  </body>
 </html>
-<style is:global>
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background: #13151a;
-		background-size: 224px;
-	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
-	}
-</style>

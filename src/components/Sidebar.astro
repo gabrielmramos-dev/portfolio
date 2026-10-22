@@ -1,5 +1,13 @@
 ---
 const { selectedItem } = Astro.props;
+
+const items = [
+  { id: 'home', href: '/', icon: '/assets/home.svg', label: 'Home' },
+  { id: 'projetos', href: '/projetos', icon: '/assets/code.svg', label: 'Projetos' },
+  { id: 'formacao', href: '/formacao', icon: '/assets/graduation.svg', label: 'Formação' },
+  { id: 'experiencia', href: '/experiencia', icon: '/assets/briefcase.svg', label: 'Experiência' },
+  { id: 'blog', href: '/blog', icon: '/assets/blog.svg', label: 'Blog' },
+];
 ---
 
 <aside
@@ -17,115 +25,38 @@ const { selectedItem } = Astro.props;
         <img
           src="/assets/gabriel.jpg"
           loading="eager"
-          alt="Profile picture"
+          alt="Foto de Gabriel Ramos" width="48" height="48"
           class="niv-image"
         />
         <div>
           <div class="label-white">Gabriel Ramos</div>
-          <div class="label-gray">Software Developer</div>
+          <div class="label-gray">Software Developer Intern</div>
         </div>
       </div>
     </a>
 
-    <nav role="navigation" class="w-nav-menu">
-      <a
-        href="/"
-        class={`nav-link-container w-inline-block ${
-          selectedItem === 'home' ? 'w--current' : ''
-        }`}
-      >
-        <img
-          src="/assets/home.svg"
-          loading="eager"
-          alt=""
-          class="nav-link-image"
-        />
-        <div>Home</div>
-      </a>
-      <a
-        href="/projetos"
-        class={`nav-link-container w-inline-block ${
-          selectedItem === 'projetos' ? 'w--current' : ''
-        }`}
-        aria-current={
-          selectedItem === 'projetos' ? 'page' : undefined
-        }
-      >
-        <img
-          src="/assets/code.svg"
-          loading="eager"
-          alt=""
-          class="nav-link-image"
-        />
-        <div>Projetos</div>
-      </a>
-      <a
-        href="/formacao"
-        class={`nav-link-container w-inline-block ${
-          selectedItem === 'formacao' ? 'w--current' : ''
-        }`}
-        aria-current={
-          selectedItem === 'formacao' ? 'page' : undefined
-        }
-      >
-        <img
-          src="/assets/graduation.svg"
-          loading="eager"
-          alt=""
-          class="nav-link-image"
-        />
-        <div>Formação</div>
-      </a>
-      <a
-        href="/experiencia"
-        class={`nav-link-container w-inline-block ${
-          selectedItem === 'experiencia' ? 'w--current' : ''
-        }`}
-        aria-current={
-          selectedItem === 'experiencia' ? 'page' : undefined
-        }
-      >
-        <img
-          src="/assets/briefcase.svg"
-          loading="eager"
-          alt=""
-          class="nav-link-image"
-        />
-        <div>Experiência</div>
-      </a>
-      <a
-        href="/blog"
-        class={`nav-link-container w-inline-block ${
-          selectedItem === 'blog' ? 'w--current' : ''
-        }`}
-        aria-current={
-          selectedItem === 'blog' ? 'page' : undefined
-        }
-      >
-        <img
-          src="/assets/blog.svg"
-          loading="eager"
-          alt=""
-          class="nav-link-image"
-        />
-        <div>Blog</div>
-      </a>
+    <nav aria-label="Principal" class="w-nav-menu" id="menu-principal">
+      {items.map((item) => (
+        <a
+          href={item.href}
+          class={`nav-link-container w-inline-block ${selectedItem === item.id ? 'w--current' : ''}`}
+          aria-current={selectedItem === item.id ? 'page' : undefined}
+        >
+          <img src={item.icon} loading="eager" alt="" class="nav-link-image" />
+          <div>{item.label}</div>
+        </a>
+      ))}
     </nav>
 
-    <div
+    <button
+      type="button"
       class="navbar-icon-button w-nav-button"
-      style="-webkit-user-select: text;"
-      aria-label="menu"
-      role="button"
-      tabindex="0"
+      aria-label="Abrir menu"
+      aria-expanded="false"
+      aria-controls="menu-principal"
     >
-      <img
-        src="/assets/menu.svg"
-        loading="eager"
-        alt=""
-        class="navbar-icon"
-      />
-    </div>
+      <img src="/assets/menu.svg" loading="eager" alt="" class="navbar-icon" />
+    </button>
   </div>
 
   <script>

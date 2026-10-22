@@ -1,130 +1,66 @@
 ---
-import Header from "../components/Header.astro";
-import Sidebar from "../components/Sidebar.astro";
+import Layout from "../layouts/Layout.astro";
+import { projects } from "../data/projects";
+
+const featured = projects.filter((p) => p.featured);
+const sections = [
+  { href: "/projetos", icon: "/assets/code.svg", title: "Projetos", label: "Tecnologias & ferramentas", chips: ["C#", ".NET", "TypeScript", "React", "Node.js", "PostgreSQL", "Docker", "Azure"] },
+  { href: "/formacao", icon: "/assets/graduation.svg", title: "Formação Acadêmica", label: "Principais Disciplinas", chips: ["Programação Web", "Algoritmos", "POO", "Banco de Dados", "Engenharia de Software", "Cloud"] },
+  { href: "/experiencia", icon: "/assets/briefcase.svg", title: "Experiência Profissional", label: "Tecnologias & Práticas", chips: ["C#/.NET", "React", "Azure DevOps", "Gemini", "VertexAI", "Clean Architecture"] },
+  { href: "/blog", icon: "/assets/blog.svg", title: "Blog", label: "Conteúdos & Aprendizados", chips: ["Tecnologia", "Desenvolvimento", "Aprendizados", "Reflexões"] },
+];
 ---
 
+<Layout title="Gabriel Ramos | Software Developer Intern" selectedItem="home">
+  <main class="fold-content-container">
+    <div class="fold-content">
+      <h1>Olá, eu sou o Gabriel.<br />Software Developer Intern.</h1>
+      <p class="subtitle-text">Análise e Desenvolvimento de Sistemas - Universidade Braz Cubas</p>
+      <p class="lead">
+        Software Developer Intern na PRODAM — empresa de tecnologia da Prefeitura de São Paulo. Trabalho com C#/.NET, React, Azure DevOps e IA generativa (Gemini/VertexAI) em um squad ágil, desenvolvendo serviços digitais para a cidade. Fora do trabalho, construo projetos próprios de backend e sistemas distribuídos.
+      </p>
+    </div>
+    <div class="buttons-container">
+      <a href="/curriculo.pdf" download class="button w-button">Baixar currículo</a>
+      <a href="mailto:gabrieldotech@gmail.com" class="button w-button button-secondary">Falar comigo</a>
+      <a href="https://github.com/gabrielmramos-dev" target="_blank" rel="noopener noreferrer" class="button w-button button-secondary">GitHub</a>
+      <a href="https://linkedin.com/in/ongabrielramos" target="_blank" rel="noopener noreferrer" class="button w-button button-secondary">LinkedIn</a>
+    </div>
+  </main>
 
-<!DOCTYPE html>
-<html
->
-  <Header title="Gabriel Ramos" />
-  <body>
-    <div class="content">
-      <Sidebar selectedItem="home" />
-      <nav class="main">
-        <div class="container">
-          <main class="fold-content-container">
-            <div class="fold-content">
-              <h1>Olá, eu sou o Gabriel.<br />Software Developer.</h1>
-              <p class="subtitle-text">Análise e Desenvolvimento de Sistemas - Universidade Braz Cubas</p>
-              <p class="lead">
-               Software Developer na PRODAM — empresa de tecnologia da Prefeitura de São Paulo. Trabalho com C#/.NET, React, Azure DevOps e IA generativa (Gemini/VertexAI) em sistemas que atendem milhões de cidadãos.
-              </p>
-            </div>
-            <div class="buttons-container">
-              <a href="https://github.com/gabrielmramos-dev" target="_blank" rel="noopener noreferrer" class="button w-button">GitHub</a>
-              <a href="https://linkedin.com/in/ongabrielramos" target="_blank" rel="noopener noreferrer" class="button w-button">LinkedIn</a>
-              <a href="mailto:gabrieldotech@gmail.com" class="button w-button">Email</a>
-              <a href="/curriculo.pdf" download class="button w-button button-secondary">Currículo</a>
-            </div>
-          </main>
-          <div class="projects-section">
-            <!-- Projects -->
-            <a href="/projetos" class="projects-container">
-              <div class="single-projects-category">
-                <div class="projects-category-image-container">
-                  <img src="/assets/code.svg" loading="lazy" alt="" class="projects-category-image" />
-                </div>
-              </div>
-              <div class="single-projects-content">
-                <h4>Projetos</h4>
-                <div class="tech-tools-container">
-                  <div class="mini-label-white gray-color">Tecnologias &amp; ferramentas</div>
-                  <div class="chips-container chips-container-small-width">
-                    <div class="single-chip small-chip">C#</div>
-                    <div class="single-chip small-chip">.NET</div>
-                    <div class="single-chip small-chip">TypeScript</div>
-                    <div class="single-chip small-chip">React</div>
-                    <div class="single-chip small-chip">Node.js</div>
-                    <div class="single-chip small-chip">PostgreSQL</div>
-                    <div class="single-chip small-chip">Docker</div>
-                    <div class="single-chip small-chip">Azure</div>
-                  </div>
-                </div>
-              </div>
-            </a>
+  <section aria-labelledby="destaques">
+    <h2 id="destaques" class="section-title">Projetos em destaque</h2>
+    <div class="featured-list">
+      {featured.map((p) => (
+        <a href="/projetos" class="featured-item">
+          <h3>{p.title}</h3>
+          <p>{p.summary}</p>
+          <div class="chips-container chips-container-small-width">
+            {p.tech.slice(0, 4).map((t) => <div class="single-chip small-chip">{t}</div>)}
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
 
-            <!-- Formação Acadêmica -->
-            <a href="/formacao" class="projects-container">
-              <div class="single-projects-category">
-                <div class="projects-category-image-container">
-                  <img src="./assets/graduation.svg" loading="lazy" alt="" class="projects-category-image" />
-                </div>
-              </div>
-              <div class="single-projects-content">
-                <h4>Formação Acadêmica</h4>
-                <div class="tech-tools-container">
-                  <div class="mini-label-white gray-color">Principais Disciplinas</div>
-                  <div class="chips-container chips-container-small-width">
-                    <div class="single-chip small-chip">Programação Web</div>
-                    <div class="single-chip small-chip">Algoritmos</div>
-                    <div class="single-chip small-chip">POO</div>
-                    <div class="single-chip small-chip">Banco de Dados</div>
-                    <div class="single-chip small-chip">Engenharia de Software</div>
-                    <div class="single-chip small-chip">Cloud</div>
-                  </div>
-                </div>
-              </div>
-            </a>
-
-            <!-- Experiência Profissional -->
-            <a href="/experiencia" class="projects-container">
-              <div class="single-projects-category">
-                <div class="projects-category-image-container">
-                  <img src="./assets/briefcase.svg" loading="lazy" alt="" class="projects-category-image" />
-                </div>
-              </div>
-              <div class="single-projects-content">
-                <h4>Experiência Profissional</h4>
-                <div class="tech-tools-container">
-                  <div class="mini-label-white gray-color">Tecnologias &amp; Práticas</div>
-                  <div class="chips-container chips-container-small-width">
-                    <div class="single-chip small-chip">C#/.NET</div>
-                    <div class="single-chip small-chip">React</div>
-                    <div class="single-chip small-chip">Azure DevOps</div>
-                    <div class="single-chip small-chip">Gemini</div>
-                    <div class="single-chip small-chip">VertexAI</div>
-                    <div class="single-chip small-chip">Clean Architecture</div>
-                  </div>
-                </div>
-              </div>
-            </a>
-
-            <!-- Blog -->
-            <a href="/blog" class="projects-container">
-              <div class="single-projects-category">
-                <div class="projects-category-image-container">
-                  <img src="./assets/blog.svg" loading="lazy" alt="" class="projects-category-image" />
-                </div>
-              </div>
-              <div class="single-projects-content">
-                <h4>Blog</h4>
-                <div class="tech-tools-container">
-                  <div class="mini-label-white gray-color">Conteúdos & Aprendizados</div>
-                  <div class="chips-container chips-container-small-width">
-                    <div class="single-chip small-chip">Tecnologia</div>
-                    <div class="single-chip small-chip">Desenvolvimento</div>
-                    <div class="single-chip small-chip">Aprendizados</div>
-                    <div class="single-chip small-chip">Reflexões</div>
-                  </div>
-                </div>
-              </div>
-            </a>
+  <div class="projects-section">
+    {sections.map((s) => (
+      <a href={s.href} class="projects-container">
+        <div class="single-projects-category">
+          <div class="projects-category-image-container">
+            <img src={s.icon} loading="lazy" alt="" class="projects-category-image" />
           </div>
         </div>
-      </nav>
-    </div>
-
-    <!--[if lte IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif]-->
-  </body>
-</html>
+        <div class="single-projects-content">
+          <h4>{s.title}</h4>
+          <div class="tech-tools-container">
+            <div class="mini-label-white gray-color">{s.label}</div>
+            <div class="chips-container chips-container-small-width">
+              {s.chips.map((c) => <div class="single-chip small-chip">{c}</div>)}
+            </div>
+          </div>
+        </div>
+      </a>
+    ))}
+  </div>
+</Layout>

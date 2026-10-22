@@ -1,69 +1,71 @@
 ---
-import Header from '../components/Header.astro';
-import Sidebar from '../components/Sidebar.astro';
+import Layout from '../layouts/Layout.astro';
+import BackLink from '../components/BackLink.astro';
 import BlogCard from '../components/BlogCard.astro';
-import { getAllPosts } from '../lib/notion';
+import { getAllPosts } from '../lib/posts';
 
-// Busca todos os posts
-let posts = [];
-let error = null;
-
-try {
-  posts = await getAllPosts();
-} catch (e) {
-  error = 'Não foi possível carregar os posts. Verifique a configuração do Notion.';
-  console.error('Erro ao buscar posts:', e);
-}
+const posts = await getAllPosts();
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
 ---
 
-<!DOCTYPE html>
-<html>
-  <Header title="Blog | Gabriel Ramos" />
-  <body>
-    <div class="content">
-      <Sidebar selectedItem="blog" />
-      <nav class="main">
-        <div class="container">
-          <a href="/" class="back-nav-button">
-            <div class="back-nav-container">
-              <img src="/assets/back.svg" loading="eager" alt="" class="back-nav-img" />
-              <div>Home</div>
-            </div>
-          </a>
+<Layout
+  title="Blog | Gabriel Ramos"
+  description="Artigos, reflexões e aprendizados sobre tecnologia, desenvolvimento e o que mais eu estiver estudando."
+  selectedItem="blog"
+>
+  <BackLink />
 
-          <main class="fold-content-container">
-            <div class="fold-content">
-              <h1>Blog</h1>
-              <p class="lead">
-                Artigos, reflexões e aprendizados sobre tecnologia, desenvolvimento e o que mais eu estiver estudando.
-              </p>
-            </div>
-
-            {error ? (
-              <div class="blog-error">
-                <p>{error}</p>
-                <p class="blog-error-hint">
-                  Se você é o dono do site, configure as variáveis de ambiente NOTION_API_KEY e NOTION_DATABASE_ID.
-                </p>
-              </div>
-            ) : posts.length === 0 ? (
-              <div class="blog-empty">
-                <p>Nenhum post publicado ainda.</p>
-                <p class="blog-empty-hint">Em breve novos conteúdos!</p>
-              </div>
-            ) : (
-              <div class="blog-grid">
-                {posts.map((post) => (
-                  <BlogCard post={post} />
-                ))}
-              </div>
-            )}
-          </main>
-        </div>
-      </nav>
+  <main class="fold-content-container">
+    <div class="fold-content">
+      <h1>Blog</h1>
+      <p class="lead">
+        Artigos, reflexões e aprendizados sobre tecnologia, desenvolvimento e o que mais eu estiver estudando.
+        <a href="/rss.xml">Assinar via RSS</a>.
+      </p>
     </div>
-  </body>
-</html>
+
+    {posts.length === 0 ? (
+      <div class="blog-empty">
+        <p>Nenhum post publicado ainda.</p>
+        <p class="blog-empty-hint">Em breve novos conteúdos!</p>
+      </div>
+    ) : (
+      <>
+        {tags.length > 1 && (
+          <div class="blog-filters" role="group" aria-label="Filtrar por tag">
+            <button type="button" class="blog-filter" data-tag="" aria-pressed="true">Todos</button>
+            {tags.map((tag) => (
+              <button type="button" class="blog-filter" data-tag={tag} aria-pressed="false">{tag}</button>
+            ))}
+          </div>
+        )}
+        <div class="blog-grid">
+          {posts.map((post) => (
+            <BlogCard post={post} />
+          ))}
+        </div>
+      </>
+    )}
+  </main>
+</Layout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.blog-filter');
+    const cards = document.querySelectorAll<HTMLElement>('.blog-card');
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const tag = button.dataset.tag ?? '';
+        buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
+        cards.forEach((card) => {
+          const cardTags = (card.dataset.tags ?? '').split('|');
+          card.hidden = tag !== '' && !cardTags.includes(tag);
+        });
+      });
+    });
+  });
+</script>
 
 <style>
   .blog-grid {
@@ -95,10 +97,30 @@ try {
     margin-top: 8px !important;
   }
 
-  @media screen and (min-width: 768px) {
-    .blog-grid {
-      grid-template-columns: repeat(1, 1fr);
-    }
+  .blog-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .blog-filter {
+    background: transparent;
+    color: #a8a8a8;
+    border: 1px solid #353535;
+    border-radius: 999px;
+    padding: 4px 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .blog-filter:hover,
+  .blog-filter[aria-pressed='true'] {
+    color: #fff;
+    background-color: #2b2b2b;
+    border-color: #a8a8a8;
   }
 
   @media screen and (max-width: 767px) {

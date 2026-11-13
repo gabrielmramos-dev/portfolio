@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Gabriel Macena Ramos — Résumé</title>
+<style>
+  /* Fonte do site, auto-hospedada no pacote. O arquivo é lido da pasta node_modules. */
+  @font-face {
+    font-family: 'Schibsted Grotesk';
+    src: url('../node_modules/@fontsource-variable/schibsted-grotesk/files/schibsted-grotesk-latin-wght-normal.woff2') format('woff2');
+    font-weight: 400 900;
+  }
+  @page { size: A4; margin: 10mm 13mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; color: #14171a; font: 8.9pt/1.36 'Schibsted Grotesk', Arial, sans-serif; }
+  h1 { margin: 0; font-size: 21pt; line-height: 1.1; letter-spacing: -0.01em; }
+  .role { margin: 2px 0 0; font-size: 11pt; font-weight: 600; }
+  .contact { margin: 4px 0 0; color: #3d4650; font-size: 8.8pt; }
+  a { color: #14171a; text-decoration: none; }
+  h2 { margin: 8px 0 3px; padding-bottom: 2px; border-bottom: 1.2px solid #14171a; font-size: 9.6pt; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+  h3 { margin: 5px 0 0; font-size: 9.6pt; font-weight: 700; }
+  .row { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+  .meta { color: #3d4650; font-size: 8.8pt; }
+  p { margin: 2px 0 0; }
+  ul { margin: 2px 0 0; padding-left: 15px; }
+  li { margin: 1px 0; }
+  .skills { margin: 0; padding: 0; list-style: none; }
+  .skills li { margin: 1px 0; }
+  .skills strong { font-weight: 700; }
+  .job { break-inside: avoid; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Gabriel Macena Ramos</h1>
+  <p class="role">.NET Developer · APIs, open data and applied AI</p>
+  <p class="contact">
+    Suzano, São Paulo, Brazil ·
+    <a href="mailto:gabrieldotech@gmail.com">gabrieldotech@gmail.com</a> ·
+    <a href="https://gabrielmramos.dev">gabrielmramos.dev</a> ·
+    <a href="https://github.com/gabrielmramos-dev">github.com/gabrielmramos-dev</a> ·
+    <a href="https://www.linkedin.com/in/ongabrielramos/">linkedin.com/in/ongabrielramos</a>
+  </p>
+</header>
+
+<section>
+  <h2>Summary</h2>
+  <p>Software Developer Intern at PRODAM, the technology company of the São Paulo City Hall, building features end to end in C#/.NET on a generative AI platform (Gemini and Claude, via Vertex AI) with RAG, streaming and semantic search. Systems Analysis and Development student, building my own back-end, API and open-data projects outside work.</p>
+</section>
+
+<section>
+  <h2>Technical skills</h2>
+  <ul class="skills">
+    <li><strong>Languages and frameworks:</strong> C#, .NET, ASP.NET Core MVC, TypeScript, Node.js, React, React Native (Expo)</li>
+    <li><strong>Data:</strong> MongoDB, Redis, BigQuery, PostgreSQL with PostGIS, SQLite, Entity Framework Core, SQL</li>
+    <li><strong>Generative AI:</strong> Gemini and Claude (Vertex AI), RAG and embeddings, semantic search, SSE streaming, MCP, Groq API</li>
+    <li><strong>Practices and tools:</strong> Clean Architecture, xUnit, Jest, Playwright MCP, Azure DevOps, GitHub Actions, Docker, Quartz</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Experience</h2>
+  <div class="job">
+    <div class="row"><h3>Software Developer Intern — PRODAM, São Paulo City Hall</h3><span class="meta">Mar 2026 – present</span></div>
+    <p class="meta">Hybrid, São Paulo. A platform that uses generative AI to produce software artifacts: epics, features, user stories, test plans and test data.</p>
+    <ul>
+      <li>Build features end to end in C#/.NET with Clean Architecture, from the endpoint to the screen.</li>
+      <li>Integrate Gemini and Claude models with SSE streaming and semantic search over project documentation; maintain prompts and model parameters in MongoDB, backed by Redis and BigQuery.</li>
+      <li>Delivered more than 70 work items from March to November 2026, across features, fixes and improvements.</li>
+      <li>Migrated the prompts of more than 10 features to an admin screen, so the AI can be tuned without a new deploy.</li>
+      <li>Built a per-project semantic search API (Vertex AI + Redis) with configurable parameters.</li>
+      <li>Instrumented BigQuery with the model, temperature and thinking level of every generation, making answers traceable.</li>
+      <li>Improved the reliability of the Azure DevOps integrations, with failure handling and clear messages to the user.</li>
+    </ul>
+  </div>
+  <div class="job">
+    <div class="row"><h3>Backend Developer | IT Instructor (mid-level) — Microlins, São Paulo</h3><span class="meta">Oct 2024 – Jan 2026</span></div>
+    <p class="meta">Previously IT Instructor (junior) in the same network, Nov 2023 – Oct 2024.</p>
+    <ul>
+      <li>Implemented a RAG architecture integrated with the Groq API to generate teaching materials automatically, with standardization and scalability.</li>
+      <li>Built Node.js automations and messaging bots (WhatsApp and Telegram), reducing the unit’s administrative rework.</li>
+      <li>Built dashboards and a fullstack gamification system with SQL to analyze engagement metrics.</li>
+      <li>Mentored more than 200 students in programming logic, systems architecture and modern technologies.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>Projects</h2>
+  <div class="job">
+    <div class="row"><h3>SinalCerto — accessible internet-quality forecast app</h3><span class="meta">v1.0.0 · github.com/gabrielmramos-dev/sinalcerto-app</span></div>
+    <ul>
+      <li>Team capstone project (Product Owner and developer): React Native, Expo and TypeScript app that shows, in plain language, whether the internet will be Good, Fair or Unstable at each hour and region.</li>
+      <li>Accessibility measured: status in text, shape and color, contrast tested in light and dark modes, 48 dp touch targets, VoiceOver tested on iPhone. CI on GitHub Actions; Android APK built with EAS.</li>
+    </ul>
+  </div>
+  <div class="job">
+    <div class="row"><h3>ZelaSP — urban issue reporting platform (technical case study)</h3><span class="meta">github.com/gabrielmramos-dev/zelasp</span></div>
+    <ul>
+      <li>.NET 9 API with Clean Architecture in four projects, PostgreSQL with PostGIS (point geometry and radius search), JWT-protected triage panel, and a React frontend with a Leaflet map.</li>
+    </ul>
+  </div>
+  <div class="job">
+    <div class="row"><h3>sp156-mcp — unofficial MCP server (in progress)</h3><span class="meta">github.com/gabrielmramos-dev/sp156-mcp</span></div>
+    <ul>
+      <li>C#/.NET project. Milestone 1 done: ingests the public SP156 spreadsheet (742,904 rows in Q1 2025) into SQLite with no address or coordinate columns, with 7 architecture decision records, xUnit tests and CI. The MCP server is in development.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>Education</h2>
+  <div class="row"><h3>Systems Analysis and Development — Braz Cubas University</h3><span class="meta">In progress · expected 2027</span></div>
+</section>
+
+<section>
+  <h2>Languages</h2>
+  <p>Portuguese (native). English (intermediate: technical reading and documentation).</p>
+</section>
+</body>
+</html>

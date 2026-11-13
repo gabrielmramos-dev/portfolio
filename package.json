@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "a11y": "node scripts/a11y-check.mjs",
-    "validate:seo": "node scripts/validate-seo.mjs"
+    "validate:seo": "node scripts/validate-seo.mjs",
+    "resume:en": "node scripts/generate-resume.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",

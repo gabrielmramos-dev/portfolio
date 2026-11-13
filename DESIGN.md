@@ -148,6 +148,16 @@ Nenhuma animação de entrada. Transições de 120 ms só em resposta a uma aç�
 - [ ] Lighthouse mantém 100 em desempenho, acessibilidade, boas práticas e SEO.
 - [ ] Sem link quebrado.
 
+## Acessibilidade
+
+- **Objetivo:** ABNT NBR 17225:2025 e WCAG 2.2 nível AA, com eMAG e a Lei Brasileira de Inclusão (art. 63) como referência. Sem certificação: a página `/acessibilidade/` diz isso.
+- **Preferências do leitor:** tamanho do texto (100, 115, 130 e 150%), alto contraste e movimento reduzido, guardados em `localStorage` (`a11y`) e aplicados no `<head>` antes da primeira renderização. O sistema (`prefers-contrast` e `prefers-reduced-motion`) define o valor inicial.
+- **Texto em rem:** nenhum `font-size` em px. A página inteira acompanha o texto do navegador e a preferência do leitor.
+- **Alto contraste:** todos os pares acima de 7:1, nos dois temas.
+- **Libras:** o VLibras só carrega depois do clique do leitor.
+- **Verificação:** `npm run a11y` (axe-core em 5 modos, reflow em 320 px, foco por teclado). O resultado entra em `src/data/a11y-report.ts`.
+- **Não coberto por teste automático:** leitores de tela, outros navegadores e revisão por pessoas. Está declarado na página.
+
 ## Fora do escopo agora
 
 - Logotipo desenhado.

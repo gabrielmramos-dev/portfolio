@@ -120,6 +120,7 @@ body {
   font-size: 1rem;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  overflow-wrap: break-word;
 }
 
 h1,
@@ -135,6 +136,7 @@ figure {
 h1,
 h2,
 h3 {
+  overflow-wrap: anywhere;
   font-weight: 600;
   letter-spacing: -0.01em;
 }

@@ -841,3 +841,37 @@ button.navbar-icon-button {
 .project-github:hover {
   background: #1a1e22;
 }
+
+/* --- Alternador de idioma --- */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  margin: 4px 0 0 12px;
+  padding: 8px 12px;
+  min-height: 40px;
+  border: 1px solid #353535;
+  border-radius: 8px;
+  color: #a8a8a8;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-decoration: none;
+}
+
+.lang-switch:hover {
+  color: #fff;
+  border-color: #a8a8a8;
+}
+
+.lang-switch .is-active {
+  color: #fff;
+  font-weight: 500;
+}
+
+@media screen and (max-width: 991px) {
+  .lang-switch {
+    margin: 12px 0 12px 32px;
+  }
+}

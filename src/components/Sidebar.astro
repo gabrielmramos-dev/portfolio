@@ -1,12 +1,25 @@
 ---
-const { selectedItem } = Astro.props;
+import { routes, ui, type Lang } from '../i18n/ui';
 
+interface Props {
+  selectedItem?: string;
+  lang?: Lang;
+  alternates?: Partial<Record<Lang, string>>;
+}
+
+const { selectedItem, lang = 'pt', alternates } = Astro.props;
+const t = ui[lang];
+const other: Lang = lang === 'pt' ? 'en' : 'pt';
+// Sem página equivalente, o alternador leva à home do outro idioma.
+const switchHref = alternates?.[other] ?? routes.home[other];
+
+// Formação e Blog só existem em português.
 const items = [
-  { id: 'home', href: '/', icon: '/assets/home.svg', label: 'Home' },
-  { id: 'projetos', href: '/projetos', icon: '/assets/code.svg', label: 'Projetos' },
-  { id: 'formacao', href: '/formacao', icon: '/assets/graduation.svg', label: 'Formação' },
-  { id: 'experiencia', href: '/experiencia', icon: '/assets/briefcase.svg', label: 'Experiência' },
-  { id: 'blog', href: '/blog', icon: '/assets/blog.svg', label: 'Blog' },
+  { id: 'home', href: routes.home[lang], icon: '/assets/home.svg', label: t.nav.home },
+  { id: 'projetos', href: routes.projects[lang], icon: '/assets/code.svg', label: t.nav.projects },
+  { id: 'formacao', href: '/formacao/', icon: '/assets/graduation.svg', label: t.nav.education },
+  { id: 'experiencia', href: routes.experience[lang], icon: '/assets/briefcase.svg', label: t.nav.experience },
+  { id: 'blog', href: '/blog/', icon: '/assets/blog.svg', label: t.nav.blog },
 ];
 ---
 
@@ -20,12 +33,12 @@ const items = [
   class="sidebar w-nav"
 >
   <div class="nav-content">
-    <a href="/" class="w-nav-brand" aria-label="home">
+    <a href={routes.home[lang]} class="w-nav-brand" aria-label={t.nav.home}>
       <div class="niv-data">
         <img
           src="/assets/gabriel.jpg"
           loading="eager"
-          alt="Foto de Gabriel Ramos" width="48" height="48"
+          alt={t.photoAlt} width="48" height="48"
           class="niv-image"
         />
         <div>
@@ -35,7 +48,7 @@ const items = [
       </div>
     </a>
 
-    <nav aria-label="Principal" class="w-nav-menu" id="menu-principal">
+    <nav aria-label={t.navLabel} class="w-nav-menu" id="menu-principal">
       {items.map((item) => (
         <a
           href={item.href}
@@ -46,12 +59,26 @@ const items = [
           <div>{item.label}</div>
         </a>
       ))}
+      <a
+        href={switchHref}
+        class="lang-switch"
+        hreflang={other === 'en' ? 'en' : 'pt-BR'}
+        lang={other === 'en' ? 'en' : 'pt-BR'}
+        aria-label={t.switchLabel}
+        data-astro-reload
+      >
+        <span class:list={[lang === 'pt' && 'is-active']} aria-hidden="true">PT</span>
+        <span aria-hidden="true">/</span>
+        <span class:list={[lang === 'en' && 'is-active']} aria-hidden="true">EN</span>
+      </a>
     </nav>
 
     <button
       type="button"
       class="navbar-icon-button w-nav-button"
-      aria-label="Abrir menu"
+      aria-label={t.openMenu}
+      data-label-open={t.openMenu}
+      data-label-close={t.closeMenu}
       aria-expanded="false"
       aria-controls="menu-principal"
     >

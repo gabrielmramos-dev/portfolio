@@ -6,7 +6,7 @@ export function setupNav() {
 
   const setOpen = (open) => {
     navButton.setAttribute('aria-expanded', String(open));
-    navButton.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+    navButton.setAttribute('aria-label', open ? navButton.dataset.labelClose : navButton.dataset.labelOpen);
     navMenu.classList.toggle('is-visible', open);
     setTimeout(() => navMenu.classList.toggle('is-open', open), open ? 10 : 300);
   };

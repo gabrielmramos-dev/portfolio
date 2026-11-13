@@ -17,6 +17,6 @@ export const site = {
   // Itens entregues na PRODAM. Atualize `count` e `until` juntos: o texto sempre mostra o período a que o número se refere.
   prodamWorkItems: { count: 70, from: '2026-03', until: '2026-11' },
 
-  // Currículos. O PDF em inglês é gerado de resume/curriculo-en.html (npm run resume:en).
+  // Currículos. Os dois PDF são gerados de resume/curriculo-pt.html e resume/curriculo-en.html (npm run resume).
   resume: { pt: '/curriculo.pdf', en: '/curriculo-en.pdf' },
 } as const;

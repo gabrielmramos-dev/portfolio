@@ -8,5 +8,10 @@ const site = process.env.SITE_URL || (vercelHost ? `https://${vercelHost}` : 'ht
 export default defineConfig({
   site,
   markdown: { shikiConfig: { theme: 'github-dark' } },
-  integrations: [sitemap({ filter: (page) => !page.endsWith('/404/') })],
+  integrations: [
+    sitemap({
+      filter: (page) => !page.endsWith('/404/'),
+      i18n: { defaultLocale: 'pt', locales: { pt: 'pt-BR', en: 'en' } },
+    }),
+  ],
 });

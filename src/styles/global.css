@@ -1396,3 +1396,30 @@ abbr[title] {
 .subject-note {
   color: var(--muted);
 }
+
+.case-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+
+.shot-slot {
+  position: relative;
+  border: 0;
+  background: none;
+}
+
+.shot-slot img {
+  width: 100%;
+  height: auto;
+}
+
+.shot-slot figcaption {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 0.875rem;
+}

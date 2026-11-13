@@ -7,7 +7,8 @@ function syncButtons() {
   document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
     const label = button.querySelector('[data-theme-label]');
     if (label) label.textContent = dark ? button.dataset.labelDark : button.dataset.labelLight;
-    button.setAttribute('aria-label', dark ? button.dataset.ariaToLight : button.dataset.ariaToDark);
+    const hint = button.querySelector('[data-theme-hint]');
+    if (hint) hint.textContent = '. ' + (dark ? button.dataset.ariaToLight : button.dataset.ariaToDark);
   });
 }
 

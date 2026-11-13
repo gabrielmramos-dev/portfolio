@@ -21,11 +21,10 @@ const otherTag = other === 'en' ? 'en' : 'pt-BR';
     class="control"
     hreflang={otherTag}
     lang={otherTag}
-    aria-label={t.switchLabel}
     data-astro-reload
   >
-    <b aria-hidden="true">{lang === 'pt' ? 'PT' : 'EN'}</b>
-    <span aria-hidden="true">&nbsp;/&nbsp;{other === 'en' ? 'EN' : 'PT'}</span>
+    <b>{lang === 'pt' ? 'PT' : 'EN'}</b>&nbsp;/&nbsp;{other === 'en' ? 'EN' : 'PT'}
+    <span class="sr-only">. {t.switchLabel}</span>
   </a>
   <button
     type="button"
@@ -37,5 +36,6 @@ const otherTag = other === 'en' ? 'en' : 'pt-BR';
     data-aria-to-dark={t.theme.toDark}
   >
     {t.theme.label}:&nbsp;<b data-theme-label>{t.theme.dark}</b>
+    <span class="sr-only" data-theme-hint></span>
   </button>
 </div>

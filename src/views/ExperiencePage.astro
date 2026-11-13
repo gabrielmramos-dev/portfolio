@@ -9,83 +9,120 @@ interface Props {
 
 const { lang } = Astro.props;
 
-// Todos os textos entram em termos gerais: nada de nomes internos, IDs de nuvem ou códigos de tarefa.
+// Fonte: o próprio Gabriel (texto do LinkedIn, conferido por ele). Termos em geral, sem nomes internos
+// de projeto, IDs de nuvem ou códigos de tarefa.
 const copy = {
   pt: {
     title: 'Experiência Profissional | Gabriel Ramos',
     description:
-      'Experiência de Gabriel Ramos: Software Developer Intern na PRODAM (C#/.NET, ASP.NET Core, IA generativa no GCP) e instrutor de informática na Microlins.',
+      'Experiência de Gabriel Ramos: Software Developer Intern na PRODAM (C#/.NET, IA generativa com RAG e streaming, MongoDB, BigQuery) e instrutor de informática e desenvolvedor na Microlins.',
     heading: 'Experiência Profissional',
-    techLabel: 'Tecnologias & Práticas Utilizadas',
-    projectsLabel: 'Projetos',
+    techLabel: 'Tecnologias',
     prodam: {
       role: 'Software Developer Intern',
       place: 'PRODAM — Prefeitura de São Paulo',
-      period: 'março de 2026 — momento atual',
+      period: 'março de 2026 — momento atual · São Paulo, híbrido',
       summary:
-        'Desenvolvimento de serviços digitais para a cidade, em um squad ágil com desenvolvedores, arquitetos, QA, analistas, PO e UX/UI.',
-      bullets: [
-        'Migrei a lista de modelos de IA generativa para a geração seguinte, mantendo um fallback para os prompts legados, para que nenhuma funcionalidade dependente da versão antiga parasse durante a transição.',
-        'Corrigi falhas em prompts cadastrados em banco (prompt não encontrado, texto antigo usado no refinamento, parâmetros gravados em branco ou nulos), para que cada funcionalidade use o prompt e a configuração cadastrados.',
-        'Passei a registrar modelo, nível de pensamento, temperatura e custo de cada geração, o que permite investigar reclamações sobre respostas ruins.',
-        'Ajustei funcionalidades com streaming de respostas (texto chegando de uma vez só, blocos de raciocínio repetidos, contexto adicional ausente), para a resposta aparecer em tempo real e sem repetição.',
-        'Escrevo testes automatizados com xUnit e testes de UI automatizados com o MCP do Playwright.',
-        'Atuo em funcionalidades de RAG e embeddings na plataforma de IA generativa, sobre o GCP (Vertex AI/Gemini).',
+        'Desenvolvo sistemas digitais para a Prefeitura de São Paulo, a maior cidade do Brasil, em uma plataforma que gera artefatos de software com IA generativa (épicos, features, user stories, planos de teste e massa de dados), em um squad ágil com desenvolvedores, arquitetos, QA, analistas, PO e UX/UI.',
+      groups: [
+        {
+          label: 'Responsabilidades',
+          items: [
+            'Desenvolvo funcionalidades de ponta a ponta em C#/.NET com Clean Architecture, do endpoint à tela.',
+            'Integro modelos Gemini (Vertex AI) e Claude em um pipeline com RAG e respostas em streaming (SSE).',
+            'Mantenho prompts dinâmicos e parâmetros dos modelos em MongoDB, com apoio de Redis e BigQuery.',
+            'Uso agentes de IA com MCP para acelerar o desenvolvimento.',
+            'Escrevo testes automatizados com xUnit e testes de UI automatizados com o MCP do Playwright.',
+          ],
+        },
+        {
+          label: 'Entregas',
+          items: [
+            'Mais de 70 itens entregues em cerca de 6 meses.',
+            'Construí a gestão de prompts e parâmetros dos modelos (MongoDB), o que permite ajustar a IA sem novo deploy.',
+            'Instrumentei no BigQuery o modelo, a temperatura e o nível de pensamento de cada geração, dando rastreabilidade às respostas.',
+            'Estabilizei o streaming SSE com Gemini, eliminando repetições e buffering nas respostas.',
+          ],
+        },
       ],
-      tech: ['C#/.NET', 'ASP.NET Core', 'GCP (Vertex AI/Gemini, BigQuery)', 'RAG e embeddings', 'xUnit', 'Playwright MCP'],
+      tech: ['C#/.NET', 'ASP.NET Core', 'Clean Architecture', 'Gemini e Claude (Vertex AI)', 'RAG', 'MongoDB', 'Redis', 'BigQuery', 'Azure DevOps', 'MCP', 'xUnit', 'Playwright MCP'],
     },
     microlins: {
-      role: 'Instrutor de Informática',
+      role: 'Instrutor de Informática e desenvolvedor',
       place: 'Microlins',
-      location: 'Suzano/SP',
-      summary:
-        'Formação técnica de alunos em desenvolvimento web, orientando projetos práticos focados em lógica de programação, APIs REST e boas práticas de código. Também construí ferramentas internas:',
-      projects: [
-        'Bot de automação Telegram–WhatsApp (Node.js, Baileys, Telegraf) para gestão de comunicação em massa, apresentado para equipes de múltiplas unidades e processando 500+ mensagens por semana em campanhas educacionais.',
-        'Gerador de exercícios com IA generativa (Groq API + RAG) que produz PDFs prontos para impressão, personalizados por disciplina e nível de dificuldade, reduzindo em horas o tempo de criação manual de materiais didáticos.',
+      period: 'novembro de 2023 — janeiro de 2026 · São Paulo',
+      summary: 'Desenvolvimento e ensino de tecnologia em uma das maiores redes de educação profissional do Brasil.',
+      groups: [
+        {
+          label: 'Entregas',
+          items: [
+            'Implementei uma arquitetura RAG integrada à Groq API para gerar materiais didáticos de forma automatizada, com padronização e escalabilidade.',
+            'Desenvolvi automações em Node.js e bots de mensagens (WhatsApp e Telegram), reduzindo o retrabalho administrativo da unidade.',
+            'Construí dashboards e um sistema de gamificação fullstack com SQL para analisar métricas de engajamento.',
+            'Mentoreei mais de 200 alunos em lógica de programação, arquitetura de sistemas e tecnologias modernas.',
+          ],
+        },
       ],
-      tech: ['Node.js', 'TypeScript', 'Groq API', 'RAG', 'Automação', 'Lógica de Programação'],
+      tech: ['Node.js', 'SQL', 'Groq API', 'RAG', 'Automação'],
     },
   },
   en: {
     title: 'Professional Experience | Gabriel Ramos',
     description:
-      'Gabriel Ramos’s experience: Software Developer Intern at PRODAM (C#/.NET, ASP.NET Core, generative AI on GCP) and IT instructor at Microlins.',
+      'Gabriel Ramos’s experience: Software Developer Intern at PRODAM (C#/.NET, generative AI with RAG and streaming, MongoDB, BigQuery) and IT instructor and developer at Microlins.',
     heading: 'Professional Experience',
-    techLabel: 'Technologies & Practices Used',
-    projectsLabel: 'Projects',
+    techLabel: 'Technologies',
     prodam: {
       role: 'Software Developer Intern',
       place: 'PRODAM — São Paulo City Hall',
-      period: 'March 2026 — present',
+      period: 'March 2026 — present · São Paulo, hybrid',
       summary:
-        'Building digital services for the city in an agile squad with developers, architects, QA, analysts, a PO and UX/UI.',
-      bullets: [
-        'Migrated the generative AI model list to the next generation while keeping a fallback for legacy prompts, so no feature that depended on the old version broke during the transition.',
-        'Fixed failures in database-stored prompts (prompt not found, old text used when refining a result, parameters saved blank or null), so each feature uses the prompt and settings it has registered.',
-        'Started recording the model, thinking level, temperature and cost of every generation, which makes it possible to investigate complaints about bad answers.',
-        'Fixed streaming features (text arriving all at once, repeated reasoning blocks, missing extra context), so answers show up in real time without repetition.',
-        'Write automated tests with xUnit and automated UI tests with the Playwright MCP.',
-        'Work on RAG and embeddings features in the generative AI platform, on GCP (Vertex AI/Gemini).',
+        'I build digital systems for the City of São Paulo, Brazil’s largest city, on a platform that generates software artifacts with generative AI (epics, features, user stories, test plans and test data), in an agile squad with developers, architects, QA, analysts, a PO and UX/UI.',
+      groups: [
+        {
+          label: 'Responsibilities',
+          items: [
+            'I build features end to end in C#/.NET with Clean Architecture, from the endpoint to the screen.',
+            'I integrate Gemini (Vertex AI) and Claude models into a pipeline with RAG and streamed responses (SSE).',
+            'I maintain dynamic prompts and model parameters in MongoDB, backed by Redis and BigQuery.',
+            'I use AI agents with MCP to speed up development.',
+            'I write automated tests with xUnit and automated UI tests with the Playwright MCP.',
+          ],
+        },
+        {
+          label: 'Deliveries',
+          items: [
+            'More than 70 items delivered in about 6 months.',
+            'Built prompt and model-parameter management (MongoDB), which lets the team tune the AI without a new deploy.',
+            'Instrumented BigQuery with the model, temperature and thinking level of every generation, making answers traceable.',
+            'Stabilized SSE streaming with Gemini, removing repeated text and buffering in responses.',
+          ],
+        },
       ],
-      tech: ['C#/.NET', 'ASP.NET Core', 'GCP (Vertex AI/Gemini, BigQuery)', 'RAG and embeddings', 'xUnit', 'Playwright MCP'],
+      tech: ['C#/.NET', 'ASP.NET Core', 'Clean Architecture', 'Gemini and Claude (Vertex AI)', 'RAG', 'MongoDB', 'Redis', 'BigQuery', 'Azure DevOps', 'MCP', 'xUnit', 'Playwright MCP'],
     },
     microlins: {
-      role: 'IT Instructor',
+      role: 'IT Instructor and developer',
       place: 'Microlins',
-      location: 'Suzano, SP, Brazil',
-      summary:
-        'Taught web development, guiding hands-on projects focused on programming logic, REST APIs and good coding practices. I also built internal tools:',
-      projects: [
-        'Telegram–WhatsApp automation bot (Node.js, Baileys, Telegraf) for mass communication management, presented to teams across several units and handling 500+ messages per week in educational campaigns.',
-        'Generative AI exercise generator (Groq API + RAG) that produces print-ready PDFs, tailored by subject and difficulty level, cutting the manual effort of creating teaching material by hours.',
+      period: 'November 2023 — January 2026 · São Paulo',
+      summary: 'Software development and technology teaching at one of Brazil’s largest professional education networks.',
+      groups: [
+        {
+          label: 'Deliveries',
+          items: [
+            'Implemented a RAG architecture integrated with the Groq API to generate teaching materials automatically, with standardization and scalability.',
+            'Built Node.js automations and messaging bots (WhatsApp and Telegram), reducing the unit’s administrative rework.',
+            'Built dashboards and a fullstack gamification system with SQL to analyze engagement metrics.',
+            'Mentored more than 200 students in programming logic, systems architecture and modern technologies.',
+          ],
+        },
       ],
-      tech: ['Node.js', 'TypeScript', 'Groq API', 'RAG', 'Automation', 'Programming logic'],
+      tech: ['Node.js', 'SQL', 'Groq API', 'RAG', 'Automation'],
     },
   },
 }[lang];
 
-const { prodam, microlins } = copy;
+const entries = [copy.prodam, copy.microlins];
 ---
 
 <Layout
@@ -98,30 +135,24 @@ const { prodam, microlins } = copy;
   <BackLink href={routes.home[lang]} label={ui[lang].back} />
   <h1>{copy.heading}</h1>
   <div class="entries">
-    <article class="entry">
-      <h2>{prodam.role}</h2>
-      <p class="entry-meta"><strong>{prodam.place}</strong> · {prodam.period}</p>
-      <p>{prodam.summary}</p>
-      <ul>{prodam.bullets.map((item) => <li>{item}</li>)}</ul>
-      {/*
-        TODO(gabriel): Azure DevOps saiu do site. Confirme se você realmente o usa no dia a dia; se sim, volte a listar.
-        TODO(gabriel): resultado concreto de cada bullet (ex.: quantos prompts/funcionalidades foram migrados ou corrigidos, que tipo de reclamação deixou de acontecer, quantos testes/fluxos de UI existem). Hoje cada bullet descreve só a ação e o objetivo.
-        TODO(gabriel): confirme que o registro de modelo/temperatura/custo e os ajustes de streaming foram feitos por você (o post do blog descreve os problemas, não quem os resolveu).
-        TODO(gabriel): BigQuery está só na linha de tecnologias. O que você fez com ele? (consultas, métricas de custo, tabelas de logs...) Vira um bullet "ação + resultado".
-        TODO(gabriel): RAG e embeddings: o que exatamente você implementou ou manteve?
-      */}
-      <p class="case-tech"><strong>{copy.techLabel}:</strong> {prodam.tech.join(', ')}</p>
-    </article>
-
-    <article class="entry">
-      <h2>{microlins.role}</h2>
-      <p class="entry-meta"><strong>{microlins.place}</strong> · {microlins.location}</p>
-      {/* TODO(gabriel): datas da Microlins (o LinkedIn mostra instrutor júnior desde 2023 e instrutor pleno de out/2024 a jan/2026; confirme). */}
-      <p>{microlins.summary}</p>
-      <h3 class="label">{copy.projectsLabel}</h3>
-      <ul>{microlins.projects.map((item) => <li>{item}</li>)}</ul>
-      {/* TODO(gabriel): "500+ mensagens por semana" e "reduzindo em horas" não têm fonte pública (os bots não estão no GitHub). Confirme os números ou troque por uma frase sem número. */}
-      <p class="case-tech"><strong>{copy.techLabel}:</strong> {microlins.tech.join(', ')}</p>
-    </article>
+    {entries.map((entry) => (
+      <article class="entry">
+        <h2>{entry.role}</h2>
+        <p class="entry-meta"><strong>{entry.place}</strong> · {entry.period}</p>
+        <p>{entry.summary}</p>
+        {entry.groups.map((group) => (
+          <>
+            <h3 class="label">{group.label}</h3>
+            <ul>{group.items.map((item) => <li>{item}</li>)}</ul>
+          </>
+        ))}
+        <p class="case-tech"><strong>{copy.techLabel}:</strong> {entry.tech.join(', ')}</p>
+      </article>
+    ))}
   </div>
+  {/*
+    TODO(gabriel): "Mais de 70 itens entregues em cerca de 6 meses": o texto do LinkedIn termina em "entre funcionalidades," (frase cortada). Diga o que mais entrou na conta (correções, melhorias...) para completar.
+    TODO(gabriel): o LinkedIn lista "ASP.NET MVC" e o site diz "ASP.NET Core". Confirme qual é o correto.
+    TODO(gabriel): o cargo da Microlins no site é "Instrutor de Informática e desenvolvedor" (pedido anterior); no LinkedIn está "Desenvolvedor Back-end | Instrutor de TI pleno".
+  */}
 </Layout>

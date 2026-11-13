@@ -1,0 +1,123 @@
+---
+import Layout from '../layouts/Layout.astro';
+import GithubActivity from '../components/GithubActivity.astro';
+import { projects } from '../data/projects';
+import { routes, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const featured = projects.filter((p) => p.featured);
+const repoNames = projects.map((p) => p.githubUrl.split('/').pop()!);
+
+const copy = {
+  pt: {
+    title: 'Gabriel Ramos | Software Developer Intern',
+    greeting: 'Olá, eu sou o Gabriel.',
+    positioning: 'Backend .NET/TypeScript · APIs, dados abertos e IA aplicada',
+    subtitle: 'Análise e Desenvolvimento de Sistemas - Universidade Braz Cubas',
+    lead: 'Software Developer Intern na PRODAM — empresa de tecnologia da Prefeitura de São Paulo. Trabalho com C#/.NET e IA generativa (Gemini/Vertex AI) em um squad ágil, desenvolvendo serviços digitais para a cidade. Fora do trabalho, construo projetos próprios de backend e sistemas distribuídos.',
+    cv: 'Baixar currículo',
+    contact: 'Falar comigo',
+    featured: 'Projetos em destaque',
+    featuredAria: 'destaques',
+  },
+  en: {
+    title: 'Gabriel Ramos | Software Developer Intern',
+    greeting: 'Hi, I’m Gabriel.',
+    positioning: 'Backend .NET/TypeScript · APIs, open data and applied AI',
+    subtitle: 'Systems Analysis and Development - Braz Cubas University',
+    lead: 'Software Developer Intern at PRODAM, the technology company of the São Paulo City Hall. I work with C#/.NET and generative AI (Gemini/Vertex AI) in an agile squad, building digital services for the city. Outside work, I build my own backend and distributed-systems projects.',
+    // TODO(gabriel): o currículo ainda é só em português; gere uma versão em inglês e aponte aqui.
+    cv: 'Download résumé (PT)',
+    contact: 'Get in touch',
+    featured: 'Featured projects',
+    featuredAria: 'featured',
+  },
+}[lang];
+
+// Linha de tecnologias do hero (os mesmos termos nos dois idiomas).
+const techLine = {
+  pt: 'C#/.NET · ASP.NET Core · GCP (Vertex AI, BigQuery) · RAG e embeddings · xUnit',
+  en: 'C#/.NET · ASP.NET Core · GCP (Vertex AI, BigQuery) · RAG and embeddings · xUnit',
+}[lang];
+
+const sections = {
+  pt: [
+    { href: routes.projects.pt, icon: '/assets/code.svg', title: 'Projetos', label: 'Tecnologias & ferramentas', chips: ['C#', '.NET', 'TypeScript', 'Node.js', 'PostgreSQL', 'RabbitMQ', 'Docker'] },
+    { href: '/formacao/', icon: '/assets/graduation.svg', title: 'Formação Acadêmica', label: 'Principais Disciplinas', chips: ['Programação Web', 'Algoritmos', 'POO', 'Banco de Dados', 'Engenharia de Software', 'Cloud'] },
+    { href: routes.experience.pt, icon: '/assets/briefcase.svg', title: 'Experiência Profissional', label: 'Tecnologias & Práticas', chips: ['C#/.NET', 'ASP.NET Core', 'GCP', 'RAG', 'xUnit', 'Playwright'] },
+    { href: '/blog/', icon: '/assets/blog.svg', title: 'Blog', label: 'Conteúdos & Aprendizados', chips: ['Tecnologia', 'Desenvolvimento', 'Aprendizados', 'Reflexões'] },
+  ],
+  en: [
+    { href: routes.projects.en, icon: '/assets/code.svg', title: 'Projects', label: 'Technologies & tools', chips: ['C#', '.NET', 'TypeScript', 'Node.js', 'PostgreSQL', 'RabbitMQ', 'Docker'] },
+    { href: '/formacao/', icon: '/assets/graduation.svg', title: 'Education (in Portuguese)', label: 'Main subjects', chips: ['Web Programming', 'Algorithms', 'OOP', 'Databases', 'Software Engineering', 'Cloud'] },
+    { href: routes.experience.en, icon: '/assets/briefcase.svg', title: 'Professional Experience', label: 'Technologies & practices', chips: ['C#/.NET', 'ASP.NET Core', 'GCP', 'RAG', 'xUnit', 'Playwright'] },
+    { href: '/blog/', icon: '/assets/blog.svg', title: 'Blog (in Portuguese)', label: 'Notes & learnings', chips: ['Tech', 'Development', 'Learnings', 'Reflections'] },
+  ],
+}[lang];
+---
+
+<Layout
+  title={copy.title}
+  selectedItem="home"
+  lang={lang}
+  alternates={{ pt: routes.home.pt, en: routes.home.en }}
+>
+  <main class="fold-content-container">
+    <div class="fold-content">
+      <h1>{copy.greeting}<br />Software Developer Intern.</h1>
+      <p class="positioning">{copy.positioning}</p>
+      <p class="tech-line">{techLine}</p>
+      <p class="subtitle-text">{copy.subtitle}</p>
+      <p class="lead">{copy.lead}</p>
+    </div>
+    <div class="buttons-container">
+      <a href="/curriculo.pdf" download class="button w-button">{copy.cv}</a>
+      <a href="mailto:gabrieldotech@gmail.com" class="button w-button button-secondary">{copy.contact}</a>
+      <a href="https://github.com/gabrielmramos-dev" target="_blank" rel="noopener noreferrer" class="button w-button button-secondary">GitHub</a>
+      <a href="https://linkedin.com/in/ongabrielramos" target="_blank" rel="noopener noreferrer" class="button w-button button-secondary">LinkedIn</a>
+    </div>
+  </main>
+
+  <section aria-labelledby="destaques">
+    <h2 id="destaques" class="section-title">{copy.featured}</h2>
+    <div class="featured-list">
+      {featured.map((p) => (
+        <a href={`${routes.projects[lang]}#${p.id}`} class="featured-item">
+          <h3>{p.title}</h3>
+          <p>{p.summary[lang]}</p>
+          <div class="chips-container chips-container-small-width">
+            {p.tech.slice(0, 4).map((t) => <div class="single-chip small-chip">{t}</div>)}
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <GithubActivity lang={lang} repos={repoNames} />
+
+  <div class="projects-section">
+    {sections.map((s) => (
+      <a href={s.href} class="projects-container">
+        <div class="single-projects-category">
+          <div class="projects-category-image-container">
+            <img src={s.icon} loading="lazy" alt="" class="projects-category-image" />
+          </div>
+        </div>
+        <div class="single-projects-content">
+          <h4>{s.title}</h4>
+          <div class="tech-tools-container">
+            <div class="mini-label-white gray-color">{s.label}</div>
+            <div class="chips-container chips-container-small-width">
+              {s.chips.map((c) => <div class="single-chip small-chip">{c}</div>)}
+            </div>
+          </div>
+        </div>
+      </a>
+    ))}
+  </div>
+</Layout>

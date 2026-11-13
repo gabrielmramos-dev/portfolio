@@ -936,3 +936,19 @@ button.navbar-icon-button {
     align-items: flex-start;
   }
 }
+
+/* --- Posicionamento e linha de tecnologias do hero --- */
+.positioning {
+  margin: 0 0 8px;
+  color: #fff;
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.tech-line {
+  margin: 0 0 16px;
+  color: #a8a8a8;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  line-height: 22px;
+}

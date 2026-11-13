@@ -10,7 +10,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "a11y": "node scripts/a11y-check.mjs"
+    "a11y": "node scripts/a11y-check.mjs",
+    "validate:seo": "node scripts/validate-seo.mjs",
+    "resume": "node scripts/generate-resume.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",

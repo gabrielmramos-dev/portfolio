@@ -6,7 +6,7 @@ Estado: **implementado na branch `feat/rebrand`, aguardando validação visual d
 
 ## Briefing
 
-- **Assunto:** portfólio de um desenvolvedor backend júnior (.NET e TypeScript).
+- **Assunto:** portfólio de um desenvolvedor .NET júnior (APIs, dados abertos e IA aplicada).
 - **Público:** recrutadores e líderes técnicos, no Brasil agora e no exterior depois.
 - **Função principal:** provar julgamento de engenharia em poucos minutos: o que foi decidido, por quê, o que foi medido e o que ainda não foi verificado.
 - **Atributo de marca:** rigoroso.
@@ -91,7 +91,7 @@ DESKTOP
 ┌ lateral ──────┬ conteúdo ─────────────────────────────┐
 │ Gabriel Ramos │ Gabriel Ramos                         │
 │ Developer     │ Software Developer Intern             │
-│ Intern        │ Backend .NET/TypeScript · APIs, ...   │
+│ Intern        │ Desenvolvedor .NET · APIs, ...     │
 │               │                                       │
 │ Projetos      │ Projetos                              │
 │ Experiência   │ ─────────────────────────────────     │

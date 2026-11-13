@@ -8,19 +8,17 @@ import { makeAbbr } from '../lib/abbr';
 interface Props {
   project: Project;
   lang?: Lang;
-  /** Recebe as siglas usadas, para a lista de termos da página. */
-  used?: Set<string>;
 }
 
-const { project, lang = 'pt', used } = Astro.props;
-const abbr = makeAbbr(lang, used);
+const { project, lang = 'pt' } = Astro.props;
+const abbr = makeAbbr(lang);
 
 const labels = {
-  pt: { problem: 'Problema', decisions: 'Decisões técnicas', limits: 'Limites', result: 'Resultado', tech: 'Tecnologias', repo: 'no GitHub', newTab: ' (abre em nova aba)' },
-  en: { problem: 'Problem', decisions: 'Technical decisions', limits: 'Limits', result: 'Result', tech: 'Technologies', repo: 'on GitHub', newTab: ' (opens in a new tab)' },
+  pt: { problem: 'Problema', decisions: 'Decisões técnicas', limits: 'Limites', result: 'Resultado', tech: 'Tecnologias', repo: 'no GitHub', newTab: ' (abre em nova aba)', demo: 'Demo', apk: 'Baixar APK', video: 'Vídeo', soon: 'Screenshot em breve' },
+  en: { problem: 'Problem', decisions: 'Technical decisions', limits: 'Limits', result: 'Result', tech: 'Technologies', repo: 'on GitHub', newTab: ' (opens in a new tab)', demo: 'Demo', apk: 'Download APK', video: 'Video', soon: 'Screenshot coming soon' },
 }[lang];
 
-const { title, badge, badgeTone, summary, problem, decisions, limits, result, tech, githubUrl } = project;
+const { title, badge, badgeTone, summary, problem, decisions, limits, result, tech, githubUrl, demo, apk, video, screenshots, screenshotSlot } = project;
 ---
 
 <article class="case" id={project.id}>
@@ -29,13 +27,31 @@ const { title, badge, badgeTone, summary, problem, decisions, limits, result, te
       <h2>{title}</h2>
       {badge && <span class:list={['badge', badgeTone === 'ok' && 'badge-ok']}>{badge[lang]}</span>}
     </div>
-    <a href={githubUrl} target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> — {title} {labels.repo}{labels.newTab}</span></a>
+    <div class="case-links">
+      <a href={githubUrl} target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> — {title} {labels.repo}{labels.newTab}</span></a>
+      {demo && <a href={demo} target="_blank" rel="noopener noreferrer">{labels.demo}<span class="sr-only"> — {title}{labels.newTab}</span></a>}
+      {apk && <a href={apk} target="_blank" rel="noopener noreferrer">{labels.apk}<span class="sr-only"> — {title}{labels.newTab}</span></a>}
+      {video && <a href={video} target="_blank" rel="noopener noreferrer">{labels.video}<span class="sr-only"> — {title}{labels.newTab}</span></a>}
+    </div>
   </div>
 
   <p class="case-summary" set:html={abbr(summary[lang])} />
 
   <ProjectFigure project={project} lang={lang} />
   {project.id === 'sp156-mcp' && <Sp156Chart lang={lang} />}
+
+  {screenshots?.length ? (
+    <figure class="figure shots">
+      {screenshots.map((shot) => (
+        <img src={shot.src} alt={shot.alt[lang]} width="1600" height="900" loading="lazy" decoding="async" />
+      ))}
+    </figure>
+  ) : screenshotSlot ? (
+    <figure class="figure shot-slot">
+      <img src="/projects/placeholder-16x9.svg" alt={screenshotSlot.alt[lang]} width="1600" height="900" loading="lazy" decoding="async" />
+      <figcaption>{labels.soon}</figcaption>
+    </figure>
+  ) : null}
 
   <section class="case-section">
     <h3>{labels.problem}</h3>

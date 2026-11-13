@@ -2,6 +2,9 @@
 import { ClientRouter } from 'astro:transitions';
 import Sidebar from '../components/Sidebar.astro';
 import Controls from '../components/Controls.astro';
+import Email from '../components/Email.astro';
+import { site } from '../data/site';
+import { serialize } from '../lib/jsonld';
 import '@fontsource-variable/schibsted-grotesk';
 import '@fontsource-variable/newsreader';
 import '@fontsource-variable/jetbrains-mono';
@@ -23,6 +26,8 @@ interface Props {
   canonicalPath?: string;
   /** `false` quando as páginas alternativas não são traduções uma da outra. */
   hreflang?: boolean;
+  /** Dados estruturados (schema.org) desta página. */
+  jsonLd?: Record<string, unknown>[];
   /** Caminho equivalente em cada idioma, quando a página existe nos dois. */
   alternates?: Partial<Record<Lang, string>>;
 }
@@ -33,10 +38,11 @@ const {
   contentLang = lang,
   canonicalPath,
   hreflang = true,
+  jsonLd = [],
   description = ui[lang].siteDescription,
   selectedItem = '',
   image = '/assets/og-image.png',
-  imageAlt = 'Gabriel Ramos — Software Developer Intern. Backend .NET/TypeScript',
+  imageAlt = 'Gabriel Ramos — Software Developer Intern. Desenvolvedor .NET, APIs, dados abertos e IA aplicada',
   type = 'website',
   noindex = false,
   alternates,
@@ -81,7 +87,7 @@ const defaultAlternate = alternates?.pt && hreflang ? new URL(alternates.pt, Ast
     <meta name="twitter:image" content={imageUrl} />
     <meta name="twitter:image:alt" content={imageAlt} />
 
-    <link rel="alternate" type="application/rss+xml" title="Blog | Gabriel Ramos" href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Blog | Gabriel Ramos" href={lang === 'en' ? '/en/rss.xml' : '/rss.xml'} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <script is:inline>
       (function () {
@@ -113,8 +119,13 @@ const defaultAlternate = alternates?.pt && hreflang ? new URL(alternates.pt, Ast
         });
       })();
     </script>
-    <link rel="icon" href="/assets/favicon-32x32.png" type="image/png" />
-    <link rel="apple-touch-icon" href="/assets/favicon-32x32.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/assets/favicon-32x32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#f5f6f7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1114" media="(prefers-color-scheme: dark)" />
+    {jsonLd.length > 0 && <script type="application/ld+json" set:html={serialize(jsonLd)} />}
     <ClientRouter />
   </head>
   <body>
@@ -129,9 +140,9 @@ const defaultAlternate = alternates?.pt && hreflang ? new URL(alternates.pt, Ast
           <div class="site-footer-inner">
             <span>© {new Date().getFullYear()} Gabriel Ramos</span>
             <span class="site-footer-links">
-              <a href="https://github.com/gabrielmramos-dev" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only">{ui[lang].newTab}</span></a>
-              <a href="https://linkedin.com/in/ongabrielramos" target="_blank" rel="noopener noreferrer">LinkedIn<span class="sr-only">{ui[lang].newTab}</span></a>
-              <a href="mailto:gabrieldotech@gmail.com">{ui[lang].footerContact}</a>
+              <a href={site.social.github.url} target="_blank" rel="noopener noreferrer">{site.social.github.label}<span class="sr-only">{ui[lang].newTab}</span></a>
+              <a href={site.social.linkedin.url} target="_blank" rel="noopener noreferrer">{site.social.linkedin.label}<span class="sr-only">{ui[lang].newTab}</span></a>
+              <Email label={ui[lang].footerContact} />
               <a href={routes.accessibility[lang]}>{ui[lang].a11y}</a>
             </span>
           </div>

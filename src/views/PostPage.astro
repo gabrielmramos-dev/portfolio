@@ -4,6 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import BackLink from '../components/BackLink.astro';
 import Comments from '../components/Comments.astro';
 import { readingTime, type Post } from '../lib/posts';
+import { blogPosting, breadcrumbs, homeLabel } from '../lib/jsonld';
 import { routes, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const { post, lang } = Astro.props;
+const origin = Astro.site!.origin;
 const { title, description, date, tags } = post.data;
 const { Content } = await render(post);
 
@@ -20,10 +22,9 @@ const formatDate = (d: Date) =>
 
 const ptPath = `${routes.blog.pt}${post.id}/`;
 const enPath = `${routes.blog.en}${post.id}/`;
-const copy = {
-  pt: { read: 'min de leitura', note: '' },
-  en: { read: 'min read', note: 'This post is written in Portuguese.' },
-}[lang];
+const copy = { pt: { read: 'min de leitura' }, en: { read: 'min read' } }[lang];
+const ownPath = lang === 'pt' ? ptPath : enPath;
+const image = lang === 'pt' ? `/og/${post.id}.png` : `/og/en/${post.id}.png`;
 ---
 
 <Layout
@@ -32,15 +33,30 @@ const copy = {
   selectedItem="blog"
   type="article"
   lang={lang}
-  contentLang="pt"
   alternates={{ pt: ptPath, en: enPath }}
-  hreflang={false}
-  canonicalPath={ptPath}
+  image={image}
+  imageAlt={lang === 'pt' ? `Imagem de compartilhamento do post: ${title}` : `Share image for the post: ${title}`}
+  jsonLd={[
+    blogPosting({
+      origin,
+      url: origin + ownPath,
+      lang,
+      title,
+      description,
+      date,
+      tags,
+      image: origin + image,
+    }),
+    breadcrumbs([
+      { name: homeLabel(lang), url: origin + routes.home[lang] },
+      { name: 'Blog', url: origin + routes.blog[lang] },
+      { name: title, url: origin + ownPath },
+    ]),
+  ]}
 >
   <BackLink href={routes.blog[lang]} label="Blog" />
 
   <article class="post">
-    {copy.note && <p class="section-note">{copy.note}</p>}
     <header class="post-header">
       <h1>{title}</h1>
       <p class="post-lead">{description}</p>

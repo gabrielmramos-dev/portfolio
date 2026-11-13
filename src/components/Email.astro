@@ -1,0 +1,19 @@
+---
+import { site } from '../data/site';
+
+interface Props {
+  class?: string;
+  /** Texto do link. Sem ele, o próprio endereço aparece como texto. */
+  label?: string;
+}
+
+const { class: className, label } = Astro.props;
+
+// Cada caractere vira uma referência numérica HTML: o navegador mostra o endereço normal e o mailto funciona
+// sem JavaScript, mas o texto puro não aparece no código-fonte. Não protege de quem decodifica; só de coleta simples.
+const encode = (text: string) => [...text].map((c) => `&#x${c.codePointAt(0)!.toString(16)};`).join('');
+const address = encode(site.email);
+const html = `<a href="mailto:${address}"${className ? ` class="${className}"` : ''}>${label ?? address}</a>`;
+---
+
+<Fragment set:html={html} />

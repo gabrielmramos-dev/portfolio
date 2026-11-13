@@ -1,7 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import BackLink from '../components/BackLink.astro';
+import { breadcrumbs, homeLabel } from '../lib/jsonld';
 import { routes, ui, type Lang } from '../i18n/ui';
+import Email from '../components/Email.astro';
 import { a11yReport } from '../data/a11y-report';
 
 interface Props {
@@ -9,7 +11,7 @@ interface Props {
 }
 
 const { lang } = Astro.props;
-const email = 'gabrieldotech@gmail.com';
+const origin = Astro.site!.origin;
 
 const copy = {
   pt: {
@@ -161,6 +163,7 @@ const report = a11yReport[lang];
   selectedItem=""
   lang={lang}
   alternates={{ pt: routes.accessibility.pt, en: routes.accessibility.en }}
+  jsonLd={[breadcrumbs([{ name: homeLabel(lang), url: origin + routes.home[lang] }, { name: copy.heading, url: origin + routes.accessibility[lang] }])]}
 >
   <BackLink href={routes.home[lang]} label={ui[lang].back} />
   <div class="prose-page">
@@ -251,7 +254,7 @@ const report = a11yReport[lang];
     <section aria-labelledby="report-title">
       <h2 id="report-title">{copy.reportTitle}</h2>
       <p>{copy.reportText}</p>
-      <p><a href={`mailto:${email}`} class="button">{copy.reportLink}</a> <span>{email}</span></p>
+      <p><Email class="button" label={copy.reportLink} /> <Email /></p>
     </section>
 
     <p class="updated">{copy.updated}</p>

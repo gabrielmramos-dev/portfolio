@@ -1,6 +1,10 @@
 ---
+// TODO(gabriel): os detalhes internos da PRODAM abaixo (Redis, BigQuery, Azure DevOps, busca semântica, jobs, retry)
+// devem ser confirmados com o seu gestor antes de ficarem públicos. O conteúdo técnico não foi alterado pela auditoria.
 import Layout from '../layouts/Layout.astro';
 import BackLink from '../components/BackLink.astro';
+import { site } from '../data/site';
+import { breadcrumbs, homeLabel } from '../lib/jsonld';
 import { routes, ui, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -8,6 +12,11 @@ interface Props {
 }
 
 const { lang } = Astro.props;
+const origin = Astro.site!.origin;
+
+const month = (iso: string) =>
+  new Date(`${iso}-01T00:00:00Z`).toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+const { count, from, until } = site.prodamWorkItems;
 
 // Fonte: o próprio Gabriel (texto do LinkedIn, conferido por ele). Termos em geral, sem nomes internos
 // de projeto, IDs de nuvem ou códigos de tarefa.
@@ -38,7 +47,7 @@ const copy = {
         {
           label: 'Entregas',
           items: [
-            'Mais de 70 work items em 7 meses, entre funcionalidades, correções e melhorias.',
+            `Mais de ${count} work items de ${month(from)} a ${month(until)}, entre funcionalidades, correções e melhorias.`,
             'Migrei os prompts de mais de 10 funcionalidades para uma tela de administração, permitindo ajustar a IA sem novo deploy.',
             'Criei uma API de busca semântica por projeto (Vertex AI + Redis) com parâmetros configuráveis.',
             'Instrumentei no BigQuery modelo, temperatura e nível de pensamento de cada geração, dando rastreabilidade às respostas.',
@@ -104,7 +113,7 @@ const copy = {
         {
           label: 'Deliveries',
           items: [
-            'More than 70 work items in 7 months, across features, fixes and improvements.',
+            `More than ${count} work items from ${month(from)} to ${month(until)}, across features, fixes and improvements.`,
             'Migrated the prompts of more than 10 features to an admin screen, so the AI can be tuned without a new deploy.',
             'Built a per-project semantic search API (Vertex AI + Redis) with configurable parameters.',
             'Instrumented BigQuery with the model, temperature and thinking level of every generation, making answers traceable.',
@@ -125,7 +134,7 @@ const copy = {
       tech: ['C#/.NET 8', 'ASP.NET Core MVC', 'Clean Architecture', 'Gemini and Claude (Vertex AI)', 'RAG', 'MongoDB', 'Redis', 'BigQuery', 'Quartz', 'SSE', 'Azure DevOps', 'MCP', 'xUnit', 'Playwright MCP'],
     },
     microlins: {
-      role: 'Back-end Developer | IT Instructor (mid-level)',
+      role: 'Backend Developer | IT Instructor (mid-level)',
       place: 'Microlins',
       period: 'October 2024 — January 2026 · São Paulo',
       summary:
@@ -155,6 +164,7 @@ const entries = [copy.prodam, copy.microlins];
   selectedItem="experiencia"
   lang={lang}
   alternates={{ pt: routes.experience.pt, en: routes.experience.en }}
+  jsonLd={[breadcrumbs([{ name: homeLabel(lang), url: origin + routes.home[lang] }, { name: copy.heading, url: origin + routes.experience[lang] }])]}
 >
   <BackLink href={routes.home[lang]} label={ui[lang].back} />
   <h1>{copy.heading}</h1>

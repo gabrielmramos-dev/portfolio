@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import BackLink from '../components/BackLink.astro';
 import BlogCard from '../components/BlogCard.astro';
 import { getAllPosts } from '../lib/posts';
+import { breadcrumbs, homeLabel } from '../lib/jsonld';
 import { routes, ui, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -10,7 +11,8 @@ interface Props {
 }
 
 const { lang } = Astro.props;
-const posts = await getAllPosts();
+const origin = Astro.site!.origin;
+const posts = await getAllPosts(lang);
 const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
 
 const copy = {
@@ -24,8 +26,8 @@ const copy = {
   },
   en: {
     title: 'Blog | Gabriel Ramos',
-    description: 'Articles and notes on technology and software development. The posts are written in Portuguese.',
-    lead: 'Articles and notes on technology and software development. The posts are written in Portuguese.',
+    description: 'Articles and notes on technology and software development.',
+    lead: 'Articles and notes on technology and software development.',
     empty: 'No posts published yet.',
     filter: 'Filter by tag',
     all: 'All',
@@ -38,10 +40,8 @@ const copy = {
   description={copy.description}
   selectedItem="blog"
   lang={lang}
-  contentLang="pt"
   alternates={{ pt: routes.blog.pt, en: routes.blog.en }}
-  hreflang={false}
-  canonicalPath={routes.blog.pt}
+  jsonLd={[breadcrumbs([{ name: homeLabel(lang), url: origin + routes.home[lang] }, { name: 'Blog', url: origin + routes.blog[lang] }])]}
 >
   <BackLink href={routes.home[lang]} label={ui[lang].back} />
   <h1>Blog</h1>
@@ -59,7 +59,7 @@ const copy = {
           ))}
         </div>
       )}
-      <ul class="post-list" role="list" lang="pt-BR">
+      <ul class="post-list" role="list">
         {posts.map((post) => (
           <BlogCard post={post} lang={lang} />
         ))}

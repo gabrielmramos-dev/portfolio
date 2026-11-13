@@ -1,6 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import BackLink from '../components/BackLink.astro';
+import { education, semesterLabel } from '../data/education';
+import { breadcrumbs, homeLabel } from '../lib/jsonld';
 import { routes, ui, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -8,69 +10,65 @@ interface Props {
 }
 
 const { lang } = Astro.props;
+const origin = Astro.site!.origin;
+const semester = semesterLabel(lang);
 
 const copy = {
   pt: {
     title: 'Formação Acadêmica | Gabriel Ramos',
-    description: 'Análise e Desenvolvimento de Sistemas na Universidade Braz Cubas (3º semestre).',
     heading: 'Formação Acadêmica',
-    course: 'Análise e Desenvolvimento de Sistemas',
-    meta: 'Universidade Braz Cubas · Cursando, 3º semestre',
     summary:
       'Formação com foco em fundamentos de desenvolvimento de software, lógica de programação e sistemas computacionais, aliando teoria à prática por meio de projetos.',
     subjectsLabel: 'Principais disciplinas',
-    subjects: [
-      'Programação Web',
-      'Técnicas e Desenvolvimento de Algoritmos',
-      'Programação Orientada a Objetos',
-      'Fundamentos de Estruturas de Dados',
-      'Banco de Dados',
-      'Sistemas Operacionais',
-      'Engenharia de Software',
-      'Sistemas Cliente/Servidor',
-      'Computação em Nuvem',
-      'Análise e Projeto de Sistemas I',
-    ],
+    note: 'Agrupadas por tema. As marcadas como "Cursando" são do período atual.',
   },
   en: {
     title: 'Education | Gabriel Ramos',
-    description: 'Systems Analysis and Development at Braz Cubas University (3rd semester).',
     heading: 'Education',
-    course: 'Systems Analysis and Development',
-    meta: 'Braz Cubas University · In progress, 3rd semester',
     summary:
       'A degree focused on software development fundamentals, programming logic and computer systems, combining theory and practice through projects.',
     subjectsLabel: 'Main subjects',
-    subjects: [
-      'Web Programming',
-      'Algorithm Techniques and Development',
-      'Object-Oriented Programming',
-      'Data Structures Fundamentals',
-      'Databases',
-      'Operating Systems',
-      'Software Engineering',
-      'Client/Server Systems',
-      'Cloud Computing',
-      'Systems Analysis and Design I',
-    ],
+    note: 'Grouped by theme. Those marked "In progress" belong to the current term.',
   },
 }[lang];
+
+const description =
+  lang === 'pt'
+    ? `${education.course.pt} na ${education.institution.pt} (${semester}).`
+    : `${education.course.en} at ${education.institution.en} (${semester}).`;
 ---
 
 <Layout
   title={copy.title}
-  description={copy.description}
+  description={description}
   selectedItem="formacao"
   lang={lang}
   alternates={{ pt: routes.education.pt, en: routes.education.en }}
+  jsonLd={[breadcrumbs([{ name: homeLabel(lang), url: origin + routes.home[lang] }, { name: copy.heading, url: origin + routes.education[lang] }])]}
 >
   <BackLink href={routes.home[lang]} label={ui[lang].back} />
   <h1>{copy.heading}</h1>
   <article class="entry">
-    <h2>{copy.course}</h2>
-    <p class="entry-meta"><strong>{copy.meta.split(' · ')[0]}</strong> · {copy.meta.split(' · ')[1]}</p>
+    <h2>{education.course[lang]}</h2>
+    <p class="entry-meta">
+      <strong>{education.institution[lang]}</strong> · {education.status[lang]}, {semester}
+    </p>
     <p>{copy.summary}</p>
     <h3 class="label">{copy.subjectsLabel}</h3>
-    <ul>{copy.subjects.map((item) => <li>{item}</li>)}</ul>
+    <p class="section-note">{copy.note}</p>
+    {education.groups.map((group) => (
+      <section class="subject-group">
+        <h4>{group.title[lang]}</h4>
+        <ul>
+          {group.subjects.map((subject) => (
+            <li>
+              {subject.name[lang]}
+              {subject.optional && <span class="subject-note"> ({education.optionalLabel[lang]})</span>}
+              {subject.term === education.currentTerm && <span class="badge">{education.currentLabel[lang]}</span>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
   </article>
 </Layout>

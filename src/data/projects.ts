@@ -33,6 +33,14 @@ export interface Project {
   tech: string[];
   githubUrl: string;
   figure: ProjectFigure;
+  /** Links opcionais do estudo de caso. Só aparecem quando preenchidos. */
+  demo?: string;
+  apk?: string;
+  video?: string;
+  /** Capturas de tela adicionais. Quando existirem, substituem o espaço reservado. */
+  screenshots?: { src: string; alt: Text }[];
+  /** Espaço reservado enquanto não há captura de tela. O TODO ao lado descreve a captura necessária. */
+  screenshotSlot?: { alt: Text };
   featured?: boolean;
   /** Fora da lista pública por decisão editorial; o conteúdo fica guardado. */
   hidden?: boolean;
@@ -40,70 +48,6 @@ export interface Project {
 
 // Fonte dos fatos: README e código de cada repositório (conferidos em 2026-11-13).
 export const projects: Project[] = [
-  {
-    id: 'sp156-mcp',
-    title: 'sp156-mcp',
-    badge: { pt: 'Em andamento', en: 'In progress' },
-    summary: {
-      pt: 'Um programa que lê a planilha pública de pedidos da central de atendimento da Prefeitura de São Paulo (SP156) e a guarda num banco de dados organizado, sem endereços, para que um assistente de IA possa responder perguntas sobre esses pedidos. A primeira parte, organizar os dados, está pronta. O assistente ainda está em desenvolvimento.',
-      en: 'A program that reads the public spreadsheet of requests to the São Paulo City Hall service center (SP156) and stores it in an organized database, without addresses, so an AI assistant can answer questions about those requests. The first part, organizing the data, is done. The assistant is still in development.',
-    },
-    problem: {
-      pt: 'Os dados abertos do SP156 vêm em planilhas XLSX enormes (742.904 linhas só no 1º trimestre de 2025). O objetivo é permitir que um assistente de IA responda perguntas agregadas sobre os pedidos, sempre com as ressalvas dos dados.',
-      en: 'The SP156 open data comes as huge XLSX spreadsheets (742,904 rows in Q1 2025 alone). The goal is to let an AI assistant answer aggregate questions about the requests, always with the data caveats attached.',
-    },
-    decisions: {
-      pt: [
-        'Privacidade por esquema: o banco SQLite não tem colunas de endereço nem de coordenadas, e um teste verifica isso (ADR 0002).',
-        'Sem deduplicação: 47,65% das linhas são duplicatas exatas e não há ID de protocolo, então a contagem é de linhas registradas, não de problemas distintos (ADR 0003).',
-        'Escrita segura: a ingestão nunca sobrescreve o destino e grava em um arquivo temporário renomeado só no fim.',
-        'Fluxo spec, testes e implementação, com 7 ADRs e CI no GitHub Actions.',
-      ],
-      en: [
-        'Privacy by schema: the SQLite database has no address or coordinate columns, and a test checks it (ADR 0002).',
-        'No deduplication: 47.65% of rows are exact duplicates and there is no protocol ID, so counts are of registered rows, not distinct problems (ADR 0003).',
-        'Safe writes: ingestion never overwrites the destination and writes to a temporary file renamed only at the end.',
-        'Spec, tests, then implementation, with 7 ADRs and CI on GitHub Actions.',
-      ],
-    },
-    // Fonte: README, seções "O que NÃO está verificado" e "Limitações dos dados".
-    limits: {
-      pt: [
-        'Tudo foi verificado em um único arquivo (1º trimestre de 2025): formato, colunas, valores e amostra de privacidade. Outros trimestres e anos não foram testados.',
-        'A proteção de privacidade vem do esquema (a coluna de endereço não existe no banco). O teste de valores é uma amostra, não uma verificação exaustiva.',
-        'O status é um retrato de data desconhecida. Pedidos de janeiro a março de 2025 ainda abertos meses depois mostram que o tempo até finalizar tem censura, então qualquer média desse tempo é enviesada.',
-        'Os dados só registram solicitações feitas pela população. O volume de pedidos não mede os serviços executados nem os problemas existentes na cidade.',
-      ],
-      en: [
-        'Everything was verified on a single file (Q1 2025): format, columns, values and the privacy sample. Other quarters and years were not tested.',
-        'The privacy protection comes from the schema (the address column does not exist in the database). The value test is a sample, not an exhaustive check.',
-        'The status is a snapshot of unknown date. Requests from January to March 2025 still open months later show that time-to-close is censored, so any average of that time is biased.',
-        'The data only records requests made by the public. Request volume does not measure services performed or problems that exist in the city.',
-      ],
-    },
-    result: {
-      pt: 'Marco 1 concluído: ingestão do XLSX para SQLite, sem endereços. O servidor MCP ainda está em desenvolvimento.',
-      en: 'Milestone 1 done: XLSX ingestion into SQLite, without addresses. The MCP server is still in development.',
-    },
-    // TODO(gabriel): o README diz que o Marco 2 (servidor MCP) está "ainda não iniciado". Alinhe o texto do site ou o README.
-    tech: ['C#', '.NET 10', 'SQLite', 'xUnit', 'MCP', 'GitHub Actions'],
-    githubUrl: 'https://github.com/gabrielmramos-dev/sp156-mcp',
-    // TODO(gabriel): opcional: GIF do comando `ingerir` gravando o banco, para acompanhar o diagrama.
-    figure: {
-      kind: 'flow',
-      alt: {
-        pt: 'Diagrama do pipeline: planilha XLSX do SP156, comando ingerir, banco SQLite sem endereços e, em desenvolvimento, o servidor MCP para um assistente de IA.',
-        en: 'Pipeline diagram: SP156 XLSX spreadsheet, the ingest command, a SQLite database without addresses and, in development, the MCP server for an AI assistant.',
-      },
-      nodes: [
-        { title: { pt: 'Planilha XLSX do SP156', en: 'SP156 XLSX spreadsheet' }, detail: { pt: '742.904 linhas no 1º trimestre de 2025', en: '742,904 rows in Q1 2025' } },
-        { title: { pt: 'Comando ingerir', en: 'Ingest command' }, detail: { pt: 'C#; descarta endereço e coordenadas', en: 'C#; drops address and coordinates' } },
-        { title: { pt: 'Banco SQLite', en: 'SQLite database' }, detail: { pt: 'Gravado em arquivo temporário e renomeado só no fim', en: 'Written to a temporary file and renamed only at the end' } },
-        { title: { pt: 'Servidor MCP', en: 'MCP server' }, detail: { pt: 'Em desenvolvimento: perguntas agregadas para um assistente de IA', en: 'In development: aggregate questions for an AI assistant' }, planned: true },
-      ],
-    },
-    featured: true,
-  },
   {
     id: 'sinalcerto-app',
     title: 'SinalCerto',
@@ -152,6 +96,9 @@ export const projects: Project[] = [
     },
     tech: ['React Native', 'Expo SDK 58', 'TypeScript', 'Jest', 'GitHub Actions'],
     githubUrl: 'https://github.com/gabrielmramos-dev/sinalcerto-app',
+    // APK: link do build no EAS, informado pelo Gabriel (também está no README do repositório).
+    apk: 'https://expo.dev/accounts/gabrieldotech/projects/sinalcerto-app/builds/2f70c8da-5365-4854-8e0c-24f30ff5b2b8',
+    // TODO(gabriel): `demo` e `video`, se existirem.
     // As capturas vêm de docs/design/ do repositório. O botão azul de engrenagem nelas é do Expo Go, não do app.
     figure: {
       kind: 'shots',
@@ -177,6 +124,153 @@ export const projects: Project[] = [
             en: 'SinalCerto details screen: the 11:00 PM hour expanded, with response time, lost information and the score.',
           },
         },
+      ],
+    },
+    featured: true,
+  },
+  {
+    id: 'zelasp',
+    title: 'ZelaSP',
+    badge: { pt: 'Estudo de caso', en: 'Case study' },
+    summary: {
+      pt: 'Um sistema web em que a pessoa marca no mapa um problema de infraestrutura da cidade, com foto, e quem cuida da cidade acompanha e prioriza os pedidos. É um estudo de caso técnico.',
+      en: 'A web system where a person marks a city infrastructure problem on the map, with a photo, and city managers track and prioritize the requests. It is a technical case study.',
+    },
+    problem: {
+      pt: 'Aproximar moradores de São Paulo dos serviços municipais: o cidadão marca um problema geolocalizado no mapa, e gestores fazem a triagem e o acompanhamento. Estudo de caso técnico.',
+      en: 'Bring São Paulo residents closer to city services: citizens pin a geolocated problem on the map, and managers triage and track it. Technical case study.',
+    },
+    decisions: {
+      pt: [
+        'Clean Architecture em quatro projetos (API, Application, Domain e Infrastructure), com dependências apontando para o domínio.',
+        'Consultas geoespaciais nativas: coordenadas como Point do PostGIS (SRID 4326) e busca por raio com cálculo de distância no banco.',
+        'Triagem com criticidade e setor responsável, protocolo no formato SP-AAAA-NNNN e alerta de SLA para pedidos abertos há mais de 7 dias.',
+        'Painel de gestão protegido por JWT (8 h) e acompanhamento anônimo para o cidadão, por token guardado no navegador; foto obrigatória no registro.',
+      ],
+      en: [
+        'Clean Architecture in four projects (API, Application, Domain and Infrastructure), with dependencies pointing to the domain.',
+        'Native geospatial queries: coordinates as a PostGIS Point (SRID 4326) and radius search with distance computed in the database.',
+        'Triage with severity and responsible department, protocol in the SP-YYYY-NNNN format and an SLA alert for requests open for more than 7 days.',
+        'Management panel protected by JWT (8 h) and anonymous tracking for citizens through a token kept in the browser; photo required on submission.',
+      ],
+    },
+    // Fonte: README, tabela de endpoints e seção "Sobre o Projeto".
+    limits: {
+      pt: [
+        'É um estudo de caso técnico, não um serviço em produção.',
+        'A listagem e a busca por raio de solicitações são públicas, sem autenticação. Só a triagem e a mudança de status exigem JWT.',
+      ],
+      en: [
+        'This is a technical case study, not a production service.',
+        'Listing and radius search of requests are public, with no authentication. Only triage and status changes require a JWT.',
+      ],
+    },
+    result: {
+      pt: 'Fluxo completo do reporte à triagem e ao acompanhamento, com API documentada em Swagger e frontend React com mapa Leaflet, rodando localmente via Docker Compose.',
+      en: 'Complete flow from report to triage and tracking, with a Swagger-documented API and a React frontend with a Leaflet map, running locally through Docker Compose.',
+    },
+    // TODO(gabriel): o repositório não tem testes automatizados; vale adicionar alguns antes de destacar este projeto.
+    tech: ['C#', '.NET 9', 'ASP.NET Core', 'EF Core', 'PostgreSQL', 'PostGIS', 'React', 'TypeScript', 'Leaflet'],
+    githubUrl: 'https://github.com/gabrielmramos-dev/zelasp',
+    // TODO(gabriel): captura de tela da interface (campo `screenshots`; ao preencher, o espaço reservado some).
+    // Tire: o mapa de São Paulo com marcadores de reportes (Leaflet) ao lado do painel de triagem, com a lista de solicitações,
+    // a criticidade e o setor responsável. Use dados fictícios. 16:9, cerca de 1600x900, PNG ou WebP, em public/projects/.
+    screenshotSlot: {
+      alt: {
+        pt: 'Espaço reservado: captura do mapa do ZelaSP com marcadores de reportes e do painel de triagem.',
+        en: 'Placeholder: capture of the ZelaSP map with report markers and the triage panel.',
+      },
+    },
+    // TODO(gabriel): o diagrama de camadas é provisório; só você pode tirar capturas do mapa com os reportes e do painel de triagem.
+    figure: {
+      kind: 'flow',
+      alt: {
+        pt: 'Diagrama das camadas do ZelaSP: frontend React com mapa Leaflet, API ASP.NET Core, camada Application, Infrastructure com EF Core e PostgreSQL com PostGIS.',
+        en: 'ZelaSP layers diagram: React frontend with a Leaflet map, ASP.NET Core API, Application layer, Infrastructure with EF Core and PostgreSQL with PostGIS.',
+      },
+      nodes: [
+        { title: { pt: 'Frontend', en: 'Frontend' }, detail: { pt: 'React, TypeScript e mapa Leaflet', en: 'React, TypeScript and a Leaflet map' } },
+        { title: { pt: 'ZelaSP.API', en: 'ZelaSP.API' }, detail: { pt: 'ASP.NET Core, JWT e tratamento global de erros', en: 'ASP.NET Core, JWT and global error handling' } },
+        { title: { pt: 'ZelaSP.Application', en: 'ZelaSP.Application' }, detail: { pt: 'Serviços, DTOs e regras de negócio', en: 'Services, DTOs and business rules' } },
+        { title: { pt: 'ZelaSP.Infrastructure', en: 'ZelaSP.Infrastructure' }, detail: { pt: 'EF Core, repositórios e consultas PostGIS', en: 'EF Core, repositories and PostGIS queries' } },
+        { title: { pt: 'PostgreSQL + PostGIS', en: 'PostgreSQL + PostGIS' }, detail: { pt: 'Ponto SRID 4326 e busca por raio', en: 'SRID 4326 point and radius search' } },
+      ],
+      note: {
+        pt: 'O Domain (entidades e contratos de repositório) fica no centro: Application e Infrastructure dependem dele, e ele não depende de nada.',
+        en: 'The Domain (entities and repository contracts) sits at the center: Application and Infrastructure depend on it, and it depends on nothing.',
+      },
+    },
+  },
+  {
+    id: 'sp156-mcp',
+    title: 'sp156-mcp',
+    badge: { pt: 'Em andamento', en: 'In progress' },
+    summary: {
+      pt: 'Um programa que lê a planilha pública de pedidos da central de atendimento da Prefeitura de São Paulo (SP156) e a guarda num banco de dados organizado, sem endereços, para que um assistente de IA possa responder perguntas sobre esses pedidos. A primeira parte, organizar os dados, está pronta. O assistente ainda está em desenvolvimento.',
+      en: 'A program that reads the public spreadsheet of requests to the São Paulo City Hall service center (SP156) and stores it in an organized database, without addresses, so an AI assistant can answer questions about those requests. The first part, organizing the data, is done. The assistant is still in development.',
+    },
+    problem: {
+      pt: 'Os dados abertos do SP156 vêm em planilhas XLSX enormes (742.904 linhas só no 1º trimestre de 2025). O objetivo é permitir que um assistente de IA responda perguntas agregadas sobre os pedidos, sempre com as ressalvas dos dados.',
+      en: 'The SP156 open data comes as huge XLSX spreadsheets (742,904 rows in Q1 2025 alone). The goal is to let an AI assistant answer aggregate questions about the requests, always with the data caveats attached.',
+    },
+    decisions: {
+      pt: [
+        'Privacidade por esquema: o banco SQLite não tem colunas de endereço nem de coordenadas, e um teste verifica isso (ADR 0002).',
+        'Sem deduplicação: 47,65% das linhas são duplicatas exatas e não há ID de protocolo, então a contagem é de linhas registradas, não de problemas distintos (ADR 0003).',
+        'Escrita segura: a ingestão nunca sobrescreve o destino e grava em um arquivo temporário renomeado só no fim.',
+        'Fluxo spec, testes e implementação, com 7 ADRs e CI no GitHub Actions.',
+      ],
+      en: [
+        'Privacy by schema: the SQLite database has no address or coordinate columns, and a test checks it (ADR 0002).',
+        'No deduplication: 47.65% of rows are exact duplicates and there is no protocol ID, so counts are of registered rows, not distinct problems (ADR 0003).',
+        'Safe writes: ingestion never overwrites the destination and writes to a temporary file renamed only at the end.',
+        'Spec, tests, then implementation, with 7 ADRs and CI on GitHub Actions.',
+      ],
+    },
+    // Fonte: README, seções "O que NÃO está verificado" e "Limitações dos dados".
+    limits: {
+      pt: [
+        'Tudo foi verificado em um único arquivo (1º trimestre de 2025): formato, colunas, valores e amostra de privacidade. Outros trimestres e anos não foram testados.',
+        'A proteção de privacidade vem do esquema (a coluna de endereço não existe no banco). O teste de valores é uma amostra, não uma verificação exaustiva.',
+        'O status é um retrato de data desconhecida. Pedidos de janeiro a março de 2025 ainda abertos meses depois mostram que o tempo até finalizar tem censura, então qualquer média desse tempo é enviesada.',
+        'Os dados só registram solicitações feitas pela população. O volume de pedidos não mede os serviços executados nem os problemas existentes na cidade.',
+      ],
+      en: [
+        'Everything was verified on a single file (Q1 2025): format, columns, values and the privacy sample. Other quarters and years were not tested.',
+        'The privacy protection comes from the schema (the address column does not exist in the database). The value test is a sample, not an exhaustive check.',
+        'The status is a snapshot of unknown date. Requests from January to March 2025 still open months later show that time-to-close is censored, so any average of that time is biased.',
+        'The data only records requests made by the public. Request volume does not measure services performed or problems that exist in the city.',
+      ],
+    },
+    result: {
+      pt: 'Marco 1 concluído: ingestão do XLSX para SQLite, sem endereços. O servidor MCP ainda está em desenvolvimento.',
+      en: 'Milestone 1 done: XLSX ingestion into SQLite, without addresses. The MCP server is still in development.',
+    },
+    // TODO(gabriel): o README diz que o Marco 2 (servidor MCP) está "ainda não iniciado". Alinhe o texto do site ou o README.
+    tech: ['C#', '.NET 10', 'SQLite', 'xUnit', 'MCP', 'GitHub Actions'],
+    githubUrl: 'https://github.com/gabrielmramos-dev/sp156-mcp',
+    // TODO(gabriel): captura de tela da saída (campo `screenshots`; ao preencher, o espaço reservado some).
+    // Tire: o terminal rodando `dotnet run --project src/Sp156.Cli -- ingerir <arquivo.xlsx> <saida.db>` com a linha final
+    // "<N> pedidos gravados em <saida.db>" e, logo abaixo, uma consulta ao SQLite que conte os pedidos por status.
+    // Use a planilha fictícia de teste ou só dados agregados: nada de endereço. 16:9, cerca de 1600x900, PNG ou WebP.
+    screenshotSlot: {
+      alt: {
+        pt: 'Espaço reservado: captura do terminal com a saída do comando de ingestão e de uma consulta ao banco SQLite.',
+        en: 'Placeholder: capture of the terminal with the ingestion command output and a query on the SQLite database.',
+      },
+    },
+    // TODO(gabriel): opcional: GIF do comando `ingerir` gravando o banco, para acompanhar o diagrama.
+    figure: {
+      kind: 'flow',
+      alt: {
+        pt: 'Diagrama do pipeline: planilha XLSX do SP156, comando ingerir, banco SQLite sem endereços e, em desenvolvimento, o servidor MCP para um assistente de IA.',
+        en: 'Pipeline diagram: SP156 XLSX spreadsheet, the ingest command, a SQLite database without addresses and, in development, the MCP server for an AI assistant.',
+      },
+      nodes: [
+        { title: { pt: 'Planilha XLSX do SP156', en: 'SP156 XLSX spreadsheet' }, detail: { pt: '742.904 linhas no 1º trimestre de 2025', en: '742,904 rows in Q1 2025' } },
+        { title: { pt: 'Comando ingerir', en: 'Ingest command' }, detail: { pt: 'C#; descarta endereço e coordenadas', en: 'C#; drops address and coordinates' } },
+        { title: { pt: 'Banco SQLite', en: 'SQLite database' }, detail: { pt: 'Gravado em arquivo temporário e renomeado só no fim', en: 'Written to a temporary file and renamed only at the end' } },
+        { title: { pt: 'Servidor MCP', en: 'MCP server' }, detail: { pt: 'Em desenvolvimento: perguntas agregadas para um assistente de IA', en: 'In development: aggregate questions for an AI assistant' }, planned: true },
       ],
     },
     featured: true,
@@ -292,69 +386,6 @@ export const projects: Project[] = [
       alt: {
         pt: 'Diagrama do fluxo de autenticação: rotas de login e refresh, com emissão de access token (10 min) e refresh token (7 dias) em cookie.',
         en: 'Authentication flow diagram: login and refresh routes, issuing an access token (10 min) and a refresh token (7 days) in a cookie.',
-      },
-    },
-  },
-  {
-    id: 'zelasp',
-    title: 'ZelaSP',
-    summary: {
-      pt: 'Um sistema web em que a pessoa marca no mapa um problema de infraestrutura da cidade, com foto, e quem cuida da cidade acompanha e prioriza os pedidos. É um estudo de caso técnico.',
-      en: 'A web system where a person marks a city infrastructure problem on the map, with a photo, and city managers track and prioritize the requests. It is a technical case study.',
-    },
-    problem: {
-      pt: 'Aproximar moradores de São Paulo dos serviços municipais: o cidadão marca um problema geolocalizado no mapa, e gestores fazem a triagem e o acompanhamento. Estudo de caso técnico.',
-      en: 'Bring São Paulo residents closer to city services: citizens pin a geolocated problem on the map, and managers triage and track it. Technical case study.',
-    },
-    decisions: {
-      pt: [
-        'Clean Architecture em quatro projetos (API, Application, Domain e Infrastructure), com dependências apontando para o domínio.',
-        'Consultas geoespaciais nativas: coordenadas como Point do PostGIS (SRID 4326) e busca por raio com cálculo de distância no banco.',
-        'Triagem com criticidade e setor responsável, protocolo no formato SP-AAAA-NNNN e alerta de SLA para pedidos abertos há mais de 7 dias.',
-        'Painel de gestão protegido por JWT (8 h) e acompanhamento anônimo para o cidadão, por token guardado no navegador; foto obrigatória no registro.',
-      ],
-      en: [
-        'Clean Architecture in four projects (API, Application, Domain and Infrastructure), with dependencies pointing to the domain.',
-        'Native geospatial queries: coordinates as a PostGIS Point (SRID 4326) and radius search with distance computed in the database.',
-        'Triage with severity and responsible department, protocol in the SP-YYYY-NNNN format and an SLA alert for requests open for more than 7 days.',
-        'Management panel protected by JWT (8 h) and anonymous tracking for citizens through a token kept in the browser; photo required on submission.',
-      ],
-    },
-    // Fonte: README, tabela de endpoints e seção "Sobre o Projeto".
-    limits: {
-      pt: [
-        'É um estudo de caso técnico, não um serviço em produção.',
-        'A listagem e a busca por raio de solicitações são públicas, sem autenticação. Só a triagem e a mudança de status exigem JWT.',
-      ],
-      en: [
-        'This is a technical case study, not a production service.',
-        'Listing and radius search of requests are public, with no authentication. Only triage and status changes require a JWT.',
-      ],
-    },
-    result: {
-      pt: 'Fluxo completo do reporte à triagem e ao acompanhamento, com API documentada em Swagger e frontend React com mapa Leaflet, rodando localmente via Docker Compose.',
-      en: 'Complete flow from report to triage and tracking, with a Swagger-documented API and a React frontend with a Leaflet map, running locally through Docker Compose.',
-    },
-    // TODO(gabriel): o repositório não tem testes automatizados; vale adicionar alguns antes de destacar este projeto.
-    tech: ['C#', '.NET 9', 'ASP.NET Core', 'EF Core', 'PostgreSQL', 'PostGIS', 'React', 'TypeScript', 'Leaflet'],
-    githubUrl: 'https://github.com/gabrielmramos-dev/zelasp',
-    // TODO(gabriel): o diagrama de camadas é provisório; só você pode tirar capturas do mapa com os reportes e do painel de triagem.
-    figure: {
-      kind: 'flow',
-      alt: {
-        pt: 'Diagrama das camadas do ZelaSP: frontend React com mapa Leaflet, API ASP.NET Core, camada Application, Infrastructure com EF Core e PostgreSQL com PostGIS.',
-        en: 'ZelaSP layers diagram: React frontend with a Leaflet map, ASP.NET Core API, Application layer, Infrastructure with EF Core and PostgreSQL with PostGIS.',
-      },
-      nodes: [
-        { title: { pt: 'Frontend', en: 'Frontend' }, detail: { pt: 'React, TypeScript e mapa Leaflet', en: 'React, TypeScript and a Leaflet map' } },
-        { title: { pt: 'ZelaSP.API', en: 'ZelaSP.API' }, detail: { pt: 'ASP.NET Core, JWT e tratamento global de erros', en: 'ASP.NET Core, JWT and global error handling' } },
-        { title: { pt: 'ZelaSP.Application', en: 'ZelaSP.Application' }, detail: { pt: 'Serviços, DTOs e regras de negócio', en: 'Services, DTOs and business rules' } },
-        { title: { pt: 'ZelaSP.Infrastructure', en: 'ZelaSP.Infrastructure' }, detail: { pt: 'EF Core, repositórios e consultas PostGIS', en: 'EF Core, repositories and PostGIS queries' } },
-        { title: { pt: 'PostgreSQL + PostGIS', en: 'PostgreSQL + PostGIS' }, detail: { pt: 'Ponto SRID 4326 e busca por raio', en: 'SRID 4326 point and radius search' } },
-      ],
-      note: {
-        pt: 'O Domain (entidades e contratos de repositório) fica no centro: Application e Infrastructure dependem dele, e ele não depende de nada.',
-        en: 'The Domain (entities and repository contracts) sits at the center: Application and Infrastructure depend on it, and it depends on nothing.',
       },
     },
   },

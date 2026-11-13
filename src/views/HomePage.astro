@@ -4,6 +4,7 @@ import GithubActivity from '../components/GithubActivity.astro';
 import ProjectFigure from '../components/ProjectFigure.astro';
 import { visibleProjects } from '../data/projects';
 import Email from '../components/Email.astro';
+import { education } from '../data/education';
 import { site } from '../data/site';
 import { routes, ui, type Lang } from '../i18n/ui';
 
@@ -27,7 +28,6 @@ const copy = {
     // Posicionamento A (em uso). B, full-stack, fica pronta: 'Desenvolvedor full-stack · .NET, TypeScript e IA aplicada'.
     positioning: 'Desenvolvedor .NET · APIs, dados abertos e IA aplicada',
     techLine: 'C#/.NET · TypeScript · ASP.NET Core MVC · GCP (Vertex AI, BigQuery) · RAG e embeddings · xUnit',
-    subtitle: 'Análise e Desenvolvimento de Sistemas - Universidade Braz Cubas',
     lead: 'Software Developer Intern na PRODAM — empresa de tecnologia da Prefeitura de São Paulo. Trabalho com C#/.NET e IA generativa (Gemini e Claude, via Vertex AI) em um squad ágil, desenvolvendo serviços digitais para a cidade. Fora do trabalho, construo projetos próprios de back-end, APIs e dados abertos.',
     contact: 'Falar comigo',
     seeProjects: 'Ver projetos',
@@ -41,7 +41,6 @@ const copy = {
     // Positioning A (in use). B, full-stack, is ready: 'Full-stack developer · .NET, TypeScript and applied AI'.
     positioning: '.NET developer · APIs, open data and applied AI',
     techLine: 'C#/.NET · TypeScript · ASP.NET Core MVC · GCP (Vertex AI, BigQuery) · RAG and embeddings · xUnit',
-    subtitle: 'Systems Analysis and Development - Braz Cubas University',
     lead: 'Software Developer Intern at PRODAM, the technology company of the São Paulo City Hall. I work with C#/.NET and generative AI (Gemini and Claude, via Vertex AI) in an agile squad, building digital services for the city. Outside work, I build my own backend, API and open-data projects.',
     contact: 'Get in touch',
     seeProjects: 'See projects',
@@ -97,7 +96,7 @@ const copy = {
 
   <section class="about" aria-labelledby="sobre">
     <h2 id="sobre">{copy.about}</h2>
-    <p class="subtitle">{copy.subtitle}</p>
+    <p class="subtitle">{education.course[lang]} · {education.institution[lang]}</p>
     <p class="lead">{copy.lead}</p>
   </section>
 </Layout>

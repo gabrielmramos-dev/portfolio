@@ -9,7 +9,7 @@ Como educador e instrutor, passo boa parte dos meus dias tentando fazer com que 
 
 ### Estudar não é acumular informação, é organizar entendimento
 
-Muitos desenvolvedores confundem estudar com consumir conteúdo. Ensinar me mostrou que aprender de verdade exige organização mental. Hoje, quando estudo uma nova tecnologia, como fiz recentemente ao implementar fluxos de mensageria com **RabbitMQ, **eu me faço uma pergunta constante: *“Como eu explicaria isso para outra pessoa?”*. Essa mudança de perspectiva garante que eu entenda os fundamentos antes de tentar aplicar a solução.
+Muitos desenvolvedores confundem estudar com consumir conteúdo. Ensinar me mostrou que aprender de verdade exige organização mental. Hoje, quando estudo uma nova tecnologia, como fiz recentemente ao implementar fluxos de mensageria com **RabbitMQ,** eu me faço uma pergunta constante: *“Como eu explicaria isso para outra pessoa?”*. Essa mudança de perspectiva garante que eu entenda os fundamentos antes de tentar aplicar a solução.
 
 ### Código claro é uma consequência da didática
 

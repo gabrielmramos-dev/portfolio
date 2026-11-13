@@ -14,44 +14,36 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
   selectedItem="blog"
 >
   <BackLink />
+  <h1>Blog</h1>
+  <p class="lead-text">
+    Artigos, reflexões e aprendizados sobre tecnologia, desenvolvimento e o que mais eu estiver estudando.
+  </p>
 
-  <main class="fold-content-container">
-    <div class="fold-content">
-      <h1>Blog</h1>
-      <p class="lead">
-        Artigos, reflexões e aprendizados sobre tecnologia, desenvolvimento e o que mais eu estiver estudando.
-      </p>
-    </div>
-
-    {posts.length === 0 ? (
-      <div class="blog-empty">
-        <p>Nenhum post publicado ainda.</p>
-        <p class="blog-empty-hint">Em breve novos conteúdos!</p>
-      </div>
-    ) : (
-      <>
-        {tags.length > 1 && (
-          <div class="blog-filters" role="group" aria-label="Filtrar por tag">
-            <button type="button" class="blog-filter" data-tag="" aria-pressed="true">Todos</button>
-            {tags.map((tag) => (
-              <button type="button" class="blog-filter" data-tag={tag} aria-pressed="false">{tag}</button>
-            ))}
-          </div>
-        )}
-        <div class="blog-grid">
-          {posts.map((post) => (
-            <BlogCard post={post} />
+  {posts.length === 0 ? (
+    <p class="section-note">Nenhum post publicado ainda.</p>
+  ) : (
+    <div class="posts">
+      {tags.length > 1 && (
+        <div class="filters" role="group" aria-label="Filtrar por tag">
+          <button type="button" class="control" data-tag="" aria-pressed="true">Todos</button>
+          {tags.map((tag) => (
+            <button type="button" class="control" data-tag={tag} aria-pressed="false">{tag}</button>
           ))}
         </div>
-      </>
-    )}
-  </main>
+      )}
+      <ul class="post-list" role="list">
+        {posts.map((post) => (
+          <BlogCard post={post} />
+        ))}
+      </ul>
+    </div>
+  )}
 </Layout>
 
 <script>
   document.addEventListener('astro:page-load', () => {
-    const buttons = document.querySelectorAll<HTMLButtonElement>('.blog-filter');
-    const cards = document.querySelectorAll<HTMLElement>('.blog-card');
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.filters .control');
+    const cards = document.querySelectorAll<HTMLElement>('.post-row');
 
     buttons.forEach((button) => {
       button.addEventListener('click', () => {
@@ -65,72 +57,3 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
     });
   });
 </script>
-
-<style>
-  .blog-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 24px;
-    width: 100%;
-  }
-
-  .blog-error,
-  .blog-empty {
-    background-color: rgba(53, 53, 53, 0.12);
-    border: 1px solid #353535;
-    border-radius: 12px;
-    padding: 32px;
-    text-align: center;
-  }
-
-  .blog-error p,
-  .blog-empty p {
-    color: #fff;
-    margin: 0;
-  }
-
-  .blog-error-hint,
-  .blog-empty-hint {
-    color: #a8a8a8 !important;
-    font-size: 14px;
-    margin-top: 8px !important;
-  }
-
-  .blog-filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 24px;
-  }
-
-  .blog-filter {
-    background: transparent;
-    color: #a8a8a8;
-    border: 1px solid #353535;
-    border-radius: 999px;
-    padding: 4px 14px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .blog-filter:hover,
-  .blog-filter[aria-pressed='true'] {
-    color: #fff;
-    background-color: #2b2b2b;
-    border-color: #a8a8a8;
-  }
-
-  @media screen and (max-width: 767px) {
-    .blog-grid {
-      gap: 16px;
-    }
-
-    .blog-error,
-    .blog-empty {
-      padding: 24px 16px;
-      border-radius: 8px;
-    }
-  }
-</style>

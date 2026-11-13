@@ -1,4 +1,5 @@
 ---
+import Controls from './Controls.astro';
 import { routes, ui, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -9,93 +10,39 @@ interface Props {
 
 const { selectedItem, lang = 'pt', alternates } = Astro.props;
 const t = ui[lang];
-const other: Lang = lang === 'pt' ? 'en' : 'pt';
-// Sem página equivalente, o alternador leva à home do outro idioma.
-const switchHref = alternates?.[other] ?? routes.home[other];
 
 // Formação e Blog só existem em português.
 const items = [
-  { id: 'home', href: routes.home[lang], icon: '/assets/home.svg', label: t.nav.home },
-  { id: 'projetos', href: routes.projects[lang], icon: '/assets/code.svg', label: t.nav.projects },
-  { id: 'formacao', href: '/formacao/', icon: '/assets/graduation.svg', label: t.nav.education },
-  { id: 'experiencia', href: routes.experience[lang], icon: '/assets/briefcase.svg', label: t.nav.experience },
-  { id: 'blog', href: '/blog/', icon: '/assets/blog.svg', label: t.nav.blog },
+  { id: 'projetos', href: routes.projects[lang], label: t.nav.projects },
+  { id: 'experiencia', href: routes.experience[lang], label: t.nav.experience },
+  { id: 'formacao', href: '/formacao/', label: t.nav.education },
+  { id: 'blog', href: '/blog/', label: t.nav.blog },
 ];
 ---
 
-<aside
-  data-animation="default"
-  data-collapse="medium"
-  data-duration="400"
-  data-easing="ease"
-  data-easing2="ease"
-  class="sidebar w-nav"
->
-  <div class="nav-content">
-    <a href={routes.home[lang]} class="w-nav-brand">
-      <div class="niv-data">
-        <img
-          src="/assets/gabriel-96.webp"
-          loading="eager"
-          alt={t.photoAlt} width="48" height="48"
-          class="niv-image"
-        />
-        <div>
-          <div class="label-white">Gabriel Ramos</div>
-          <div class="label-gray">Software Developer Intern</div>
-        </div>
-      </div>
-    </a>
+<header class="rail" data-rail>
+  <a href={routes.home[lang]} class="brand">
+    <span class="brand-name">Gabriel Ramos</span>
+    <span class="brand-role">Software Developer Intern</span>
+  </a>
 
-    <nav aria-label={t.navLabel} class="w-nav-menu" id="menu-principal">
-      {items.map((item) => (
-        <a
-          href={item.href}
-          class={`nav-link-container w-inline-block ${selectedItem === item.id ? 'w--current' : ''}`}
-          aria-current={selectedItem === item.id ? 'page' : undefined}
-        >
-          <img src={item.icon} loading="eager" alt="" class="nav-link-image" />
-          <div>{item.label}</div>
-        </a>
-      ))}
-      <a
-        href={switchHref}
-        class="lang-switch"
-        hreflang={other === 'en' ? 'en' : 'pt-BR'}
-        lang={other === 'en' ? 'en' : 'pt-BR'}
-        aria-label={t.switchLabel}
-        data-astro-reload
-      >
-        <span class:list={[lang === 'pt' && 'is-active']} aria-hidden="true">PT</span>
-        <span aria-hidden="true">/</span>
-        <span class:list={[lang === 'en' && 'is-active']} aria-hidden="true">EN</span>
+  <button
+    type="button"
+    class="control menu-button"
+    aria-expanded="false"
+    aria-controls="menu-principal"
+    data-menu-button
+  >
+    {t.menu}
+  </button>
+
+  <nav aria-label={t.navLabel} class="rail-nav" id="menu-principal">
+    {items.map((item) => (
+      <a href={item.href} aria-current={selectedItem === item.id ? 'page' : undefined}>
+        {item.label}
       </a>
-    </nav>
+    ))}
+  </nav>
 
-    <button
-      type="button"
-      class="navbar-icon-button w-nav-button"
-      aria-label={t.openMenu}
-      data-label-open={t.openMenu}
-      data-label-close={t.closeMenu}
-      aria-expanded="false"
-      aria-controls="menu-principal"
-    >
-      <img src="/assets/menu.svg" loading="eager" alt="" class="navbar-icon" />
-    </button>
-  </div>
-
-  <script>
-    import { setupNav } from '../scripts/nav.js';
-    
-    let cleanup;
-    document.addEventListener('astro:page-load', () => {
-      if (cleanup) cleanup();
-      cleanup = setupNav();
-    });
-
-    document.addEventListener('astro:before-swap', () => {
-      if (cleanup) cleanup();
-    });
-  </script>
-</aside>
+  <Controls lang={lang} alternates={alternates} />
+</header>

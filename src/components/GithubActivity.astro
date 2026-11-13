@@ -51,8 +51,8 @@ const copy = {
   hidden
 >
   <div class="gh-header">
-    <h2 id="gh-title" class="section-title">{copy.title}</h2>
-    <a href={`https://github.com/${user}`} target="_blank" rel="noopener noreferrer" class="gh-profile">@{user}</a>
+    <h2 id="gh-title">{copy.title}</h2>
+    <a href={`https://github.com/${user}`} target="_blank" rel="noopener noreferrer" class="section-note">@{user}</a>
   </div>
   <p class="gh-summary" data-summary></p>
   <div class="gh-graph-scroll">
@@ -180,37 +180,22 @@ const copy = {
 
 <style is:global>
   .gh-activity {
-    padding: 24px;
-    background-color: rgba(53, 53, 53, 0.12);
-    border: 1px solid #353535;
-    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
   .gh-activity .gh-header {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
     align-items: baseline;
-    gap: 12px;
-  }
-
-  .gh-activity .gh-header .section-title {
-    margin: 0 0 8px;
-  }
-
-  .gh-activity .gh-profile {
-    color: #a8a8a8;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
-    text-decoration: none;
-  }
-
-  .gh-activity .gh-profile:hover {
-    color: #fff;
+    justify-content: space-between;
+    gap: 4px 16px;
   }
 
   .gh-activity .gh-summary {
-    margin: 0 0 16px;
-    color: #a8a8a8;
+    margin: 0;
+    color: var(--muted);
     font-size: 14px;
   }
 
@@ -232,30 +217,44 @@ const copy = {
     width: 11px;
     height: 11px;
     border-radius: 2px;
-    background-color: #2b2b2b;
+    background: var(--border);
   }
 
   .gh-activity .gh-pad {
     background: none;
   }
 
-  .gh-activity .gh-l1 { background-color: #0e4429; }
-  .gh-activity .gh-l2 { background-color: #006d32; }
-  .gh-activity .gh-l3 { background-color: #26a641; }
-  .gh-activity .gh-l4 { background-color: #39d353; }
+  .gh-activity .gh-l1 { background: color-mix(in srgb, var(--link) 30%, var(--bg)); }
+  .gh-activity .gh-l2 { background: color-mix(in srgb, var(--link) 55%, var(--bg)); }
+  .gh-activity .gh-l3 { background: color-mix(in srgb, var(--link) 80%, var(--bg)); }
+  .gh-activity .gh-l4 { background: var(--link); }
+
+  .gh-activity .gh-legend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .gh-activity .gh-legend .gh-cell {
+    width: 10px;
+    height: 10px;
+  }
 
   .gh-activity .gh-events {
     list-style: none;
-    margin: 16px 0 0;
-    padding: 16px 0 0;
-    border-top: 1px solid #353535;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    margin: 4px 0 0;
+    padding: 0;
+    border-top: 1px solid var(--border-strong);
   }
 
   .gh-activity .gh-events:empty {
     display: none;
+  }
+
+  .gh-activity .gh-events li {
+    border-bottom: 1px solid var(--border);
   }
 
   .gh-activity .gh-events a {
@@ -263,40 +262,24 @@ const copy = {
     grid-template-columns: minmax(0, 11rem) minmax(0, 1fr) auto;
     gap: 12px;
     align-items: baseline;
-    padding: 6px 8px;
-    margin: 0 -8px;
-    border-radius: 6px;
-    text-decoration: none;
+    padding: 10px 0;
+    color: var(--muted);
     font-size: 14px;
-    color: #a8a8a8;
+    text-decoration: none;
   }
 
-  .gh-activity .gh-events a:hover {
-    background-color: rgba(53, 53, 53, 0.4);
+  .gh-activity .gh-events a:hover strong {
+    text-decoration: underline;
   }
 
   .gh-activity .gh-events strong {
-    color: #fff;
-    font-weight: 500;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .gh-activity .gh-legend {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-top: 8px;
-    color: #a8a8a8;
-    font-size: 12px;
-  }
-
-  .gh-activity .gh-legend .gh-cell {
-    width: 10px;
-    height: 10px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
   }
 
   .gh-activity .gh-events span {
@@ -306,15 +289,11 @@ const copy = {
   }
 
   .gh-activity .gh-events time {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 12px;
   }
 
-  @media screen and (max-width: 767px) {
-    .gh-activity {
-      padding: 20px 16px;
-    }
-
+  @media screen and (max-width: 700px) {
     .gh-activity .gh-events a {
       grid-template-columns: minmax(0, 1fr) auto;
     }

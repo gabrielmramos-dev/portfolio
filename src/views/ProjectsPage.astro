@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import BackLink from '../components/BackLink.astro';
 import Project from '../components/Project.astro';
-import { projects } from '../data/projects';
+import { visibleProjects } from '../data/projects';
 import { routes, ui, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -15,13 +15,13 @@ const copy = {
   pt: {
     title: 'Projetos | Gabriel Ramos',
     description:
-      'Projetos de Gabriel Ramos como mini cases: problema, decisões técnicas e resultado. Dados abertos com MCP, app acessível, mensageria, IAM e geoprocessamento.',
+      'Projetos de Gabriel Ramos como estudos de caso: problema, decisões técnicas, limites e resultado. Dados abertos com MCP, app acessível e geoprocessamento.',
     heading: 'Projetos',
   },
   en: {
     title: 'Projects | Gabriel Ramos',
     description:
-      'Gabriel Ramos’s projects as mini case studies: problem, technical decisions and result. Open data with MCP, an accessible app, messaging, IAM and geospatial.',
+      'Gabriel Ramos’s projects as case studies: problem, technical decisions, limits and result. Open data with MCP, an accessible app and geospatial.',
     heading: 'Projects',
   },
 }[lang];
@@ -35,12 +35,8 @@ const copy = {
   alternates={{ pt: routes.projects.pt, en: routes.projects.en }}
 >
   <BackLink href={routes.home[lang]} label={ui[lang].back} />
-  <div class="content-container">
-    <h1>{copy.heading}</h1>
-    <section class="items-container">
-      <div class="resouce-items">
-        {projects.map((project) => <Project project={project} lang={lang} />)}
-      </div>
-    </section>
+  <h1>{copy.heading}</h1>
+  <div class="cases">
+    {visibleProjects.map((project) => <Project project={project} lang={lang} />)}
   </div>
 </Layout>

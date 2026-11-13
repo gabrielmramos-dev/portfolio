@@ -34,6 +34,8 @@ export const ui = {
     photoAlt: 'Foto de Gabriel Ramos',
     switchLabel: 'Mudar idioma para inglês',
     footerContact: 'Email',
+    menu: 'Menu',
+    theme: { dark: 'Escuro', light: 'Claro', label: 'Tema', toLight: 'Mudar para o tema claro', toDark: 'Mudar para o tema escuro' },
   },
   en: {
     skip: 'Skip to content',
@@ -53,5 +55,7 @@ export const ui = {
     photoAlt: 'Photo of Gabriel Ramos',
     switchLabel: 'Switch language to Portuguese',
     footerContact: 'Email',
+    menu: 'Menu',
+    theme: { dark: 'Dark', light: 'Light', label: 'Theme', toLight: 'Switch to the light theme', toDark: 'Switch to the dark theme' },
   },
 } as const;

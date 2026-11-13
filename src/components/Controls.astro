@@ -1,0 +1,41 @@
+---
+import { routes, ui, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  alternates?: Partial<Record<Lang, string>>;
+  class?: string;
+}
+
+const { lang, alternates, class: className = '' } = Astro.props;
+const t = ui[lang];
+const other: Lang = lang === 'pt' ? 'en' : 'pt';
+// Sem página equivalente, o alternador leva à home do outro idioma.
+const switchHref = alternates?.[other] ?? routes.home[other];
+const otherTag = other === 'en' ? 'en' : 'pt-BR';
+---
+
+<div class:list={['controls', className]}>
+  <a
+    href={switchHref}
+    class="control"
+    hreflang={otherTag}
+    lang={otherTag}
+    aria-label={t.switchLabel}
+    data-astro-reload
+  >
+    <b aria-hidden="true">{lang === 'pt' ? 'PT' : 'EN'}</b>
+    <span aria-hidden="true">&nbsp;/&nbsp;{other === 'en' ? 'EN' : 'PT'}</span>
+  </a>
+  <button
+    type="button"
+    class="control"
+    data-theme-toggle
+    data-label-dark={t.theme.dark}
+    data-label-light={t.theme.light}
+    data-aria-to-light={t.theme.toLight}
+    data-aria-to-dark={t.theme.toDark}
+  >
+    {t.theme.label}:&nbsp;<b data-theme-label>{t.theme.dark}</b>
+  </button>
+</div>

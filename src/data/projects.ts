@@ -14,14 +14,20 @@ export interface Project {
   title: string;
   /** Selo ao lado do título (ex.: "Em andamento"). */
   badge?: Text;
+  /** Cor do selo: `ok` para estado positivo (ex.: release). */
+  badgeTone?: 'ok';
   summary: Text;
   problem: Text;
   decisions: TextList;
+  /** O que NÃO está resolvido ou verificado. Cada item vem do README do repositório (ou do código, quando indicado). */
+  limits: TextList;
   result: Text;
   tech: string[];
   githubUrl: string;
   media: ProjectMedia;
   featured?: boolean;
+  /** Fora da lista pública por decisão editorial; o conteúdo fica guardado. */
+  hidden?: boolean;
 }
 
 // Fonte dos fatos: README e código de cada repositório (conferidos em 2026-11-13).
@@ -43,15 +49,28 @@ export const projects: Project[] = [
         'Privacidade por esquema: o banco SQLite não tem colunas de endereço nem de coordenadas, e um teste verifica isso (ADR 0002).',
         'Sem deduplicação: 47,65% das linhas são duplicatas exatas e não há ID de protocolo, então a contagem é de linhas registradas, não de problemas distintos (ADR 0003).',
         'Escrita segura: a ingestão nunca sobrescreve o destino e grava em um arquivo temporário renomeado só no fim.',
-        'Limites dos dados documentados: um único trimestre, status de data desconhecida e viés de censura no tempo até finalizar.',
         'Fluxo spec, testes e implementação, com 7 ADRs e CI no GitHub Actions.',
       ],
       en: [
         'Privacy by schema: the SQLite database has no address or coordinate columns, and a test checks it (ADR 0002).',
         'No deduplication: 47.65% of rows are exact duplicates and there is no protocol ID, so counts are of registered rows, not distinct problems (ADR 0003).',
         'Safe writes: ingestion never overwrites the destination and writes to a temporary file renamed only at the end.',
-        'Data limits documented: a single quarter, a status snapshot of unknown date and censoring bias in time-to-close.',
         'Spec, tests, then implementation, with 7 ADRs and CI on GitHub Actions.',
+      ],
+    },
+    // Fonte: README, seções "O que NÃO está verificado" e "Limitações dos dados".
+    limits: {
+      pt: [
+        'Tudo foi verificado em um único arquivo (1º trimestre de 2025): formato, colunas, valores e amostra de privacidade. Outros trimestres e anos não foram testados.',
+        'A proteção de privacidade vem do esquema (a coluna de endereço não existe no banco). O teste de valores é uma amostra, não uma verificação exaustiva.',
+        'O status é um retrato de data desconhecida. Pedidos de janeiro a março de 2025 ainda abertos meses depois mostram que o tempo até finalizar tem censura, então qualquer média desse tempo é enviesada.',
+        'Os dados só registram solicitações feitas pela população. O volume de pedidos não mede os serviços executados nem os problemas existentes na cidade.',
+      ],
+      en: [
+        'Everything was verified on a single file (Q1 2025): format, columns, values and the privacy sample. Other quarters and years were not tested.',
+        'The privacy protection comes from the schema (the address column does not exist in the database). The value test is a sample, not an exhaustive check.',
+        'The status is a snapshot of unknown date. Requests from January to March 2025 still open months later show that time-to-close is censored, so any average of that time is biased.',
+        'The data only records requests made by the public. Request volume does not measure services performed or problems that exist in the city.',
       ],
     },
     result: {
@@ -74,6 +93,7 @@ export const projects: Project[] = [
     id: 'sinalcerto-app',
     title: 'SinalCerto',
     badge: { pt: 'v1.0.0', en: 'v1.0.0' },
+    badgeTone: 'ok',
     summary: {
       pt: 'App acessível que mostra, em linguagem simples, a qualidade prevista da internet por hora e região.',
       en: 'Accessible app that shows, in plain language, the predicted internet quality by hour and region.',
@@ -96,6 +116,21 @@ export const projects: Project[] = [
         'CI on GitHub Actions running types, lint with accessibility rules and tests on every push.',
       ],
     },
+    // Fonte: README, seção "Limitações" e tabela de requisitos.
+    limits: {
+      pt: [
+        'A previsão vale para a região escolhida (um ponto de medição numa capital), não exatamente para o celular de quem usa. O app não mede a conexão: mostra uma estimativa que pode errar.',
+        'Os dados da API cobrem só um dia (19 a 20/08/2026), então o app mostra sempre a data real e nunca chama a previsão de "agora".',
+        'Jogos online ficou de fora: a API não tem essa atividade.',
+        'O app ainda não foi testado em um aparelho Android, nem com o TalkBack.',
+      ],
+      en: [
+        'The forecast applies to the chosen region (one measurement point in a capital city), not exactly to the user’s phone. The app does not measure the connection: it shows an estimate that can be wrong.',
+        'The API data covers a single day (Aug 19 to 20, 2026), so the app always shows the real date and never calls the forecast "now".',
+        'Online games was left out: the API has no such activity.',
+        'The app has not yet been tested on an Android device, nor with TalkBack.',
+      ],
+    },
     result: {
       pt: 'Release v1.0.0 (29/10/2026), com APK para Android gerado pelo EAS. Limites declarados: o teste com TalkBack ainda está pendente e "jogos online" ficou de fora porque a API não oferece essa atividade.',
       en: 'Release v1.0.0 (Oct 29, 2026), with an Android APK built by EAS. Stated limits: TalkBack testing is still pending and "online games" was left out because the API does not offer that activity.',
@@ -114,6 +149,7 @@ export const projects: Project[] = [
   {
     id: 'asyncflow',
     title: 'AsyncFlow',
+    hidden: true,
     summary: {
       pt: 'Processamento assíncrono de tarefas com Fastify, RabbitMQ e PostgreSQL.',
       en: 'Asynchronous task processing with Fastify, RabbitMQ and PostgreSQL.',
@@ -132,6 +168,17 @@ export const projects: Project[] = [
         'The API validates input with Zod, stores the task as PENDING in PostgreSQL and publishes to the queue; only then it answers 202 Accepted.',
         'Durable queue with persistent messages, prefetch(1) to hand each worker one task at a time and manual acks: ack on success, nack with requeue on failure.',
         'Monorepo with Node.js Workspaces separating API and worker, and Docker Compose for PostgreSQL and RabbitMQ.',
+      ],
+    },
+    // Fonte: README, seções "Current Status & Design Philosophy" e "Potential Evolutions"; o item sobre nack vem do código do worker.
+    limits: {
+      pt: [
+        'O processamento é simulado de propósito (atraso de 5 s), para focar na arquitetura.',
+        'Em caso de falha, o worker devolve a mensagem à fila sem limite de tentativas. Dead letter queue e retry com backoff são evoluções mapeadas, ainda não implementadas.',
+      ],
+      en: [
+        'Processing is deliberately simulated (5 s delay) to focus on the architecture.',
+        'On failure, the worker returns the message to the queue with no retry limit. Dead letter queue and retry with backoff are mapped next steps, not implemented yet.',
       ],
     },
     result: {
@@ -154,6 +201,7 @@ export const projects: Project[] = [
   {
     id: 'iam-microservice-node',
     title: 'IAM Microservice',
+    hidden: true,
     summary: {
       pt: 'Microsserviço de identidade e acesso com Fastify, TypeScript e Clean Architecture.',
       en: 'Identity and access microservice with Fastify, TypeScript and Clean Architecture.',
@@ -167,13 +215,26 @@ export const projects: Project[] = [
         'Clean Architecture: rotas, controllers e use cases separados; os casos de uso não dependem de Fastify nem de Prisma.',
         'Access token JWT de 10 minutos na resposta e refresh token de 7 dias em cookie httpOnly; senhas com bcrypt.',
         'RBAC com os papéis ADMIN e MEMBER e validação de entrada com Zod na borda.',
-        'Trade-offs registrados no README: JWT stateless sem revogação imediata; rotation do refresh token, blacklist em Redis e rate limiting estão no roadmap, não implementados.',
+        'Trade-offs de segurança escritos no próprio README, com o que ficou para o roadmap (veja Limites).',
       ],
       en: [
         'Clean Architecture: routes, controllers and use cases kept apart; use cases depend on neither Fastify nor Prisma.',
         '10-minute JWT access token in the response and 7-day refresh token in an httpOnly cookie; passwords hashed with bcrypt.',
         'RBAC with ADMIN and MEMBER roles and input validation with Zod at the edge.',
-        'Trade-offs recorded in the README: stateless JWT without immediate revocation; refresh token rotation, a Redis blacklist and rate limiting are on the roadmap, not implemented.',
+        'Security trade-offs written in the README itself, with what was left for the roadmap (see Limits).',
+      ],
+    },
+    // Fonte: README, seção "Architectural Trade-offs & Security Notes"; o item sobre o refresh vem do código (refresh.ts).
+    limits: {
+      pt: [
+        'JWT stateless: não há revogação imediata de sessão; ela depende da expiração curta do access token (10 min) e da invalidação manual do refresh token.',
+        'O refresh token é reemitido a cada uso, mas o anterior não é invalidado: a rotation completa, a blacklist em Redis e o rate limiting estão no roadmap, não implementados.',
+        'O próprio repositório se descreve como protótipo focado em arquitetura.',
+      ],
+      en: [
+        'Stateless JWT: there is no immediate session revocation; it relies on the short access token lifetime (10 min) and manual invalidation of the refresh token.',
+        'A new refresh token is issued on every use, but the previous one is not invalidated: full rotation, a Redis blacklist and rate limiting are on the roadmap, not implemented.',
+        'The repository itself describes this as an architecture-focused prototype.',
       ],
     },
     result: {
@@ -216,6 +277,17 @@ export const projects: Project[] = [
         'Management panel protected by JWT (8 h) and anonymous tracking for citizens through a token kept in the browser; photo required on submission.',
       ],
     },
+    // Fonte: README, tabela de endpoints e seção "Sobre o Projeto".
+    limits: {
+      pt: [
+        'É um estudo de caso técnico, não um serviço em produção.',
+        'A listagem e a busca por raio de solicitações são públicas, sem autenticação. Só a triagem e a mudança de status exigem JWT.',
+      ],
+      en: [
+        'This is a technical case study, not a production service.',
+        'Listing and radius search of requests are public, with no authentication. Only triage and status changes require a JWT.',
+      ],
+    },
     result: {
       pt: 'Fluxo completo do reporte à triagem e ao acompanhamento, com API documentada em Swagger e frontend React com mapa Leaflet, rodando localmente via Docker Compose.',
       en: 'Complete flow from report to triage and tracking, with a Swagger-documented API and a React frontend with a Leaflet map, running locally through Docker Compose.',
@@ -232,3 +304,5 @@ export const projects: Project[] = [
     },
   },
 ];
+
+export const visibleProjects = projects.filter((p) => !p.hidden);

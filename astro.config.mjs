@@ -7,7 +7,7 @@ const site = process.env.SITE_URL || (vercelHost ? `https://${vercelHost}` : 'ht
 // https://astro.build/config
 export default defineConfig({
   site,
-  markdown: { shikiConfig: { theme: 'github-dark' } },
+  markdown: { shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' }, defaultColor: false } },
   integrations: [
     sitemap({
       filter: (page) => !page.endsWith('/404/'),

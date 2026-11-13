@@ -1,0 +1,82 @@
+---
+import type { Lang } from '../i18n/ui';
+import { sp156Data } from '../data/sp156';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'pt' } = Astro.props;
+const locale = lang === 'pt' ? 'pt-BR' : 'en-US';
+const fmt = (n: number, digits = 0) =>
+  n.toLocaleString(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits });
+
+const { totalRows, duplicateRatePct, status } = sp156Data;
+const quarter = sp156Data.quarter[lang];
+const uniquePct = +(100 - duplicateRatePct).toFixed(2);
+
+const copy = {
+  pt: {
+    headline: 'Quase metade das linhas do SP156 são duplicatas exatas',
+    sub: `${fmt(duplicateRatePct, 2)}% das ${fmt(totalRows)} linhas do ${quarter}.`,
+    duplicate: 'Duplicatas exatas',
+    other: 'Demais linhas',
+    statusTitle: 'Status das mesmas linhas',
+    note: 'Os dados não têm ID de protocolo, então não dá para deduplicar: a contagem é de linhas registradas, não de problemas distintos. O status é um retrato de data desconhecida.',
+    source: 'Fonte: docs/DATA.md do projeto',
+    barAria: (dup: string, rest: string) => `Duplicatas exatas: ${dup}. Demais linhas: ${rest}.`,
+    statusAria: 'Distribuição das linhas por status, com os valores listados abaixo.',
+  },
+  en: {
+    headline: 'Almost half of the SP156 rows are exact duplicates',
+    sub: `${fmt(duplicateRatePct, 2)}% of the ${fmt(totalRows)} rows in ${quarter}.`,
+    duplicate: 'Exact duplicates',
+    other: 'Other rows',
+    statusTitle: 'Status of the same rows',
+    note: 'The data has no protocol ID, so it cannot be deduplicated: counts are registered rows, not distinct problems. The status is a snapshot of unknown date.',
+    source: 'Source: the project’s docs/DATA.md',
+    barAria: (dup: string, rest: string) => `Exact duplicates: ${dup}. Other rows: ${rest}.`,
+    statusAria: 'Distribution of rows by status, with the values listed below.',
+  },
+}[lang];
+
+const dupLabel = `${fmt(duplicateRatePct, 2)}%`;
+const restLabel = `${fmt(uniquePct, 2)}%`;
+---
+
+<figure class="dchart">
+  <figcaption>
+    <strong class="dchart-headline">{copy.headline}</strong>
+    <span class="dchart-sub">{copy.sub}</span>
+  </figcaption>
+
+  <div class="dchart-bar dchart-bar-main" role="img" aria-label={copy.barAria(dupLabel, restLabel)}>
+    <span class="dchart-seg dchart-dup" style={`flex-grow:${duplicateRatePct}`} aria-hidden="true">
+      <b>{dupLabel}</b> {copy.duplicate}
+    </span>
+    <span class="dchart-seg dchart-rest" style={`flex-grow:${uniquePct}`} aria-hidden="true">
+      <b>{restLabel}</b> {copy.other}
+    </span>
+  </div>
+
+  <p class="dchart-title">{copy.statusTitle}</p>
+  <div class="dchart-bar dchart-bar-status" role="img" aria-label={copy.statusAria}>
+    {status.map((s, i) => (
+      <span class={`dchart-seg dchart-s${i}`} style={`flex-grow:${s.rows}`} aria-hidden="true"></span>
+    ))}
+  </div>
+  <ul class="dchart-legend" role="list">
+    {status.map((s, i) => (
+      <li>
+        <span class={`dchart-swatch dchart-s${i}`} aria-hidden="true"></span>
+        {s.label[lang]}
+        <span class="dchart-value">{fmt(s.rows)} ({fmt((s.rows / totalRows) * 100, 2)}%)</span>
+      </li>
+    ))}
+  </ul>
+
+  <p class="dchart-note">
+    {copy.note}
+    <a href={sp156Data.sourceUrl} target="_blank" rel="noopener noreferrer">{copy.source}</a>.
+  </p>
+</figure>

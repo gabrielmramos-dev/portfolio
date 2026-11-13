@@ -96,54 +96,32 @@ const { prodam, microlins } = copy;
   alternates={{ pt: routes.experience.pt, en: routes.experience.en }}
 >
   <BackLink href={routes.home[lang]} label={ui[lang].back} />
-  <div class="content-container">
-    <h1>{copy.heading}</h1>
-    <section class="items-container">
-      <div class="resouce-items">
-        <div class="single-item">
-          <h2 class="item-title">{prodam.role}</h2>
-          <p class="meta-line">
-            <strong>{prodam.place}</strong> · {prodam.period}
-          </p>
-          <p class="project-text">{prodam.summary}</p>
-          <div class="project-desc project-desc-list w-richtext">
-            <ul role="list">
-              {prodam.bullets.map((item) => <li>{item}</li>)}
-            </ul>
-          </div>
-          {/*
-            TODO(gabriel): Azure DevOps saiu do site. Confirme se você realmente o usa no dia a dia; se sim, volte a listar.
-            TODO(gabriel): resultado concreto de cada bullet (ex.: quantos prompts/funcionalidades foram migrados ou corrigidos, que tipo de reclamação deixou de acontecer, quantos testes/fluxos de UI existem). Hoje cada bullet descreve só a ação e o objetivo.
-            TODO(gabriel): confirme que o registro de modelo/temperatura/custo e os ajustes de streaming foram feitos por você (o post do blog descreve os problemas, não quem os resolveu).
-            TODO(gabriel): BigQuery está só na linha de tecnologias. O que você fez com ele? (consultas, métricas de custo, tabelas de logs...) Vira um bullet "ação + resultado".
-            TODO(gabriel): RAG e embeddings: o que exatamente você implementou ou manteve?
-          */}
-          <div class="mini-label-white">{copy.techLabel}</div>
-          <div class="chips-container">
-            {prodam.tech.map((item) => <div class="single-chip">{item}</div>)}
-          </div>
-        </div>
+  <h1>{copy.heading}</h1>
+  <div class="entries">
+    <article class="entry">
+      <h2>{prodam.role}</h2>
+      <p class="entry-meta"><strong>{prodam.place}</strong> · {prodam.period}</p>
+      <p>{prodam.summary}</p>
+      <ul>{prodam.bullets.map((item) => <li>{item}</li>)}</ul>
+      {/*
+        TODO(gabriel): Azure DevOps saiu do site. Confirme se você realmente o usa no dia a dia; se sim, volte a listar.
+        TODO(gabriel): resultado concreto de cada bullet (ex.: quantos prompts/funcionalidades foram migrados ou corrigidos, que tipo de reclamação deixou de acontecer, quantos testes/fluxos de UI existem). Hoje cada bullet descreve só a ação e o objetivo.
+        TODO(gabriel): confirme que o registro de modelo/temperatura/custo e os ajustes de streaming foram feitos por você (o post do blog descreve os problemas, não quem os resolveu).
+        TODO(gabriel): BigQuery está só na linha de tecnologias. O que você fez com ele? (consultas, métricas de custo, tabelas de logs...) Vira um bullet "ação + resultado".
+        TODO(gabriel): RAG e embeddings: o que exatamente você implementou ou manteve?
+      */}
+      <p class="case-tech"><strong>{copy.techLabel}:</strong> {prodam.tech.join(', ')}</p>
+    </article>
 
-        <div class="single-item">
-          <h2 class="item-title">{microlins.role}</h2>
-          <p class="meta-line">
-            <strong>{microlins.place}</strong> · {microlins.location}
-          </p>
-          {/* TODO(gabriel): datas da Microlins (o LinkedIn mostra instrutor júnior desde 2023 e instrutor pleno de out/2024 a jan/2026; confirme). */}
-          <p class="project-text">{microlins.summary}</p>
-          <div class="mini-label-white">{copy.projectsLabel}</div>
-          <div class="project-desc project-desc-list w-richtext">
-            <ul role="list">
-              {microlins.projects.map((item) => <li>{item}</li>)}
-            </ul>
-          </div>
-          {/* TODO(gabriel): "500+ mensagens por semana" e "reduzindo em horas" não têm fonte pública (os bots não estão no GitHub). Confirme os números ou troque por uma frase sem número. */}
-          <div class="mini-label-white">{copy.techLabel}</div>
-          <div class="chips-container">
-            {microlins.tech.map((item) => <div class="single-chip">{item}</div>)}
-          </div>
-        </div>
-      </div>
-    </section>
+    <article class="entry">
+      <h2>{microlins.role}</h2>
+      <p class="entry-meta"><strong>{microlins.place}</strong> · {microlins.location}</p>
+      {/* TODO(gabriel): datas da Microlins (o LinkedIn mostra instrutor júnior desde 2023 e instrutor pleno de out/2024 a jan/2026; confirme). */}
+      <p>{microlins.summary}</p>
+      <h3 class="label">{copy.projectsLabel}</h3>
+      <ul>{microlins.projects.map((item) => <li>{item}</li>)}</ul>
+      {/* TODO(gabriel): "500+ mensagens por semana" e "reduzindo em horas" não têm fonte pública (os bots não estão no GitHub). Confirme os números ou troque por uma frase sem número. */}
+      <p class="case-tech"><strong>{copy.techLabel}:</strong> {microlins.tech.join(', ')}</p>
+    </article>
   </div>
 </Layout>

@@ -9,33 +9,23 @@ import BackLink from "../components/BackLink.astro";
   selectedItem="formacao"
 >
   <BackLink />
-  <div class="content-container">
-    <h1>Formação Acadêmica</h1>
-    <section class="items-container">
-      <div class="resouce-items">
-        <div class="single-item">
-          <h2 class="item-title">Análise e Desenvolvimento de Sistemas</h2>
-          <p class="meta-line">
-            <strong>Universidade Braz Cubas</strong> — Cursando, 3º semestre
-          </p>
-          <div class="project-desc w-richtext">
-            <p>Formação com foco em fundamentos de desenvolvimento de software, lógica de programação e sistemas computacionais, aliando teoria à prática por meio de projetos.</p>
-          </div>
-          <div class="mini-label-white">Principais Disciplinas</div>
-          <div class="chips-container">
-            <div class="single-chip">Programação Web</div>
-            <div class="single-chip">Técnicas e Desenvolvimento de Algoritmos</div>
-            <div class="single-chip">Programação Orientada a Objetos</div>
-            <div class="single-chip">Fundamentos de Estruturas de Dados</div>
-            <div class="single-chip">Banco de Dados</div>
-            <div class="single-chip">Sistemas Operacionais</div>
-            <div class="single-chip">Engenharia de Software</div>
-            <div class="single-chip">Sistemas Cliente/Servidor</div>
-            <div class="single-chip">Computação em Nuvem</div>
-            <div class="single-chip">Análise e Projeto de Sistemas I</div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
+  <h1>Formação Acadêmica</h1>
+  <article class="entry">
+    <h2>Análise e Desenvolvimento de Sistemas</h2>
+    <p class="entry-meta"><strong>Universidade Braz Cubas</strong> · Cursando, 3º semestre</p>
+    <p>Formação com foco em fundamentos de desenvolvimento de software, lógica de programação e sistemas computacionais, aliando teoria à prática por meio de projetos.</p>
+    <h3 class="label">Principais disciplinas</h3>
+    <ul>
+      <li>Programação Web</li>
+      <li>Técnicas e Desenvolvimento de Algoritmos</li>
+      <li>Programação Orientada a Objetos</li>
+      <li>Fundamentos de Estruturas de Dados</li>
+      <li>Banco de Dados</li>
+      <li>Sistemas Operacionais</li>
+      <li>Engenharia de Software</li>
+      <li>Sistemas Cliente/Servidor</li>
+      <li>Computação em Nuvem</li>
+      <li>Análise e Projeto de Sistemas I</li>
+    </ul>
+  </article>
 </Layout>

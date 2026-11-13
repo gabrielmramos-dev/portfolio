@@ -2,7 +2,7 @@
 
 Este arquivo é a fonte única das decisões visuais. Toda página e todo componente usam os tokens daqui. Mudou uma decisão, muda este arquivo primeiro.
 
-Estado: **proposta, aguardando aprovação**. Nenhum código foi alterado.
+Estado: **implementado na branch `feat/rebrand`, aguardando validação visual do Gabriel.**
 
 ## Briefing
 

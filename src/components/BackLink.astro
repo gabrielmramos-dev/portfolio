@@ -7,9 +7,4 @@ interface Props {
 const { href = '/', label = 'Voltar' } = Astro.props;
 ---
 
-<a href={href} class="back-nav-button">
-  <div class="back-nav-container">
-    <img src="/assets/back.svg" alt="" class="back-nav-img" />
-    <div>{label}</div>
-  </div>
-</a>
+<a href={href} class="back">{label}</a>

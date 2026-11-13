@@ -1,6 +1,11 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import Sidebar from '../components/Sidebar.astro';
+import Controls from '../components/Controls.astro';
+import '@fontsource-variable/schibsted-grotesk';
+import '@fontsource-variable/newsreader';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/global.css';
 import { htmlLang, ogLocale, ui, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -69,39 +74,55 @@ const defaultAlternate = alternates?.pt ? new URL(alternates.pt, Astro.site) : n
 
     <link rel="alternate" type="application/rss+xml" title="Blog | Gabriel Ramos" href="/rss.xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap"
-      onload="this.onload=null;this.rel='stylesheet'"
-    />
-    <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" />
-    </noscript>
-    <link rel="stylesheet" href="/assets/styles.css" />
+    <script is:inline>
+      (function () {
+        var theme;
+        try {
+          theme = localStorage.getItem('theme');
+        } catch (e) {}
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.dataset.theme = theme;
+        document.addEventListener('astro:before-swap', function (event) {
+          event.newDocument.documentElement.dataset.theme = document.documentElement.dataset.theme;
+        });
+      })();
+    </script>
     <link rel="icon" href="/assets/favicon-32x32.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/favicon-32x32.png" />
     <ClientRouter />
   </head>
   <body>
     <a href="#conteudo" class="skip-link">{ui[lang].skip}</a>
-    <div class="content">
+    <div class="shell">
       <Sidebar selectedItem={selectedItem} lang={lang} alternates={alternates} />
-      <div class="main" id="conteudo">
-        <div class="container">
+      <div class="page" id="conteudo">
+        <main class="container">
           <slot />
-        </div>
+        </main>
         <footer class="site-footer">
-          <span>© {new Date().getFullYear()} Gabriel Ramos</span>
-          <span class="site-footer-links">
-            <a href="https://github.com/gabrielmramos-dev" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a href="https://linkedin.com/in/ongabrielramos" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a href="mailto:gabrieldotech@gmail.com">{ui[lang].footerContact}</a>
-          </span>
+          <div class="site-footer-inner">
+            <span>© {new Date().getFullYear()} Gabriel Ramos</span>
+            <span class="site-footer-links">
+              <a href="https://github.com/gabrielmramos-dev" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="https://linkedin.com/in/ongabrielramos" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              <a href="mailto:gabrieldotech@gmail.com">{ui[lang].footerContact}</a>
+            </span>
+          </div>
+          <Controls lang={lang} alternates={alternates} class="page-controls" />
         </footer>
       </div>
     </div>
+    <script>
+      import '../scripts/theme.js';
+      import { setupNav } from '../scripts/nav.js';
+
+      let cleanup;
+      document.addEventListener('astro:page-load', () => {
+        if (cleanup) cleanup();
+        cleanup = setupNav();
+      });
+    </script>
   </body>
 </html>

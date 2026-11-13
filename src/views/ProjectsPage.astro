@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import BackLink from '../components/BackLink.astro';
 import Project from '../components/Project.astro';
 import { visibleProjects } from '../data/projects';
+import { breadcrumbs, homeLabel } from '../lib/jsonld';
 import { routes, ui, type Lang } from '../i18n/ui';
 import { makeAbbr, terms } from '../lib/abbr';
 
@@ -11,6 +12,7 @@ interface Props {
 }
 
 const { lang } = Astro.props;
+const origin = Astro.site!.origin;
 // As siglas da lista são colhidas aqui, antes de renderizar: os componentes filhos só rodam depois desta página montar a lista.
 const used = new Set<string>();
 for (const project of visibleProjects) {
@@ -42,6 +44,7 @@ const copy = {
   selectedItem="projetos"
   lang={lang}
   alternates={{ pt: routes.projects.pt, en: routes.projects.en }}
+  jsonLd={[breadcrumbs([{ name: homeLabel(lang), url: origin + routes.home[lang] }, { name: copy.heading, url: origin + routes.projects[lang] }])]}
 >
   <BackLink href={routes.home[lang]} label={ui[lang].back} />
   <h1>{copy.heading}</h1>

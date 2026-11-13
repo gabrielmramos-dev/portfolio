@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import BackLink from '../components/BackLink.astro';
 import BlogCard from '../components/BlogCard.astro';
 import { getAllPosts } from '../lib/posts';
+import { breadcrumbs, homeLabel } from '../lib/jsonld';
 import { routes, ui, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const { lang } = Astro.props;
+const origin = Astro.site!.origin;
 const posts = await getAllPosts();
 const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
 
@@ -42,6 +44,7 @@ const copy = {
   alternates={{ pt: routes.blog.pt, en: routes.blog.en }}
   hreflang={false}
   canonicalPath={routes.blog.pt}
+  jsonLd={[breadcrumbs([{ name: homeLabel(lang), url: origin + routes.home[lang] }, { name: 'Blog', url: origin + routes.blog[lang] }])]}
 >
   <BackLink href={routes.home[lang]} label={ui[lang].back} />
   <h1>Blog</h1>

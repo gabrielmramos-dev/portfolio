@@ -4,6 +4,7 @@
 import Layout from '../layouts/Layout.astro';
 import BackLink from '../components/BackLink.astro';
 import { site } from '../data/site';
+import { breadcrumbs, homeLabel } from '../lib/jsonld';
 import { routes, ui, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
 }
 
 const { lang } = Astro.props;
+const origin = Astro.site!.origin;
 
 const month = (iso: string) =>
   new Date(`${iso}-01T00:00:00Z`).toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
@@ -162,6 +164,7 @@ const entries = [copy.prodam, copy.microlins];
   selectedItem="experiencia"
   lang={lang}
   alternates={{ pt: routes.experience.pt, en: routes.experience.en }}
+  jsonLd={[breadcrumbs([{ name: homeLabel(lang), url: origin + routes.home[lang] }, { name: copy.heading, url: origin + routes.experience[lang] }])]}
 >
   <BackLink href={routes.home[lang]} label={ui[lang].back} />
   <h1>{copy.heading}</h1>

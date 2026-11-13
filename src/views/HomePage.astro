@@ -7,6 +7,7 @@ import { visibleProjects } from '../data/projects';
 import Email from '../components/Email.astro';
 import { education } from '../data/education';
 import { site } from '../data/site';
+import { person, website } from '../lib/jsonld';
 import { routes, ui, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const { lang } = Astro.props;
+const origin = Astro.site!.origin;
 
 const newTab = ui[lang].newTab;
 
@@ -67,6 +69,7 @@ const copy = {
   selectedItem="home"
   lang={lang}
   alternates={{ pt: routes.home.pt, en: routes.home.en }}
+  jsonLd={[person(origin), website(origin)]}
 >
   <section class="hero">
     <h1>{copy.greeting}<br />Software Developer Intern.</h1>

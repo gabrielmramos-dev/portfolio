@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import BackLink from '../components/BackLink.astro';
 import { education, semesterLabel } from '../data/education';
+import { breadcrumbs, homeLabel } from '../lib/jsonld';
 import { routes, ui, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
 }
 
 const { lang } = Astro.props;
+const origin = Astro.site!.origin;
 const semester = semesterLabel(lang);
 
 const copy = {
@@ -42,6 +44,7 @@ const description =
   selectedItem="formacao"
   lang={lang}
   alternates={{ pt: routes.education.pt, en: routes.education.en }}
+  jsonLd={[breadcrumbs([{ name: homeLabel(lang), url: origin + routes.home[lang] }, { name: copy.heading, url: origin + routes.education[lang] }])]}
 >
   <BackLink href={routes.home[lang]} label={ui[lang].back} />
   <h1>{copy.heading}</h1>

@@ -4,6 +4,7 @@ import Sidebar from '../components/Sidebar.astro';
 import Controls from '../components/Controls.astro';
 import Email from '../components/Email.astro';
 import { site } from '../data/site';
+import { serialize } from '../lib/jsonld';
 import '@fontsource-variable/schibsted-grotesk';
 import '@fontsource-variable/newsreader';
 import '@fontsource-variable/jetbrains-mono';
@@ -25,6 +26,8 @@ interface Props {
   canonicalPath?: string;
   /** `false` quando as páginas alternativas não são traduções uma da outra. */
   hreflang?: boolean;
+  /** Dados estruturados (schema.org) desta página. */
+  jsonLd?: Record<string, unknown>[];
   /** Caminho equivalente em cada idioma, quando a página existe nos dois. */
   alternates?: Partial<Record<Lang, string>>;
 }
@@ -35,6 +38,7 @@ const {
   contentLang = lang,
   canonicalPath,
   hreflang = true,
+  jsonLd = [],
   description = ui[lang].siteDescription,
   selectedItem = '',
   image = '/assets/og-image.png',
@@ -121,6 +125,7 @@ const defaultAlternate = alternates?.pt && hreflang ? new URL(alternates.pt, Ast
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#f5f6f7" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0f1114" media="(prefers-color-scheme: dark)" />
+    {jsonLd.length > 0 && <script type="application/ld+json" set:html={serialize(jsonLd)} />}
     <ClientRouter />
   </head>
   <body>

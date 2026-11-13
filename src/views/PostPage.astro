@@ -4,6 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import BackLink from '../components/BackLink.astro';
 import Comments from '../components/Comments.astro';
 import { readingTime, type Post } from '../lib/posts';
+import { blogPosting, breadcrumbs, homeLabel } from '../lib/jsonld';
 import { routes, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const { post, lang } = Astro.props;
+const origin = Astro.site!.origin;
 const { title, description, date, tags } = post.data;
 const { Content } = await render(post);
 
@@ -36,6 +38,22 @@ const copy = {
   alternates={{ pt: ptPath, en: enPath }}
   hreflang={false}
   canonicalPath={ptPath}
+  jsonLd={[
+    blogPosting({
+      origin,
+      url: origin + ptPath,
+      title,
+      description,
+      date,
+      tags,
+      image: origin + '/assets/og-image.png',
+    }),
+    breadcrumbs([
+      { name: homeLabel(lang), url: origin + routes.home[lang] },
+      { name: 'Blog', url: origin + routes.blog[lang] },
+      { name: title, url: origin + (lang === 'pt' ? ptPath : enPath) },
+    ]),
+  ]}
 >
   <BackLink href={routes.blog[lang]} label="Blog" />
 

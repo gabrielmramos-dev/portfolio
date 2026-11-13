@@ -1,0 +1,48 @@
+---
+import { routes, ui, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  alternates?: Partial<Record<Lang, string>>;
+  class?: string;
+}
+
+const { lang, alternates, class: className = '' } = Astro.props;
+const t = ui[lang];
+const other: Lang = lang === 'pt' ? 'en' : 'pt';
+// Sem página equivalente, o alternador leva à home do outro idioma.
+const switchHref = alternates?.[other] ?? routes.home[other];
+const otherTag = other === 'en' ? 'en' : 'pt-BR';
+---
+
+<div class:list={['controls', className]}>
+  <a href={routes.accessibility[lang]} class="control">
+    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false" class="a11y-symbol">
+      <circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="1.6" />
+      <circle cx="12" cy="6.8" r="1.7" fill="currentColor" />
+      <path d="M6.5 9.6h11M12 9.6v4.2M9.2 18l2.8-4.2 2.8 4.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    {t.a11y}
+  </a>
+  <a
+    href={switchHref}
+    class="control"
+    hreflang={otherTag}
+    lang={otherTag}
+  >
+    <b>{lang === 'pt' ? 'PT' : 'EN'}</b>&nbsp;/&nbsp;{other === 'en' ? 'EN' : 'PT'}
+    <span class="sr-only">. {t.switchLabel}</span>
+  </a>
+  <button
+    type="button"
+    class="control"
+    data-theme-toggle
+    data-label-dark={t.theme.dark}
+    data-label-light={t.theme.light}
+    data-aria-to-light={t.theme.toLight}
+    data-aria-to-dark={t.theme.toDark}
+  >
+    {t.theme.label}:&nbsp;<b data-theme-label>{t.theme.dark}</b>
+    <span class="sr-only" data-theme-hint></span>
+  </button>
+</div>

@@ -1,7 +1,10 @@
 ---
 // Comentários usando Giscus (GitHub Discussions)
 
+import type { Lang } from '../i18n/ui';
+
 interface Props {
+  lang?: Lang;
   repo?: string;
   repoId?: string;
   category?: string;
@@ -9,6 +12,7 @@ interface Props {
 }
 
 const {
+  lang = 'pt',
   repo = 'gabrielmramos-dev/blog-discussions',
   repoId = 'R_kgDOQsoNCw',
   category = 'General',
@@ -19,20 +23,23 @@ const isEnabled = repo && repoId && category && categoryId;
 ---
 
 {isEnabled && (
-  <section class="comments-section">
-    <h2>Comentários</h2>
-    <div 
+  <section class="comments">
+    <h2>{lang === 'pt' ? 'Comentários' : 'Comments'}</h2>
+    <div
       class="giscus-container"
       data-repo={repo}
       data-repo-id={repoId}
       data-category={category}
       data-category-id={categoryId}
+      data-lang={lang}
     ></div>
-    <noscript>Ative o JavaScript para ver e deixar comentários.</noscript>
+    <noscript>{lang === 'pt' ? 'Ative o JavaScript para ver e deixar comentários.' : 'Enable JavaScript to read and leave comments.'}</noscript>
   </section>
 )}
 
 <script>
+  const currentTheme = () => (document.documentElement.dataset.theme === 'light' ? 'light' : 'dark');
+
   function loadGiscus() {
     const container = document.querySelector('.giscus-container');
     if (!container) return;
@@ -51,9 +58,9 @@ const isEnabled = repo && repoId && category && categoryId;
     script.setAttribute('data-reactions-enabled', '1');
     script.setAttribute('data-emit-metadata', '0');
     script.setAttribute('data-input-position', 'bottom');
-    script.setAttribute('data-theme', 'transparent_dark');
+    script.setAttribute('data-theme', currentTheme());
     script.setAttribute('data-loading', 'lazy');
-    script.setAttribute('data-lang', 'pt');
+    script.setAttribute('data-lang', container.getAttribute('data-lang') || 'pt');
     script.setAttribute('crossorigin', 'anonymous');
     script.async = true;
 
@@ -62,45 +69,10 @@ const isEnabled = repo && repoId && category && categoryId;
 
   // Dispara na carga inicial e a cada navegação (ClientRouter)
   document.addEventListener('astro:page-load', loadGiscus);
+
+  // Troca o tema do widget sem recarregá-lo.
+  document.addEventListener('themechange', () => {
+    const frame = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+    frame?.contentWindow?.postMessage({ giscus: { setConfig: { theme: currentTheme() } } }, 'https://giscus.app');
+  });
 </script>
-
-<style>
-  .comments-section {
-    margin-top: 64px;
-    padding-top: 48px;
-    border-top: 1px solid #353535;
-  }
-
-  .comments-section h2 {
-    color: #fff;
-    font-size: 24px;
-    font-weight: 500;
-    margin-bottom: 24px;
-  }
-
-  .giscus-container {
-    min-height: 200px;
-    overflow-x: auto;
-  }
-
-  @media screen and (max-width: 767px) {
-    .comments-section {
-      margin-top: 48px;
-      padding-top: 32px;
-      margin-left: -8px;
-      margin-right: -8px;
-      padding-left: 8px;
-      padding-right: 8px;
-    }
-
-    .comments-section h2 {
-      font-size: 20px;
-      margin-bottom: 16px;
-    }
-
-    .giscus-container {
-      overflow-x: scroll;
-      -webkit-overflow-scrolling: touch;
-    }
-  }
-</style>

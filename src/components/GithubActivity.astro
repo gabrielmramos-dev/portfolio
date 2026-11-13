@@ -1,24 +1,69 @@
 ---
+import type { Lang } from '../i18n/ui';
+
 interface Props {
   user?: string;
+  lang?: Lang;
+  /** Nomes dos repositórios cujos eventos aparecem no feed. */
+  repos: string[];
 }
 
-const { user = 'gabrielmramos-dev' } = Astro.props;
+const { user = 'gabrielmramos-dev', lang = 'pt', repos } = Astro.props;
+
+const copy = {
+  pt: {
+    title: 'Atividade no GitHub',
+    graphLabel: 'Gráfico de contribuições dos últimos meses',
+    less: 'Menos',
+    more: 'Mais',
+    summary: '{n} contribuições nos últimos 6 meses · {total} no último ano',
+    cell: '{n} contribuições em {date}',
+    push: 'Push em {branch}',
+    branchFallback: 'branch',
+    repoCreated: 'Repositório criado',
+    branchCreated: 'Branch criado: {branch}',
+    pullRequest: 'Pull request',
+    locale: 'pt-BR',
+    newTab: ' (abre em nova aba)',
+  },
+  en: {
+    title: 'GitHub activity',
+    graphLabel: 'Contribution graph for the last months',
+    less: 'Less',
+    more: 'More',
+    summary: '{n} contributions in the last 6 months · {total} in the last year',
+    cell: '{n} contributions on {date}',
+    push: 'Push to {branch}',
+    branchFallback: 'a branch',
+    repoCreated: 'Repository created',
+    branchCreated: 'Branch created: {branch}',
+    pullRequest: 'Pull request',
+    locale: 'en',
+    newTab: ' (opens in a new tab)',
+  },
+}[lang];
 ---
 
-<section class="gh-activity" aria-labelledby="gh-title" data-user={user} hidden>
+<section
+  class="gh-activity"
+  aria-labelledby="gh-title"
+  data-user={user}
+  data-repos={JSON.stringify(repos)}
+  data-copy={JSON.stringify(copy)}
+  hidden
+>
   <div class="gh-header">
-    <h2 id="gh-title" class="section-title">Atividade no GitHub</h2>
-    <a href={`https://github.com/${user}`} target="_blank" rel="noopener noreferrer" class="gh-profile">@{user}</a>
+    <h2 id="gh-title">{copy.title}</h2>
+    <a href={`https://github.com/${user}`} target="_blank" rel="noopener noreferrer" class="section-note">@{user}<span class="sr-only">{copy.newTab}</span></a>
   </div>
   <p class="gh-summary" data-summary></p>
   <div class="gh-graph-scroll">
-    <div class="gh-graph" data-graph role="img" aria-label="Gráfico de contribuições dos últimos meses"></div>
+    <div class="gh-graph" data-graph role="img" aria-label={copy.graphLabel}></div>
   </div>
   <div class="gh-legend" aria-hidden="true">
-    Menos
+    {copy.less}
     <span class="gh-cell"></span><span class="gh-cell gh-l1"></span><span class="gh-cell gh-l2"></span><span class="gh-cell gh-l3"></span><span class="gh-cell gh-l4"></span>
-    Mais
+    {copy.more}
   </div>
   <ul class="gh-events" data-events></ul>
 </section>
@@ -44,9 +89,14 @@ const { user = 'gabrielmramos-dev' } = Astro.props;
     return data;
   }
 
-  function timeAgo(iso: string): string {
+  type Copy = Record<string, string>;
+
+  const fill = (template: string, values: Record<string, string | number>) =>
+    template.replace(/\{(\w+)\}/g, (_, key) => String(values[key]));
+
+  function timeAgo(iso: string, locale: string): string {
     const diff = (Date.now() - new Date(iso).getTime()) / 1000;
-    const rtf = new Intl.RelativeTimeFormat('pt-BR', { numeric: 'auto' });
+    const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
     if (diff < 3600) return rtf.format(-Math.max(1, Math.round(diff / 60)), 'minute');
     if (diff < 86400) return rtf.format(-Math.round(diff / 3600), 'hour');
     return rtf.format(-Math.round(diff / 86400), 'day');
@@ -54,21 +104,22 @@ const { user = 'gabrielmramos-dev' } = Astro.props;
 
   type Day = { date: string; count: number; level: number };
 
-  function renderGraph(root: HTMLElement, summary: HTMLElement, days: Day[], total: number) {
+  function renderGraph(root: HTMLElement, summary: HTMLElement, days: Day[], total: number, copy: Copy) {
     const recent = days.slice(-WEEKS * 7);
     const firstDow = new Date(recent[0].date + 'T00:00:00').getDay();
     const cells: string[] = Array(firstDow).fill('<span class="gh-cell gh-pad"></span>');
     for (const day of recent) {
-      cells.push(`<span class="gh-cell gh-l${day.level}" title="${day.count} contribuições em ${day.date}"></span>`);
+      cells.push(`<span class="gh-cell gh-l${day.level}" title="${fill(copy.cell, { n: day.count, date: day.date })}"></span>`);
     }
     root.innerHTML = cells.join('');
     const lastMonths = recent.reduce((sum, d) => sum + d.count, 0);
-    summary.textContent = `${lastMonths} contribuições nos últimos 6 meses · ${total} no último ano`;
+    summary.textContent = fill(copy.summary, { n: lastMonths, total });
   }
 
-  function renderEvents(list: HTMLElement, events: any[]) {
+  function renderEvents(list: HTMLElement, events: any[], repos: string[], copy: Copy) {
     const items = [...events]
       .sort((a, b) => b.created_at.localeCompare(a.created_at))
+      .filter((e) => repos.includes(String(e.repo.name).split('/')[1]))
       .filter((e) => e.type === 'PushEvent' || e.type === 'CreateEvent' || e.type === 'PullRequestEvent')
       .slice(0, 4)
       .map((e) => {
@@ -77,10 +128,10 @@ const { user = 'gabrielmramos-dev' } = Astro.props;
         const branch = String(e.payload?.ref ?? '').replace('refs/heads/', '');
         const label =
           e.type === 'PushEvent'
-            ? `Push em ${branch || 'branch'}`
+            ? fill(copy.push, { branch: branch || copy.branchFallback })
             : e.type === 'CreateEvent'
-              ? e.payload?.ref_type === 'repository' ? 'Repositório criado' : `Branch criado: ${branch}`
-              : 'Pull request';
+              ? e.payload?.ref_type === 'repository' ? copy.repoCreated : fill(copy.branchCreated, { branch })
+              : copy.pullRequest;
         const li = document.createElement('li');
         const a = document.createElement('a');
         a.href = url;
@@ -92,8 +143,11 @@ const { user = 'gabrielmramos-dev' } = Astro.props;
         text.textContent = label;
         const time = document.createElement('time');
         time.dateTime = e.created_at;
-        time.textContent = timeAgo(e.created_at);
-        a.append(name, text, time);
+        time.textContent = timeAgo(e.created_at, copy.locale);
+        const hint = document.createElement('span');
+        hint.className = 'sr-only';
+        hint.textContent = copy.newTab;
+        a.append(name, text, time, hint);
         li.append(a);
         return li;
       });
@@ -104,21 +158,23 @@ const { user = 'gabrielmramos-dev' } = Astro.props;
     const section = document.querySelector<HTMLElement>('.gh-activity');
     if (!section) return;
     const user = section.dataset.user!;
+    const repos: string[] = JSON.parse(section.dataset.repos ?? '[]');
+    const copy: Copy = JSON.parse(section.dataset.copy ?? '{}');
     const graph = section.querySelector<HTMLElement>('[data-graph]')!;
     const summary = section.querySelector<HTMLElement>('[data-summary]')!;
     const list = section.querySelector<HTMLElement>('[data-events]')!;
 
     const [calendar, events] = await Promise.allSettled([
       cached<any>(`gh-cal-${user}`, `https://github-contributions-api.jogruber.de/v4/${user}?y=last`),
-      cached<any[]>(`gh-ev-${user}`, `https://api.github.com/users/${user}/events/public?per_page=30`),
+      cached<any[]>(`gh-ev-${user}`, `https://api.github.com/users/${user}/events/public?per_page=100`),
     ]);
 
     if (calendar.status === 'fulfilled') {
-      renderGraph(graph, summary, calendar.value.contributions, calendar.value.total?.lastYear ?? 0);
+      renderGraph(graph, summary, calendar.value.contributions, calendar.value.total?.lastYear ?? 0, copy);
     } else {
       graph.parentElement!.hidden = true;
     }
-    if (events.status === 'fulfilled') renderEvents(list, events.value);
+    if (events.status === 'fulfilled') renderEvents(list, events.value, repos, copy);
 
     // Sem nenhum dado, a seção fica escondida.
     section.hidden = calendar.status === 'rejected' && events.status === 'rejected';
@@ -129,38 +185,23 @@ const { user = 'gabrielmramos-dev' } = Astro.props;
 
 <style is:global>
   .gh-activity {
-    padding: 24px;
-    background-color: rgba(53, 53, 53, 0.12);
-    border: 1px solid #353535;
-    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
   .gh-activity .gh-header {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
     align-items: baseline;
-    gap: 12px;
-  }
-
-  .gh-activity .gh-header .section-title {
-    margin: 0 0 8px;
-  }
-
-  .gh-activity .gh-profile {
-    color: #a8a8a8;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
-    text-decoration: none;
-  }
-
-  .gh-activity .gh-profile:hover {
-    color: #fff;
+    justify-content: space-between;
+    gap: 4px 16px;
   }
 
   .gh-activity .gh-summary {
-    margin: 0 0 16px;
-    color: #a8a8a8;
-    font-size: 14px;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.875rem;
   }
 
   .gh-activity .gh-graph-scroll {
@@ -181,30 +222,44 @@ const { user = 'gabrielmramos-dev' } = Astro.props;
     width: 11px;
     height: 11px;
     border-radius: 2px;
-    background-color: #2b2b2b;
+    background: var(--border);
   }
 
   .gh-activity .gh-pad {
     background: none;
   }
 
-  .gh-activity .gh-l1 { background-color: #0e4429; }
-  .gh-activity .gh-l2 { background-color: #006d32; }
-  .gh-activity .gh-l3 { background-color: #26a641; }
-  .gh-activity .gh-l4 { background-color: #39d353; }
+  .gh-activity .gh-l1 { background: color-mix(in srgb, var(--link) 30%, var(--bg)); }
+  .gh-activity .gh-l2 { background: color-mix(in srgb, var(--link) 55%, var(--bg)); }
+  .gh-activity .gh-l3 { background: color-mix(in srgb, var(--link) 80%, var(--bg)); }
+  .gh-activity .gh-l4 { background: var(--link); }
+
+  .gh-activity .gh-legend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
+
+  .gh-activity .gh-legend .gh-cell {
+    width: 10px;
+    height: 10px;
+  }
 
   .gh-activity .gh-events {
     list-style: none;
-    margin: 16px 0 0;
-    padding: 16px 0 0;
-    border-top: 1px solid #353535;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    margin: 4px 0 0;
+    padding: 0;
+    border-top: 1px solid var(--border-strong);
   }
 
   .gh-activity .gh-events:empty {
     display: none;
+  }
+
+  .gh-activity .gh-events li {
+    border-bottom: 1px solid var(--border);
   }
 
   .gh-activity .gh-events a {
@@ -212,40 +267,24 @@ const { user = 'gabrielmramos-dev' } = Astro.props;
     grid-template-columns: minmax(0, 11rem) minmax(0, 1fr) auto;
     gap: 12px;
     align-items: baseline;
-    padding: 6px 8px;
-    margin: 0 -8px;
-    border-radius: 6px;
+    padding: 10px 0;
+    color: var(--muted);
+    font-size: 0.875rem;
     text-decoration: none;
-    font-size: 14px;
-    color: #a8a8a8;
   }
 
-  .gh-activity .gh-events a:hover {
-    background-color: rgba(53, 53, 53, 0.4);
+  .gh-activity .gh-events a:hover strong {
+    text-decoration: underline;
   }
 
   .gh-activity .gh-events strong {
-    color: #fff;
-    font-weight: 500;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .gh-activity .gh-legend {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-top: 8px;
-    color: #a8a8a8;
-    font-size: 12px;
-  }
-
-  .gh-activity .gh-legend .gh-cell {
-    width: 10px;
-    height: 10px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 500;
   }
 
   .gh-activity .gh-events span {
@@ -255,15 +294,11 @@ const { user = 'gabrielmramos-dev' } = Astro.props;
   }
 
   .gh-activity .gh-events time {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
   }
 
-  @media screen and (max-width: 767px) {
-    .gh-activity {
-      padding: 20px 16px;
-    }
-
+  @media screen and (max-width: 700px) {
     .gh-activity .gh-events a {
       grid-template-columns: minmax(0, 1fr) auto;
     }

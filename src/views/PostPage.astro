@@ -1,0 +1,59 @@
+---
+import { render } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import BackLink from '../components/BackLink.astro';
+import Comments from '../components/Comments.astro';
+import { readingTime, type Post } from '../lib/posts';
+import { routes, type Lang } from '../i18n/ui';
+
+interface Props {
+  post: Post;
+  lang: Lang;
+}
+
+const { post, lang } = Astro.props;
+const { title, description, date, tags } = post.data;
+const { Content } = await render(post);
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+
+const ptPath = `${routes.blog.pt}${post.id}/`;
+const enPath = `${routes.blog.en}${post.id}/`;
+const copy = {
+  pt: { read: 'min de leitura', note: '' },
+  en: { read: 'min read', note: 'This post is written in Portuguese.' },
+}[lang];
+---
+
+<Layout
+  title={`${title} | Blog | Gabriel Ramos`}
+  description={description}
+  selectedItem="blog"
+  type="article"
+  lang={lang}
+  contentLang="pt"
+  alternates={{ pt: ptPath, en: enPath }}
+  hreflang={false}
+  canonicalPath={ptPath}
+>
+  <BackLink href={routes.blog[lang]} label="Blog" />
+
+  <article class="post">
+    {copy.note && <p class="section-note">{copy.note}</p>}
+    <header class="post-header">
+      <h1>{title}</h1>
+      <p class="post-lead">{description}</p>
+      <p class="post-meta">
+        <time datetime={date.toISOString()}>{formatDate(date)}</time> · {readingTime(post)} {copy.read}
+        {tags.length > 0 && <> · {tags.join(', ')}</>}
+      </p>
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <Comments lang={lang} />
+  </article>
+</Layout>

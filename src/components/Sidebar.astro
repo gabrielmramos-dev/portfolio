@@ -1,75 +1,58 @@
 ---
-const { selectedItem } = Astro.props;
+import Controls from './Controls.astro';
+import { routes, ui, type Lang } from '../i18n/ui';
+
+interface Props {
+  selectedItem?: string;
+  lang?: Lang;
+  alternates?: Partial<Record<Lang, string>>;
+}
+
+const { selectedItem, lang = 'pt', alternates } = Astro.props;
+const t = ui[lang];
+
+// Ícones no estilo Lucide (licença ISC). Sempre acompanham o texto e ficam escondidos de leitores de tela.
+const icons = {
+  home: '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+  projetos: '<path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/>',
+  experiencia: '<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/>',
+  formacao: '<path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>',
+  blog: '<path d="M15 18h-5"/><path d="M18 14h-8"/><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0v-9a2 2 0 0 1 2-2h2"/><rect width="8" height="4" x="10" y="6" rx="1"/>',
+};
 
 const items = [
-  { id: 'home', href: '/', icon: '/assets/home.svg', label: 'Home' },
-  { id: 'projetos', href: '/projetos', icon: '/assets/code.svg', label: 'Projetos' },
-  { id: 'formacao', href: '/formacao', icon: '/assets/graduation.svg', label: 'Formação' },
-  { id: 'experiencia', href: '/experiencia', icon: '/assets/briefcase.svg', label: 'Experiência' },
-  { id: 'blog', href: '/blog', icon: '/assets/blog.svg', label: 'Blog' },
+  { id: 'home', href: routes.home[lang], label: t.nav.home },
+  { id: 'projetos', href: routes.projects[lang], label: t.nav.projects },
+  { id: 'experiencia', href: routes.experience[lang], label: t.nav.experience },
+  { id: 'formacao', href: routes.education[lang], label: t.nav.education },
+  { id: 'blog', href: routes.blog[lang], label: t.nav.blog },
 ];
 ---
 
-<aside
-  data-animation="default"
-  data-collapse="medium"
-  data-duration="400"
-  data-easing="ease"
-  data-easing2="ease"
-  role="banner"
-  class="sidebar w-nav"
->
-  <div class="nav-content">
-    <a href="/" class="w-nav-brand" aria-label="home">
-      <div class="niv-data">
-        <img
-          src="/assets/gabriel.jpg"
-          loading="eager"
-          alt="Foto de Gabriel Ramos" width="48" height="48"
-          class="niv-image"
-        />
-        <div>
-          <div class="label-white">Gabriel Ramos</div>
-          <div class="label-gray">Software Developer Intern</div>
-        </div>
-      </div>
-    </a>
+<header class="rail" data-rail>
+  <a href={routes.home[lang]} class="brand">
+    <span class="brand-name">Gabriel Ramos</span>
+    <span class="brand-role">Software Developer Intern</span>
+  </a>
 
-    <nav aria-label="Principal" class="w-nav-menu" id="menu-principal">
-      {items.map((item) => (
-        <a
-          href={item.href}
-          class={`nav-link-container w-inline-block ${selectedItem === item.id ? 'w--current' : ''}`}
-          aria-current={selectedItem === item.id ? 'page' : undefined}
-        >
-          <img src={item.icon} loading="eager" alt="" class="nav-link-image" />
-          <div>{item.label}</div>
-        </a>
-      ))}
-    </nav>
+  <button
+    type="button"
+    class="control menu-button"
+    aria-expanded="false"
+    aria-controls="menu-principal"
+    data-menu-button
+  >
+    {t.menu}
+  </button>
 
-    <button
-      type="button"
-      class="navbar-icon-button w-nav-button"
-      aria-label="Abrir menu"
-      aria-expanded="false"
-      aria-controls="menu-principal"
-    >
-      <img src="/assets/menu.svg" loading="eager" alt="" class="navbar-icon" />
-    </button>
-  </div>
+  <nav aria-label={t.navLabel} class="rail-nav" id="menu-principal">
+    {items.map((item) => (
+      <a href={item.href} aria-current={selectedItem === item.id ? 'page' : undefined}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" set:html={icons[item.id]} />
+        <span>{item.label}</span>
+      </a>
+    ))}
+  </nav>
 
-  <script>
-    import { setupNav } from '../scripts/nav.js';
-    
-    let cleanup;
-    document.addEventListener('astro:page-load', () => {
-      if (cleanup) cleanup();
-      cleanup = setupNav();
-    });
-
-    document.addEventListener('astro:before-swap', () => {
-      if (cleanup) cleanup();
-    });
-  </script>
-</aside>
+  <Controls lang={lang} alternates={alternates} />
+</header>

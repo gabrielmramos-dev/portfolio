@@ -1,0 +1,180 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BackLink from '../components/BackLink.astro';
+import { routes, ui, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+// Fonte: o próprio Gabriel (texto do LinkedIn, conferido por ele). Termos em geral, sem nomes internos
+// de projeto, IDs de nuvem ou códigos de tarefa.
+const copy = {
+  pt: {
+    title: 'Experiência Profissional | Gabriel Ramos',
+    description:
+      'Experiência de Gabriel Ramos: Software Developer Intern na PRODAM (C#/.NET, IA generativa com RAG e streaming, MongoDB, BigQuery) e instrutor de informática e desenvolvedor na Microlins.',
+    heading: 'Experiência Profissional',
+    techLabel: 'Tecnologias',
+    prodam: {
+      role: 'Software Developer Intern',
+      place: 'PRODAM — Prefeitura de São Paulo',
+      period: 'março de 2026 — momento atual · São Paulo, híbrido',
+      summary:
+        'Desenvolvo sistemas na PRODAM, empresa de tecnologia da Prefeitura de São Paulo, em uma plataforma que usa IA generativa (Gemini e Claude, via Vertex AI) para gerar artefatos de software: épicos, features, user stories, planos de teste e massa de dados.',
+      groups: [
+        {
+          label: 'Responsabilidades',
+          items: [
+            'Desenvolvo funcionalidades de ponta a ponta em C#/.NET com Clean Architecture, do endpoint à tela.',
+            'Integro modelos Gemini e Claude com streaming (SSE) e busca semântica sobre a documentação dos projetos.',
+            'Mantenho prompts e parâmetros dos modelos em MongoDB, com apoio de Redis e BigQuery.',
+            'Uso agentes de IA com MCP para acelerar o desenvolvimento.',
+            'Escrevo testes automatizados com xUnit e testes de UI automatizados com o MCP do Playwright.',
+          ],
+        },
+        {
+          label: 'Entregas',
+          items: [
+            'Mais de 70 work items em 7 meses, entre funcionalidades, correções e melhorias.',
+            'Migrei os prompts de mais de 10 funcionalidades para uma tela de administração, permitindo ajustar a IA sem novo deploy.',
+            'Criei uma API de busca semântica por projeto (Vertex AI + Redis) com parâmetros configuráveis.',
+            'Instrumentei no BigQuery modelo, temperatura e nível de pensamento de cada geração, dando rastreabilidade às respostas.',
+            'Aumentei a confiabilidade das integrações com o Azure DevOps, com tratamento de falhas e mensagens claras ao usuário.',
+          ],
+        },
+        {
+          label: 'Destaques técnicos',
+          items: [
+            'Por dentro da busca semântica: a API é versionada e autenticada, gera o embedding da pergunta no Vertex AI, consulta um índice vetorial no Redis filtrado pelo projeto e devolve os documentos mais relevantes com o percentual de similaridade. Os parâmetros opcionais são validados, e um projeto sem base indexada responde 404.',
+            'Implementei o cálculo de completude de um formulário de levantamento de negócio, ponderado por peso: campos condicionais só entram na conta quando estão ativos, e o peso do campo pai é dividido com o condicional. O cálculo tem 18 testes.',
+            'Criei jobs agendados (Quartz) que arquivam iniciativas sem atualização e apagam as arquivadas. A exclusão remove antes os arquivos no Cloud Storage e preserva a iniciativa se algo falhar, para não deixar registros pela metade. Os jobs têm testes para os dois casos de falha.',
+            'Por dentro da confiabilidade com o Azure DevOps: criei um mecanismo de retry com backoff exponencial e jitter, que reconhece falhas transitórias de rede e SSL e não repete erros que já vêm com status HTTP, além de mensagens claras para permissão negada, pasta inexistente e Wiki vazia.',
+            'Criei uma nova tela inicial que mostra o projeto por fases e etapas, com um botão "Gerar novo" em cada etapa. O modo do botão (direto, menu ou indisponível) vem de um catálogo de regras coberto por 23 testes unitários, e o menu funciona pelo teclado.',
+          ],
+        },
+      ],
+      tech: ['C#/.NET 8', 'ASP.NET Core MVC', 'Clean Architecture', 'Gemini e Claude (Vertex AI)', 'RAG', 'MongoDB', 'Redis', 'BigQuery', 'Quartz', 'SSE', 'Azure DevOps', 'MCP', 'xUnit', 'Playwright MCP'],
+    },
+    microlins: {
+      role: 'Desenvolvedor Back-end | Instrutor de TI pleno',
+      place: 'Microlins',
+      period: 'outubro de 2024 — janeiro de 2026 · São Paulo',
+      summary:
+        'Desenvolvimento e ensino de tecnologia em uma das maiores redes de educação profissional do Brasil. Antes, de novembro de 2023 a outubro de 2024, atuei como Instrutor de TI júnior na mesma rede.',
+      groups: [
+        {
+          label: 'Entregas',
+          items: [
+            'Implementei uma arquitetura RAG integrada à Groq API para gerar materiais didáticos de forma automatizada, com padronização e escalabilidade.',
+            'Desenvolvi automações em Node.js e bots de mensagens (WhatsApp e Telegram), reduzindo o retrabalho administrativo da unidade.',
+            'Construí dashboards e um sistema de gamificação fullstack com SQL para analisar métricas de engajamento.',
+            'Mentoreei mais de 200 alunos em lógica de programação, arquitetura de sistemas e tecnologias modernas.',
+          ],
+        },
+      ],
+      tech: ['Node.js', 'SQL', 'Groq API', 'RAG', 'Automação'],
+    },
+  },
+  en: {
+    title: 'Professional Experience | Gabriel Ramos',
+    description:
+      'Gabriel Ramos’s experience: Software Developer Intern at PRODAM (C#/.NET, generative AI with RAG and streaming, MongoDB, BigQuery) and IT instructor and developer at Microlins.',
+    heading: 'Professional Experience',
+    techLabel: 'Technologies',
+    prodam: {
+      role: 'Software Developer Intern',
+      place: 'PRODAM — São Paulo City Hall',
+      period: 'March 2026 — present · São Paulo, hybrid',
+      summary:
+        'I build systems at PRODAM, the technology company of the São Paulo City Hall, on a platform that uses generative AI (Gemini and Claude, via Vertex AI) to generate software artifacts: epics, features, user stories, test plans and test data.',
+      groups: [
+        {
+          label: 'Responsibilities',
+          items: [
+            'I build features end to end in C#/.NET with Clean Architecture, from the endpoint to the screen.',
+            'I integrate Gemini and Claude models with streaming (SSE) and semantic search over the projects’ documentation.',
+            'I maintain prompts and model parameters in MongoDB, backed by Redis and BigQuery.',
+            'I use AI agents with MCP to speed up development.',
+            'I write automated tests with xUnit and automated UI tests with the Playwright MCP.',
+          ],
+        },
+        {
+          label: 'Deliveries',
+          items: [
+            'More than 70 work items in 7 months, across features, fixes and improvements.',
+            'Migrated the prompts of more than 10 features to an admin screen, so the AI can be tuned without a new deploy.',
+            'Built a per-project semantic search API (Vertex AI + Redis) with configurable parameters.',
+            'Instrumented BigQuery with the model, temperature and thinking level of every generation, making answers traceable.',
+            'Improved the reliability of the Azure DevOps integrations, with failure handling and clear messages to the user.',
+          ],
+        },
+        {
+          label: 'Technical highlights',
+          items: [
+            'Inside the semantic search: the API is versioned and authenticated, generates the question embedding in Vertex AI, queries a Redis vector index filtered by project and returns the most relevant documents with a similarity percentage. Optional parameters are validated, and a project with no indexed base answers 404.',
+            'Implemented the completeness calculation of a business-discovery form, weighted by field: conditional fields only count when active, and the parent field’s weight is split with the conditional one. The calculation has 18 tests.',
+            'Built scheduled jobs (Quartz) that archive stale initiatives and delete the archived ones. Deletion removes the Cloud Storage files first and keeps the initiative if anything fails, so no half-deleted records remain. The jobs have tests for both failure cases.',
+            'Inside the Azure DevOps reliability work: I built a retry mechanism with exponential backoff and jitter that recognizes transient network and SSL failures and does not retry errors that already carry an HTTP status, plus clear messages for denied permission, a missing folder and an empty Wiki.',
+            'Built a new home screen that shows the project by phases and steps, with a "Generate new" button on each step. The button’s mode (direct, menu or unavailable) comes from a rule catalog covered by 23 unit tests, and the menu works from the keyboard.',
+          ],
+        },
+      ],
+      tech: ['C#/.NET 8', 'ASP.NET Core MVC', 'Clean Architecture', 'Gemini and Claude (Vertex AI)', 'RAG', 'MongoDB', 'Redis', 'BigQuery', 'Quartz', 'SSE', 'Azure DevOps', 'MCP', 'xUnit', 'Playwright MCP'],
+    },
+    microlins: {
+      role: 'Back-end Developer | IT Instructor (mid-level)',
+      place: 'Microlins',
+      period: 'October 2024 — January 2026 · São Paulo',
+      summary:
+        'Software development and technology teaching at one of Brazil’s largest professional education networks. Before that, from November 2023 to October 2024, I worked as a junior IT Instructor in the same network.',
+      groups: [
+        {
+          label: 'Deliveries',
+          items: [
+            'Implemented a RAG architecture integrated with the Groq API to generate teaching materials automatically, with standardization and scalability.',
+            'Built Node.js automations and messaging bots (WhatsApp and Telegram), reducing the unit’s administrative rework.',
+            'Built dashboards and a fullstack gamification system with SQL to analyze engagement metrics.',
+            'Mentored more than 200 students in programming logic, systems architecture and modern technologies.',
+          ],
+        },
+      ],
+      tech: ['Node.js', 'SQL', 'Groq API', 'RAG', 'Automation'],
+    },
+  },
+}[lang];
+
+const entries = [copy.prodam, copy.microlins];
+---
+
+<Layout
+  title={copy.title}
+  description={copy.description}
+  selectedItem="experiencia"
+  lang={lang}
+  alternates={{ pt: routes.experience.pt, en: routes.experience.en }}
+>
+  <BackLink href={routes.home[lang]} label={ui[lang].back} />
+  <h1>{copy.heading}</h1>
+  <div class="entries">
+    {entries.map((entry) => (
+      <article class="entry">
+        <h2>{entry.role}</h2>
+        <p class="entry-meta"><strong>{entry.place}</strong> · {entry.period}</p>
+        <p>{entry.summary}</p>
+        {entry.groups.map((group) => (
+          <>
+            <h3 class="label">{group.label}</h3>
+            <ul>{group.items.map((item) => <li>{item}</li>)}</ul>
+          </>
+        ))}
+        <p class="case-tech"><strong>{copy.techLabel}:</strong> {entry.tech.join(', ')}</p>
+      </article>
+    ))}
+  </div>
+  {/*
+    TODO(gabriel): os "Destaques técnicos" da PRODAM descrevem a arquitetura de funcionalidades internas, em termos gerais (sem nome do sistema, códigos de tarefa, limites numéricos de regras de negócio ou nomes internos de componentes). Confirme com a PRODAM que descrições assim podem ser públicas.
+  */}
+</Layout>

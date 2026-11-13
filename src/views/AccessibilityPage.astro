@@ -1,0 +1,263 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BackLink from '../components/BackLink.astro';
+import { routes, ui, type Lang } from '../i18n/ui';
+import { a11yReport } from '../data/a11y-report';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const email = 'gabrieldotech@gmail.com';
+
+const copy = {
+  pt: {
+    title: 'Acessibilidade | Gabriel Ramos',
+    description:
+      'Como este site busca ser acessível: preferências de leitura, atalhos de teclado, tradução em Libras, padrões seguidos, testes feitos, limitações conhecidas e como relatar uma barreira.',
+    heading: 'Acessibilidade',
+    intro:
+      'Quero que qualquer pessoa consiga usar este site, com leitor de tela, só com o teclado, com zoom, com alto contraste ou com tradução em Libras. Esta página mostra o que existe, como testei, o que ainda falha e como falar comigo.',
+    prefsTitle: 'Suas preferências',
+    prefsIntro: 'As escolhas valem na hora e ficam salvas neste navegador. Nada é enviado para fora.',
+    textLegend: 'Tamanho do texto',
+    textOptions: [
+      ['100', 'Padrão'],
+      ['115', 'Grande (115%)'],
+      ['130', 'Maior (130%)'],
+      ['150', 'Máximo (150%)'],
+    ],
+    contrast: 'Alto contraste',
+    contrastHint: 'Cores com contraste acima de 7:1, em qualquer tema.',
+    motion: 'Reduzir movimento',
+    motionHint: 'Desliga transições e animações.',
+    reset: 'Restaurar padrões',
+    saved: 'Preferências salvas.',
+    resetDone: 'Preferências restauradas. Usando as configurações do seu sistema.',
+    themeNote: 'O tema claro ou escuro muda no botão "Tema": no computador, no fim do menu lateral; no celular, dentro do botão "Menu" e no rodapé da página.',
+    librasTitle: 'Tradução em Libras (VLibras)',
+    librasText:
+      'O VLibras é um serviço gratuito do governo federal que traduz o texto da página para Libras. Ele só é carregado se você clicar no botão abaixo. Ao ativar, o seu navegador acessa o endereço vlibras.gov.br. A tradução é automática e pode não traduzir bem termos técnicos.',
+    librasButton: 'Ativar o VLibras nesta página',
+    librasLoading: 'Carregando o VLibras…',
+    librasOn: 'VLibras ativado. Procure o botão do VLibras na tela.',
+    librasError: 'Não foi possível carregar o VLibras. Tente de novo mais tarde.',
+    kbdTitle: 'Como navegar só com o teclado',
+    kbd: [
+      ['Tab', 'vai para o próximo link, botão ou campo.'],
+      ['Shift + Tab', 'volta para o anterior.'],
+      ['Enter', 'abre um link ou aciona um botão.'],
+      ['Espaço', 'marca uma opção ou aciona um botão.'],
+      ['Esc', 'fecha o menu, no celular.'],
+    ],
+    kbdAfter:
+      'O primeiro item ao apertar Tab é "Pular para o conteúdo", que leva direto ao texto da página. Não defini teclas de acesso (accesskey), porque podem conflitar com atalhos do navegador e de leitores de tela.',
+    standardsTitle: 'Padrões que sigo',
+    standardsText:
+      'Meu objetivo é atender à norma brasileira ABNT NBR 17225:2025 (acessibilidade em conteúdo e aplicações web) e às Diretrizes de Acessibilidade para Conteúdo Web (WCAG) 2.2, nível AA. Uso também como referência o eMAG, modelo de acessibilidade do governo federal, e a Lei Brasileira de Inclusão (Lei 13.146/2015, art. 63).',
+    standardsCaveat:
+      'Este é um site pessoal. Ele não passou por auditoria externa e não tem certificação: a avaliação é minha. Por isso digo "objetivo", e não "conformidade".',
+    refs: [
+      ['Lei Brasileira de Inclusão (Lei 13.146/2015)', 'https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm'],
+      ['ABNT NBR 17225: notícia de lançamento (Agência Gov)', 'https://agenciagov.ebc.com.br/noticias/202503/com-apoio-do-governo-federal-nova-norma-tecnica-da-abnt-e-instituida-para-impulsionar-acessibilidade-digital-no-brasil'],
+      ['Acessibilidade digital no gov.br (eMAG e normas)', 'https://www.gov.br/governodigital/pt-br/acessibilidade-e-usuario/acessibilidade-digital'],
+      ['WCAG 2.2 (W3C, em inglês)', 'https://www.w3.org/TR/WCAG22/'],
+    ],
+    testedTitle: 'Como testei',
+    notTestedTitle: 'O que ainda não testei',
+    limitsTitle: 'Limitações conhecidas',
+    limits: [
+      'Os posts do blog estão em português. Na interface em inglês, o texto dos posts continua em português e é marcado como tal para leitores de tela.',
+      'Os comentários dos posts usam o Giscus (GitHub Discussions), um serviço de terceiros. Não controlo a acessibilidade dele, e comentar exige conta no GitHub.',
+      'As capturas de tela do SinalCerto têm texto pequeno. A descrição alternativa resume o que aparece, mas não reproduz todo o texto.',
+      'A seção de atividade do GitHub depende de serviços externos. Se eles estiverem bloqueados ou fora do ar, a seção não aparece.',
+      'Não verifiquei a acessibilidade do currículo em PDF (marcação e ordem de leitura).',
+    ],
+    reportTitle: 'Encontrou uma barreira?',
+    reportText:
+      'Escreva para mim contando qual página, o que você tentou fazer e que ferramenta usa (leitor de tela, navegador, aparelho). Eu respondo por e-mail.',
+    reportLink: 'Enviar e-mail',
+    updated: `Última revisão: ${a11yReport.date}.`,
+    newTab: ui.pt.newTab,
+  },
+  en: {
+    title: 'Accessibility | Gabriel Ramos',
+    description:
+      'How this site aims to be accessible: reading preferences, keyboard shortcuts, Libras translation, standards followed, tests run, known limitations and how to report a barrier.',
+    heading: 'Accessibility',
+    intro:
+      'I want anyone to be able to use this site: with a screen reader, with only a keyboard, with zoom, with high contrast or with Libras (Brazilian Sign Language) translation. This page shows what exists, how I tested it, what still fails and how to reach me.',
+    prefsTitle: 'Your preferences',
+    prefsIntro: 'Choices apply right away and are saved in this browser. Nothing is sent anywhere.',
+    textLegend: 'Text size',
+    textOptions: [
+      ['100', 'Default'],
+      ['115', 'Large (115%)'],
+      ['130', 'Larger (130%)'],
+      ['150', 'Maximum (150%)'],
+    ],
+    contrast: 'High contrast',
+    contrastHint: 'Colors with contrast above 7:1, in any theme.',
+    motion: 'Reduce motion',
+    motionHint: 'Turns off transitions and animations.',
+    reset: 'Restore defaults',
+    saved: 'Preferences saved.',
+    resetDone: 'Preferences restored. Using your system settings.',
+    themeNote: 'The light or dark theme is changed with the "Theme" button: on a computer, at the end of the side menu; on a phone, inside the "Menu" button and in the page footer.',
+    librasTitle: 'Libras translation (VLibras)',
+    librasText:
+      'VLibras is a free Brazilian federal government service that translates page text into Libras (Brazilian Sign Language). It only loads if you click the button below. When enabled, your browser contacts vlibras.gov.br. The translation is automatic and may not handle technical terms well. It translates Portuguese text, not English.',
+    librasButton: 'Turn on VLibras on this page',
+    librasLoading: 'Loading VLibras…',
+    librasOn: 'VLibras is on. Look for the VLibras button on the screen.',
+    librasError: 'Could not load VLibras. Please try again later.',
+    kbdTitle: 'Using only the keyboard',
+    kbd: [
+      ['Tab', 'moves to the next link, button or field.'],
+      ['Shift + Tab', 'goes back to the previous one.'],
+      ['Enter', 'opens a link or presses a button.'],
+      ['Space', 'checks an option or presses a button.'],
+      ['Esc', 'closes the menu, on phones.'],
+    ],
+    kbdAfter:
+      'The first item when you press Tab is "Skip to content", which jumps straight to the page text. I did not define access keys (accesskey), because they can clash with browser and screen reader shortcuts.',
+    standardsTitle: 'Standards I follow',
+    standardsText:
+      'My goal is to meet the Brazilian standard ABNT NBR 17225:2025 (accessibility of web content and applications) and the Web Content Accessibility Guidelines (WCAG) 2.2, level AA. I also use eMAG, the federal government’s accessibility model, and the Brazilian Inclusion Law (Law 13,146/2015, art. 63) as references.',
+    standardsCaveat:
+      'This is a personal site. It has not been externally audited and has no certification: the assessment is mine. That is why I say "goal" and not "compliance".',
+    refs: [
+      ['Brazilian Inclusion Law (Law 13,146/2015, in Portuguese)', 'https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm'],
+      ['ABNT NBR 17225: launch news (Agência Gov, in Portuguese)', 'https://agenciagov.ebc.com.br/noticias/202503/com-apoio-do-governo-federal-nova-norma-tecnica-da-abnt-e-instituida-para-impulsionar-acessibilidade-digital-no-brasil'],
+      ['Digital accessibility on gov.br (eMAG and standards, in Portuguese)', 'https://www.gov.br/governodigital/pt-br/acessibilidade-e-usuario/acessibilidade-digital'],
+      ['WCAG 2.2 (W3C)', 'https://www.w3.org/TR/WCAG22/'],
+    ],
+    testedTitle: 'How I tested',
+    notTestedTitle: 'What I have not tested yet',
+    limitsTitle: 'Known limitations',
+    limits: [
+      'The blog posts are in Portuguese. In the English interface the post text stays in Portuguese and is marked as such for screen readers.',
+      'Post comments use Giscus (GitHub Discussions), a third-party service. I do not control its accessibility, and commenting requires a GitHub account.',
+      'The SinalCerto screenshots contain small text. The alternative text summarizes what appears but does not reproduce all of it.',
+      'The GitHub activity section depends on external services. If they are blocked or down, the section does not appear.',
+      'I have not checked the accessibility of the PDF résumé (tagging and reading order).',
+    ],
+    reportTitle: 'Found a barrier?',
+    reportText:
+      'Email me with the page, what you tried to do and the tool you use (screen reader, browser, device). I reply by email.',
+    reportLink: 'Send an email',
+    updated: `Last reviewed: ${a11yReport.date}.`,
+    newTab: ui.en.newTab,
+  },
+}[lang];
+
+const report = a11yReport[lang];
+---
+
+<Layout
+  title={copy.title}
+  description={copy.description}
+  selectedItem=""
+  lang={lang}
+  alternates={{ pt: routes.accessibility.pt, en: routes.accessibility.en }}
+>
+  <BackLink href={routes.home[lang]} label={ui[lang].back} />
+  <div class="prose-page">
+    <h1>{copy.heading}</h1>
+    <p>{copy.intro}</p>
+
+    <section aria-labelledby="prefs-title">
+      <h2 id="prefs-title">{copy.prefsTitle}</h2>
+      <p>{copy.prefsIntro}</p>
+      <form
+        class="prefs"
+        data-prefs
+        data-msg-saved={copy.saved}
+        data-msg-reset={copy.resetDone}
+        onsubmit="return false"
+      >
+        <fieldset>
+          <legend>{copy.textLegend}</legend>
+          {copy.textOptions.map(([value, label]) => (
+            <label><input type="radio" name="text" value={value} /> {label}</label>
+          ))}
+        </fieldset>
+        <div>
+          <label><input type="checkbox" name="contrast" /> {copy.contrast}</label>
+          <p class="hint">{copy.contrastHint}</p>
+        </div>
+        <div>
+          <label><input type="checkbox" name="motion" /> {copy.motion}</label>
+          <p class="hint">{copy.motionHint}</p>
+        </div>
+        <div>
+          <button type="button" class="button" data-prefs-reset>{copy.reset}</button>
+        </div>
+        <p class="prefs-status" role="status" aria-live="polite" data-prefs-status></p>
+      </form>
+      <p>{copy.themeNote}</p>
+    </section>
+
+    <section aria-labelledby="libras-title">
+      <h2 id="libras-title">{copy.librasTitle}</h2>
+      <p>{copy.librasText}</p>
+      <div>
+        <button
+          type="button"
+          class="button"
+          data-vlibras
+          data-msg-loading={copy.librasLoading}
+          data-msg-on={copy.librasOn}
+          data-msg-error={copy.librasError}
+        >
+          {copy.librasButton}
+        </button>
+      </div>
+      <p class="prefs-status" role="status" aria-live="polite" data-vlibras-status></p>
+    </section>
+
+    <section aria-labelledby="kbd-title">
+      <h2 id="kbd-title">{copy.kbdTitle}</h2>
+      <ul>
+        {copy.kbd.map(([key, text]) => <li><kbd>{key}</kbd> {text}</li>)}
+      </ul>
+      <p>{copy.kbdAfter}</p>
+    </section>
+
+    <section aria-labelledby="standards-title">
+      <h2 id="standards-title">{copy.standardsTitle}</h2>
+      <p>{copy.standardsText}</p>
+      <p>{copy.standardsCaveat}</p>
+      <ul>
+        {copy.refs.map(([label, href]) => (
+          <li><a href={href} target="_blank" rel="noopener noreferrer">{label}<span class="sr-only">{copy.newTab}</span></a></li>
+        ))}
+      </ul>
+    </section>
+
+    <section aria-labelledby="tested-title">
+      <h2 id="tested-title">{copy.testedTitle}</h2>
+      <ul>{report.tested.map((item) => <li>{item}</li>)}</ul>
+      <h3>{copy.notTestedTitle}</h3>
+      <ul>{report.notTested.map((item) => <li>{item}</li>)}</ul>
+    </section>
+
+    <section aria-labelledby="limits-title">
+      <h2 id="limits-title">{copy.limitsTitle}</h2>
+      <ul>{copy.limits.map((item) => <li>{item}</li>)}</ul>
+    </section>
+
+    <section aria-labelledby="report-title">
+      <h2 id="report-title">{copy.reportTitle}</h2>
+      <p>{copy.reportText}</p>
+      <p><a href={`mailto:${email}`} class="button">{copy.reportLink}</a> <span>{email}</span></p>
+    </section>
+
+    <p class="updated">{copy.updated}</p>
+  </div>
+</Layout>
+
+<script>
+  import '../scripts/prefs.js';
+</script>

@@ -1,28 +1,25 @@
+// Menu da barra superior (telas estreitas). Devolve a função que remove os ouvintes.
 export function setupNav() {
-  const navButton = document.querySelector('.navbar-icon-button');
-  const navMenu = document.querySelector('.w-nav-menu');
-
-  if (!navButton || !navMenu) return;
+  const rail = document.querySelector('[data-rail]');
+  const button = document.querySelector('[data-menu-button]');
+  if (!rail || !button) return;
 
   const setOpen = (open) => {
-    navButton.setAttribute('aria-expanded', String(open));
-    navButton.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
-    navMenu.classList.toggle('is-visible', open);
-    setTimeout(() => navMenu.classList.toggle('is-open', open), open ? 10 : 300);
+    rail.dataset.open = String(open);
+    button.setAttribute('aria-expanded', String(open));
   };
-
-  const toggleNav = () => setOpen(navButton.getAttribute('aria-expanded') !== 'true');
+  const onClick = () => setOpen(button.getAttribute('aria-expanded') !== 'true');
   const onKeydown = (e) => {
-    if (e.key === 'Escape' && navButton.getAttribute('aria-expanded') === 'true') {
+    if (e.key === 'Escape' && button.getAttribute('aria-expanded') === 'true') {
       setOpen(false);
-      navButton.focus();
+      button.focus();
     }
   };
 
-  navButton.addEventListener('click', toggleNav);
+  button.addEventListener('click', onClick);
   document.addEventListener('keydown', onKeydown);
   return () => {
-    navButton.removeEventListener('click', toggleNav);
+    button.removeEventListener('click', onClick);
     document.removeEventListener('keydown', onKeydown);
   };
 }

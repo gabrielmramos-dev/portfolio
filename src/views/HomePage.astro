@@ -1,0 +1,98 @@
+---
+import Layout from '../layouts/Layout.astro';
+import GithubActivity from '../components/GithubActivity.astro';
+import ProjectFigure from '../components/ProjectFigure.astro';
+import { visibleProjects } from '../data/projects';
+import { routes, ui, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const newTab = ui[lang].newTab;
+const repoNames = visibleProjects.map((p) => p.githubUrl.split('/').pop()!);
+
+const copy = {
+  pt: {
+    title: 'Gabriel Ramos | Software Developer Intern',
+    greeting: 'Olá, eu sou o Gabriel.',
+    positioning: 'Backend .NET/TypeScript · APIs, dados abertos e IA aplicada',
+    techLine: 'C#/.NET · ASP.NET Core MVC · GCP (Vertex AI, BigQuery) · RAG e embeddings · xUnit',
+    subtitle: 'Análise e Desenvolvimento de Sistemas - Universidade Braz Cubas',
+    lead: 'Software Developer Intern na PRODAM — empresa de tecnologia da Prefeitura de São Paulo. Trabalho com C#/.NET e IA generativa (Gemini/Vertex AI) em um squad ágil, desenvolvendo serviços digitais para a cidade. Fora do trabalho, construo projetos próprios de backend e sistemas distribuídos.',
+    cv: 'Currículo',
+    contact: 'Falar comigo',
+    seeProjects: 'Ver projetos',
+    projects: 'Projetos',
+    caseStudy: 'Ler o estudo de caso',
+    about: 'Sobre',
+  },
+  en: {
+    title: 'Gabriel Ramos | Software Developer Intern',
+    greeting: 'Hi, I’m Gabriel.',
+    positioning: 'Backend .NET/TypeScript · APIs, open data and applied AI',
+    techLine: 'C#/.NET · ASP.NET Core MVC · GCP (Vertex AI, BigQuery) · RAG and embeddings · xUnit',
+    subtitle: 'Systems Analysis and Development - Braz Cubas University',
+    lead: 'Software Developer Intern at PRODAM, the technology company of the São Paulo City Hall. I work with C#/.NET and generative AI (Gemini/Vertex AI) in an agile squad, building digital services for the city. Outside work, I build my own backend and distributed-systems projects.',
+    // TODO(gabriel): o currículo ainda é só em português; gere uma versão em inglês e aponte aqui.
+    cv: 'Résumé (PT)',
+    contact: 'Get in touch',
+    seeProjects: 'See projects',
+    projects: 'Projects',
+    caseStudy: 'Read the case study',
+    about: 'About',
+  },
+}[lang];
+---
+
+<Layout
+  title={copy.title}
+  selectedItem="home"
+  lang={lang}
+  alternates={{ pt: routes.home.pt, en: routes.home.en }}
+>
+  <section class="hero">
+    <h1>{copy.greeting}<br />Software Developer Intern.</h1>
+    <p class="positioning">{copy.positioning}</p>
+    <p class="tech-line">{copy.techLine}</p>
+    <div class="actions">
+      <a href="#projetos" class="button button-primary">{copy.seeProjects}</a>
+      <a href="mailto:gabrieldotech@gmail.com" class="button">{copy.contact}</a>
+    </div>
+    <p class="hero-links">
+      <a href="https://github.com/gabrielmramos-dev" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only">{newTab}</span></a>
+      <a href="https://linkedin.com/in/ongabrielramos" target="_blank" rel="noopener noreferrer">LinkedIn<span class="sr-only">{newTab}</span></a>
+      <a href="/curriculo.pdf" download>{copy.cv}</a>
+    </p>
+  </section>
+
+  <section aria-labelledby="projetos-titulo" id="projetos" class="gallery">
+    <h2 id="projetos-titulo" class="section-title">{copy.projects}</h2>
+    <div class="gallery-items">
+    {visibleProjects.map((p) => (
+      <article class="gallery-item" aria-labelledby={`g-${p.id}`}>
+        <div class="case-head">
+          <div class="case-title">
+            <h3 id={`g-${p.id}`} class="case-heading">{p.title}</h3>
+            {p.badge && <span class:list={['badge', p.badgeTone === 'ok' && 'badge-ok']}>{p.badge[lang]}</span>}
+          </div>
+          <a href={`${routes.projects[lang]}#${p.id}`}>{copy.caseStudy}<span class="sr-only">: {p.title}</span></a>
+        </div>
+        <p class="case-summary">{p.summary[lang]}</p>
+        <ProjectFigure project={p} lang={lang} />
+        <p class="case-tech">{p.tech.slice(0, 5).join(', ')}</p>
+      </article>
+    ))}
+    </div>
+  </section>
+
+  <GithubActivity lang={lang} repos={repoNames} />
+
+  <section class="about" aria-labelledby="sobre">
+    <h2 id="sobre">{copy.about}</h2>
+    <p class="subtitle">{copy.subtitle}</p>
+    <p class="lead">{copy.lead}</p>
+  </section>
+</Layout>

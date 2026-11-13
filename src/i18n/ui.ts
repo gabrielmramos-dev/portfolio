@@ -11,6 +11,8 @@ export const routes = {
   home: { pt: '/', en: '/en/' },
   projects: { pt: '/projetos/', en: '/en/projects/' },
   experience: { pt: '/experiencia/', en: '/en/experience/' },
+  education: { pt: '/formacao/', en: '/en/education/' },
+  blog: { pt: '/blog/', en: '/en/blog/' },
 } as const;
 
 export type RouteId = keyof typeof routes;
@@ -45,9 +47,9 @@ export const ui = {
     nav: {
       home: 'Home',
       projects: 'Projects',
-      education: 'Education (PT)',
+      education: 'Education',
       experience: 'Experience',
-      blog: 'Blog (PT)',
+      blog: 'Blog',
     },
     navLabel: 'Main',
     openMenu: 'Open menu',

@@ -17,6 +17,12 @@ interface Props {
   type?: 'website' | 'article';
   noindex?: boolean;
   lang?: Lang;
+  /** Idioma do conteúdo, quando difere do idioma da interface (ex.: posts em português dentro da interface em inglês). */
+  contentLang?: Lang;
+  /** Caminho canônico, quando a página repete o conteúdo de outra. */
+  canonicalPath?: string;
+  /** `false` quando as páginas alternativas não são traduções uma da outra. */
+  hreflang?: boolean;
   /** Caminho equivalente em cada idioma, quando a página existe nos dois. */
   alternates?: Partial<Record<Lang, string>>;
 }
@@ -24,6 +30,9 @@ interface Props {
 const {
   title,
   lang = 'pt',
+  contentLang = lang,
+  canonicalPath,
+  hreflang = true,
   description = ui[lang].siteDescription,
   selectedItem = '',
   image = '/assets/og-image.png',
@@ -33,15 +42,15 @@ const {
   alternates,
 } = Astro.props;
 
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const canonical = new URL(canonicalPath ?? Astro.url.pathname, Astro.site);
 const imageUrl = new URL(image, Astro.site);
-const hreflangs = alternates
+const hreflangs = alternates && hreflang
   ? (Object.entries(alternates) as [Lang, string][]).map(([l, path]) => ({
       hreflang: htmlLang[l],
       href: new URL(path, Astro.site),
     }))
   : [];
-const defaultAlternate = alternates?.pt ? new URL(alternates.pt, Astro.site) : null;
+const defaultAlternate = alternates?.pt && hreflang ? new URL(alternates.pt, Astro.site) : null;
 ---
 
 <!doctype html>
@@ -98,7 +107,7 @@ const defaultAlternate = alternates?.pt ? new URL(alternates.pt, Astro.site) : n
     <div class="shell">
       <Sidebar selectedItem={selectedItem} lang={lang} alternates={alternates} />
       <div class="page" id="conteudo">
-        <main class="container">
+        <main class="container" lang={contentLang !== lang ? htmlLang[contentLang] : undefined}>
           <slot />
         </main>
         <footer class="site-footer">

@@ -1,20 +1,22 @@
 ---
 import { readingTime, type Post } from '../lib/posts';
+import { routes, type Lang } from '../i18n/ui';
 
 interface Props {
   post: Post;
+  lang?: Lang;
 }
 
-const { post } = Astro.props;
+const { post, lang = 'pt' } = Astro.props;
 const { title, description, date, tags } = post.data;
 
 function formatDate(date: Date): string {
-  return date.toLocaleDateString('pt-BR', { day: 'numeric', month: 'short', year: 'numeric' });
+  return date.toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 ---
 
 <li class="post-row" data-tags={tags.join('|')}>
-  <a href={`/blog/${post.id}`}>
+  <a href={`${routes.blog[lang]}${post.id}/`}>
     <span class="post-title">{title}</span>
     <span class="post-desc">{description}</span>
     <span class="post-meta">

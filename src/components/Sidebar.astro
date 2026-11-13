@@ -11,12 +11,11 @@ interface Props {
 const { selectedItem, lang = 'pt', alternates } = Astro.props;
 const t = ui[lang];
 
-// Formação e Blog só existem em português.
 const items = [
   { id: 'projetos', href: routes.projects[lang], label: t.nav.projects },
   { id: 'experiencia', href: routes.experience[lang], label: t.nav.experience },
-  { id: 'formacao', href: '/formacao/', label: t.nav.education },
-  { id: 'blog', href: '/blog/', label: t.nav.blog },
+  { id: 'formacao', href: routes.education[lang], label: t.nav.education },
+  { id: 'blog', href: routes.blog[lang], label: t.nav.blog },
 ];
 ---
 

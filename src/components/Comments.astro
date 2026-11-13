@@ -1,7 +1,10 @@
 ---
 // Comentários usando Giscus (GitHub Discussions)
 
+import type { Lang } from '../i18n/ui';
+
 interface Props {
+  lang?: Lang;
   repo?: string;
   repoId?: string;
   category?: string;
@@ -9,6 +12,7 @@ interface Props {
 }
 
 const {
+  lang = 'pt',
   repo = 'gabrielmramos-dev/blog-discussions',
   repoId = 'R_kgDOQsoNCw',
   category = 'General',
@@ -20,15 +24,16 @@ const isEnabled = repo && repoId && category && categoryId;
 
 {isEnabled && (
   <section class="comments">
-    <h2>Comentários</h2>
+    <h2>{lang === 'pt' ? 'Comentários' : 'Comments'}</h2>
     <div
       class="giscus-container"
       data-repo={repo}
       data-repo-id={repoId}
       data-category={category}
       data-category-id={categoryId}
+      data-lang={lang}
     ></div>
-    <noscript>Ative o JavaScript para ver e deixar comentários.</noscript>
+    <noscript>{lang === 'pt' ? 'Ative o JavaScript para ver e deixar comentários.' : 'Enable JavaScript to read and leave comments.'}</noscript>
   </section>
 )}
 
@@ -55,7 +60,7 @@ const isEnabled = repo && repoId && category && categoryId;
     script.setAttribute('data-input-position', 'bottom');
     script.setAttribute('data-theme', currentTheme());
     script.setAttribute('data-loading', 'lazy');
-    script.setAttribute('data-lang', 'pt');
+    script.setAttribute('data-lang', container.getAttribute('data-lang') || 'pt');
     script.setAttribute('crossorigin', 'anonymous');
     script.async = true;
 

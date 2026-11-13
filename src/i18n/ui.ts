@@ -25,7 +25,7 @@ export const ui = {
     siteDescription:
       'Gabriel Ramos — Software Developer Intern na PRODAM (Prefeitura de São Paulo). Backend .NET/TypeScript, APIs, dados abertos e IA aplicada.',
     nav: {
-      home: 'Home',
+      home: 'Início',
       projects: 'Projetos',
       education: 'Formação',
       experience: 'Experiência',

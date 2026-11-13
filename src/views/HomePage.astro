@@ -70,6 +70,7 @@ const copy = {
 
   <section aria-labelledby="projetos-titulo" id="projetos" class="gallery">
     <h2 id="projetos-titulo" class="section-title">{copy.projects}</h2>
+    <div class="gallery-items">
     {visibleProjects.map((p) => (
       <article class="gallery-item" aria-labelledby={`g-${p.id}`}>
         <div class="case-head">
@@ -84,6 +85,7 @@ const copy = {
         <p class="case-tech">{p.tech.slice(0, 5).join(', ')}</p>
       </article>
     ))}
+    </div>
   </section>
 
   <GithubActivity lang={lang} repos={repoNames} />

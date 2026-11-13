@@ -259,6 +259,9 @@ img {
 }
 
 .rail-nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   padding: 8px;
   border-radius: var(--radius);
   color: var(--muted);
@@ -407,6 +410,14 @@ img {
 
   .rail .controls {
     display: none;
+  }
+
+  /* No celular, os controles ficam dentro do menu aberto (e também no rodapé). */
+  .rail[data-open='true'] .controls {
+    display: flex;
+    flex-basis: 100%;
+    margin-top: 0;
+    padding-bottom: 8px;
   }
 
   .page-controls {
@@ -1185,8 +1196,14 @@ img {
 .gallery {
   display: flex;
   flex-direction: column;
-  gap: 64px;
+  gap: 24px;
   scroll-margin-top: 24px;
+}
+
+.gallery-items {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
 }
 
 .gallery-item {

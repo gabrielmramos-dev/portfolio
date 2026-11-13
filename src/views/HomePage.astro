@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import GithubActivity from '../components/GithubActivity.astro';
+import ProjectFigure from '../components/ProjectFigure.astro';
 import { visibleProjects } from '../data/projects';
 import { routes, type Lang } from '../i18n/ui';
 
@@ -20,13 +21,12 @@ const copy = {
     techLine: 'C#/.NET · ASP.NET Core · GCP (Vertex AI, BigQuery) · RAG e embeddings · xUnit',
     subtitle: 'Análise e Desenvolvimento de Sistemas - Universidade Braz Cubas',
     lead: 'Software Developer Intern na PRODAM — empresa de tecnologia da Prefeitura de São Paulo. Trabalho com C#/.NET e IA generativa (Gemini/Vertex AI) em um squad ágil, desenvolvendo serviços digitais para a cidade. Fora do trabalho, construo projetos próprios de backend e sistemas distribuídos.',
-    cv: 'Baixar currículo',
+    cv: 'Currículo',
     contact: 'Falar comigo',
+    seeProjects: 'Ver projetos',
     projects: 'Projetos',
-    allCases: 'Ver os estudos de caso',
-    thProject: 'Projeto',
-    thState: 'Estado',
-    thTech: 'Tecnologias',
+    caseStudy: 'Ler o estudo de caso',
+    about: 'Sobre',
   },
   en: {
     title: 'Gabriel Ramos | Software Developer Intern',
@@ -36,13 +36,12 @@ const copy = {
     subtitle: 'Systems Analysis and Development - Braz Cubas University',
     lead: 'Software Developer Intern at PRODAM, the technology company of the São Paulo City Hall. I work with C#/.NET and generative AI (Gemini/Vertex AI) in an agile squad, building digital services for the city. Outside work, I build my own backend and distributed-systems projects.',
     // TODO(gabriel): o currículo ainda é só em português; gere uma versão em inglês e aponte aqui.
-    cv: 'Download résumé (PT)',
+    cv: 'Résumé (PT)',
     contact: 'Get in touch',
+    seeProjects: 'See projects',
     projects: 'Projects',
-    allCases: 'See the case studies',
-    thProject: 'Project',
-    thState: 'State',
-    thTech: 'Technologies',
+    caseStudy: 'Read the case study',
+    about: 'About',
   },
 }[lang];
 ---
@@ -57,49 +56,40 @@ const copy = {
     <h1>{copy.greeting}<br />Software Developer Intern.</h1>
     <p class="positioning">{copy.positioning}</p>
     <p class="tech-line">{copy.techLine}</p>
-    <p class="subtitle">{copy.subtitle}</p>
-    <p class="lead">{copy.lead}</p>
     <div class="actions">
-      <a href="/curriculo.pdf" download class="button button-primary">{copy.cv}</a>
+      <a href="#projetos" class="button button-primary">{copy.seeProjects}</a>
       <a href="mailto:gabrieldotech@gmail.com" class="button">{copy.contact}</a>
-      <a href="https://github.com/gabrielmramos-dev" target="_blank" rel="noopener noreferrer" class="button">GitHub</a>
-      <a href="https://linkedin.com/in/ongabrielramos" target="_blank" rel="noopener noreferrer" class="button">LinkedIn</a>
     </div>
+    <p class="hero-links">
+      <a href="https://github.com/gabrielmramos-dev" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://linkedin.com/in/ongabrielramos" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="/curriculo.pdf" download>{copy.cv}</a>
+    </p>
   </section>
 
-  <section aria-labelledby="projetos">
-    <div class="section-head">
-      <h2 id="projetos">{copy.projects}</h2>
-      <a href={routes.projects[lang]} class="section-note">{copy.allCases}</a>
-    </div>
-    <table class="index-table">
-      <thead>
-        <tr>
-          <th scope="col">{copy.thProject}</th>
-          <th scope="col">{copy.thState}</th>
-          <th scope="col">{copy.thTech}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {visibleProjects.map((p) => (
-          <tr>
-            <td>
-              <a href={`${routes.projects[lang]}#${p.id}`} class="index-name">{p.title}</a>
-              <p class="index-summary">{p.summary[lang]}</p>
-            </td>
-            <td>
-              {p.badge ? (
-                <span class:list={['badge', p.badgeTone === 'ok' && 'badge-ok']}>{p.badge[lang]}</span>
-              ) : (
-                <span class="index-tech" aria-hidden="true">–</span>
-              )}
-            </td>
-            <td class="index-tech">{p.tech.slice(0, 4).join(', ')}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+  <section aria-labelledby="projetos-titulo" id="projetos" class="gallery">
+    <h2 id="projetos-titulo" class="sr-only">{copy.projects}</h2>
+    {visibleProjects.map((p) => (
+      <article class="gallery-item" aria-labelledby={`g-${p.id}`}>
+        <div class="case-head">
+          <div class="case-title">
+            <h2 id={`g-${p.id}`}>{p.title}</h2>
+            {p.badge && <span class:list={['badge', p.badgeTone === 'ok' && 'badge-ok']}>{p.badge[lang]}</span>}
+          </div>
+          <a href={`${routes.projects[lang]}#${p.id}`}>{copy.caseStudy}</a>
+        </div>
+        <p class="case-summary">{p.summary[lang]}</p>
+        <ProjectFigure project={p} lang={lang} />
+        <p class="case-tech">{p.tech.slice(0, 5).join(', ')}</p>
+      </article>
+    ))}
   </section>
 
   <GithubActivity lang={lang} repos={repoNames} />
+
+  <section class="about" aria-labelledby="sobre">
+    <h2 id="sobre">{copy.about}</h2>
+    <p class="subtitle">{copy.subtitle}</p>
+    <p class="lead">{copy.lead}</p>
+  </section>
 </Layout>

@@ -3,11 +3,19 @@ import type { Lang } from '../i18n/ui';
 type Text = Record<Lang, string>;
 type TextList = Record<Lang, string[]>;
 
-export interface ProjectMedia {
-  /** Caminho em /public. Sem `src`, a página mostra um espaço reservado. */
-  src?: string;
-  alt: Text;
+export interface FlowNode {
+  title: Text;
+  detail?: Text;
+  /** Tracejado: etapa planejada ou ainda em desenvolvimento. */
+  planned?: boolean;
 }
+
+/** Figura que abre o estudo de caso: diagrama de fluxo, capturas de tela, imagem ou espaço reservado. */
+export type ProjectFigure =
+  | { kind: 'flow'; nodes: FlowNode[]; note?: Text; alt: Text }
+  | { kind: 'shots'; shots: { src: string; alt: Text }[] }
+  | { kind: 'image'; src: string; alt: Text }
+  | { kind: 'placeholder'; alt: Text };
 
 export interface Project {
   id: string;
@@ -24,7 +32,7 @@ export interface Project {
   result: Text;
   tech: string[];
   githubUrl: string;
-  media: ProjectMedia;
+  figure: ProjectFigure;
   featured?: boolean;
   /** Fora da lista pública por decisão editorial; o conteúdo fica guardado. */
   hidden?: boolean;
@@ -80,12 +88,19 @@ export const projects: Project[] = [
     // TODO(gabriel): o README diz que o Marco 2 (servidor MCP) está "ainda não iniciado". Alinhe o texto do site ou o README.
     tech: ['C#', '.NET 10', 'SQLite', 'xUnit', 'MCP', 'GitHub Actions'],
     githubUrl: 'https://github.com/gabrielmramos-dev/sp156-mcp',
-    // TODO(gabriel): screenshot ou GIF do comando `ingerir` gravando o banco.
-    media: {
+    // TODO(gabriel): opcional: GIF do comando `ingerir` gravando o banco, para acompanhar o diagrama.
+    figure: {
+      kind: 'flow',
       alt: {
-        pt: 'Espaço reservado: captura do comando de ingestão gravando o banco SQLite.',
-        en: 'Placeholder: capture of the ingestion command writing the SQLite database.',
+        pt: 'Diagrama do pipeline: planilha XLSX do SP156, comando ingerir, banco SQLite sem endereços e, em desenvolvimento, o servidor MCP para um assistente de IA.',
+        en: 'Pipeline diagram: SP156 XLSX spreadsheet, the ingest command, a SQLite database without addresses and, in development, the MCP server for an AI assistant.',
       },
+      nodes: [
+        { title: { pt: 'Planilha XLSX do SP156', en: 'SP156 XLSX spreadsheet' }, detail: { pt: '742.904 linhas no 1º trimestre de 2025', en: '742,904 rows in Q1 2025' } },
+        { title: { pt: 'Comando ingerir', en: 'Ingest command' }, detail: { pt: 'C#; descarta endereço e coordenadas', en: 'C#; drops address and coordinates' } },
+        { title: { pt: 'Banco SQLite', en: 'SQLite database' }, detail: { pt: 'Gravado em arquivo temporário e renomeado só no fim', en: 'Written to a temporary file and renamed only at the end' } },
+        { title: { pt: 'Servidor MCP', en: 'MCP server' }, detail: { pt: 'Em desenvolvimento: perguntas agregadas para um assistente de IA', en: 'In development: aggregate questions for an AI assistant' }, planned: true },
+      ],
     },
     featured: true,
   },
@@ -137,12 +152,32 @@ export const projects: Project[] = [
     },
     tech: ['React Native', 'Expo SDK 58', 'TypeScript', 'Jest', 'GitHub Actions'],
     githubUrl: 'https://github.com/gabrielmramos-dev/sinalcerto-app',
-    // TODO(gabriel): o repositório já tem prints do iPhone em docs/design/ (print-inicio.jpeg etc.). Copie um para public/projects/ e preencha `src`.
-    media: {
-      alt: {
-        pt: 'Espaço reservado: tela Início do SinalCerto com a previsão Regular e a faixa das 24 horas.',
-        en: 'Placeholder: SinalCerto home screen with the Fair forecast and the 24-hour strip.',
-      },
+    // As capturas vêm de docs/design/ do repositório. O botão azul de engrenagem nelas é do Expo Go, não do app.
+    figure: {
+      kind: 'shots',
+      shots: [
+        {
+          src: '/projects/sinalcerto-inicio.webp',
+          alt: {
+            pt: 'Tela Início do SinalCerto: São Paulo (SP), cartão Regular às 20:00, faixa das 24 horas e os melhores e piores horários do dia.',
+            en: 'SinalCerto home screen: São Paulo (SP), a Fair card at 8:00 PM, the 24-hour strip and the best and worst hours of the day.',
+          },
+        },
+        {
+          src: '/projects/sinalcerto-atividades.webp',
+          alt: {
+            pt: 'Tela Atividades do SinalCerto: seis atividades com o status no horário escolhido e os melhores horários de cada uma.',
+            en: 'SinalCerto activities screen: six activities with their status at the chosen hour and the best hours for each.',
+          },
+        },
+        {
+          src: '/projects/sinalcerto-detalhes-aberta.webp',
+          alt: {
+            pt: 'Tela Detalhes do SinalCerto: a hora 23:00 aberta, com tempo de resposta, informação perdida e a nota.',
+            en: 'SinalCerto details screen: the 11:00 PM hour expanded, with response time, lost information and the score.',
+          },
+        },
+      ],
     },
     featured: true,
   },
@@ -189,12 +224,19 @@ export const projects: Project[] = [
     // TODO(gabriel): o README afirma idempotência, graceful shutdown e Prisma singleton, mas o código não os tem; por isso não aparecem aqui.
     tech: ['TypeScript', 'Fastify', 'RabbitMQ', 'PostgreSQL', 'Prisma', 'Zod', 'Docker Compose'],
     githubUrl: 'https://github.com/gabrielmramos-dev/asyncflow',
-    // TODO(gabriel): GIF do fluxo (POST na API, mensagem na UI do RabbitMQ, status COMPLETED no banco).
-    media: {
+    // TODO(gabriel): opcional: GIF do fluxo (POST na API, mensagem na UI do RabbitMQ, status COMPLETED no banco).
+    figure: {
+      kind: 'flow',
       alt: {
-        pt: 'Espaço reservado: GIF do fluxo da tarefa, da API até o status COMPLETED no banco.',
-        en: 'Placeholder: GIF of the task flow, from the API to the COMPLETED status in the database.',
+        pt: 'Diagrama do fluxo: cliente, API Fastify, PostgreSQL com a tarefa PENDING, fila RabbitMQ, worker e PostgreSQL com a tarefa COMPLETED.',
+        en: 'Flow diagram: client, Fastify API, PostgreSQL with the PENDING task, RabbitMQ queue, worker and PostgreSQL with the COMPLETED task.',
       },
+      nodes: [
+        { title: { pt: 'API (Fastify)', en: 'API (Fastify)' }, detail: { pt: 'Valida com Zod, grava PENDING e responde 202', en: 'Validates with Zod, stores PENDING and answers 202' } },
+        { title: { pt: 'Fila RabbitMQ', en: 'RabbitMQ queue' }, detail: { pt: 'Durável, mensagens persistentes, prefetch(1)', en: 'Durable, persistent messages, prefetch(1)' } },
+        { title: { pt: 'Worker', en: 'Worker' }, detail: { pt: 'ack ao concluir, nack com requeue em falha', en: 'ack on success, nack with requeue on failure' } },
+        { title: { pt: 'PostgreSQL', en: 'PostgreSQL' }, detail: { pt: 'Status da tarefa: PENDING, depois COMPLETED', en: 'Task status: PENDING, then COMPLETED' } },
+      ],
     },
     featured: true,
   },
@@ -244,7 +286,8 @@ export const projects: Project[] = [
     // TODO(gabriel): o README fala em "suíte E2E completa", mas o repositório tem 1 spec E2E e 2 specs de use case.
     tech: ['TypeScript', 'Fastify', 'Prisma', 'PostgreSQL', 'JWT', 'Zod', 'Vitest', 'Docker'],
     githubUrl: 'https://github.com/gabrielmramos-dev/iam-microservice-node',
-    media: {
+    figure: {
+      kind: 'image',
       src: '/blog/iam-fluxo.png',
       alt: {
         pt: 'Diagrama do fluxo de autenticação: rotas de login e refresh, com emissão de access token (10 min) e refresh token (7 dias) em cookie.',
@@ -295,11 +338,23 @@ export const projects: Project[] = [
     // TODO(gabriel): o repositório não tem testes automatizados; vale adicionar alguns antes de destacar este projeto.
     tech: ['C#', '.NET 9', 'ASP.NET Core', 'EF Core', 'PostgreSQL', 'PostGIS', 'React', 'TypeScript', 'Leaflet'],
     githubUrl: 'https://github.com/gabrielmramos-dev/zelasp',
-    // TODO(gabriel): screenshot do mapa com os reportes e do painel de triagem.
-    media: {
+    // TODO(gabriel): o diagrama de camadas é provisório; só você pode tirar capturas do mapa com os reportes e do painel de triagem.
+    figure: {
+      kind: 'flow',
       alt: {
-        pt: 'Espaço reservado: mapa do ZelaSP com os reportes e o painel de triagem.',
-        en: 'Placeholder: ZelaSP map with the reports and the triage panel.',
+        pt: 'Diagrama das camadas do ZelaSP: frontend React com mapa Leaflet, API ASP.NET Core, camada Application, Infrastructure com EF Core e PostgreSQL com PostGIS.',
+        en: 'ZelaSP layers diagram: React frontend with a Leaflet map, ASP.NET Core API, Application layer, Infrastructure with EF Core and PostgreSQL with PostGIS.',
+      },
+      nodes: [
+        { title: { pt: 'Frontend', en: 'Frontend' }, detail: { pt: 'React, TypeScript e mapa Leaflet', en: 'React, TypeScript and a Leaflet map' } },
+        { title: { pt: 'ZelaSP.API', en: 'ZelaSP.API' }, detail: { pt: 'ASP.NET Core, JWT e tratamento global de erros', en: 'ASP.NET Core, JWT and global error handling' } },
+        { title: { pt: 'ZelaSP.Application', en: 'ZelaSP.Application' }, detail: { pt: 'Serviços, DTOs e regras de negócio', en: 'Services, DTOs and business rules' } },
+        { title: { pt: 'ZelaSP.Infrastructure', en: 'ZelaSP.Infrastructure' }, detail: { pt: 'EF Core, repositórios e consultas PostGIS', en: 'EF Core, repositories and PostGIS queries' } },
+        { title: { pt: 'PostgreSQL + PostGIS', en: 'PostgreSQL + PostGIS' }, detail: { pt: 'Ponto SRID 4326 e busca por raio', en: 'SRID 4326 point and radius search' } },
+      ],
+      note: {
+        pt: 'O Domain (entidades e contratos de repositório) fica no centro: Application e Infrastructure dependem dele, e ele não depende de nada.',
+        en: 'The Domain (entities and repository contracts) sits at the center: Application and Infrastructure depend on it, and it depends on nothing.',
       },
     },
   },

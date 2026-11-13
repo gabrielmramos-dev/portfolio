@@ -1,0 +1,25 @@
+---
+import type { Lang } from '../i18n/ui';
+import type { FlowNode } from '../data/projects';
+
+interface Props {
+  nodes: FlowNode[];
+  lang: Lang;
+  label: string;
+  note?: string;
+}
+
+const { nodes, lang, label, note } = Astro.props;
+---
+
+<figure class="figure flow-figure">
+  <ol class="flow" aria-label={label}>
+    {nodes.map((node) => (
+      <li class:list={['flow-node', node.planned && 'is-planned']}>
+        <strong>{node.title[lang]}</strong>
+        {node.detail && <span>{node.detail[lang]}</span>}
+      </li>
+    ))}
+  </ol>
+  {note && <figcaption>{note}</figcaption>}
+</figure>

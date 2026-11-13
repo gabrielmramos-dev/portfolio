@@ -2,6 +2,7 @@
 import type { Lang } from '../i18n/ui';
 import type { Project } from '../data/projects';
 import Sp156Chart from './Sp156Chart.astro';
+import ProjectFigure from './ProjectFigure.astro';
 
 interface Props {
   project: Project;
@@ -11,11 +12,11 @@ interface Props {
 const { project, lang = 'pt' } = Astro.props;
 
 const labels = {
-  pt: { problem: 'Problema', decisions: 'Decisões técnicas', limits: 'Limites', result: 'Resultado', tech: 'Tecnologias', placeholder: 'Screenshot em breve', repo: 'no GitHub' },
-  en: { problem: 'Problem', decisions: 'Technical decisions', limits: 'Limits', result: 'Result', tech: 'Technologies', placeholder: 'Screenshot coming soon', repo: 'on GitHub' },
+  pt: { problem: 'Problema', decisions: 'Decisões técnicas', limits: 'Limites', result: 'Resultado', tech: 'Tecnologias', repo: 'no GitHub' },
+  en: { problem: 'Problem', decisions: 'Technical decisions', limits: 'Limits', result: 'Result', tech: 'Technologies', repo: 'on GitHub' },
 }[lang];
 
-const { title, badge, badgeTone, summary, problem, decisions, limits, result, tech, githubUrl, media } = project;
+const { title, badge, badgeTone, summary, problem, decisions, limits, result, tech, githubUrl } = project;
 ---
 
 <article class="case" id={project.id}>
@@ -29,17 +30,8 @@ const { title, badge, badgeTone, summary, problem, decisions, limits, result, te
 
   <p class="case-summary">{summary[lang]}</p>
 
-  {project.id === 'sp156-mcp' ? (
-    <Sp156Chart lang={lang} />
-  ) : media.src ? (
-    <figure class="figure">
-      <img src={media.src} alt={media.alt[lang]} loading="lazy" decoding="async" />
-    </figure>
-  ) : (
-    <div class="figure figure-placeholder" role="img" aria-label={media.alt[lang]}>
-      <span aria-hidden="true">{labels.placeholder}</span>
-    </div>
-  )}
+  <ProjectFigure project={project} lang={lang} />
+  {project.id === 'sp156-mcp' && <Sp156Chart lang={lang} />}
 
   <section class="case-section">
     <h3>{labels.problem}</h3>

@@ -96,8 +96,8 @@ export const projects: Project[] = [
     },
     tech: ['React Native', 'Expo SDK 58', 'TypeScript', 'Jest', 'GitHub Actions'],
     githubUrl: 'https://github.com/gabrielmramos-dev/sinalcerto-app',
-    // TODO(gabriel): link do APK (campo `apk`). O app tem a release v1.0.0 com APK gerado pelo EAS, mas não achei um link direto de download.
-    // Candidato: https://github.com/gabrielmramos-dev/sinalcerto-app/releases/tag/v1.0.0 (confirme se o APK está anexado a essa release, ou use o link do build do EAS).
+    // APK: link do build no EAS, informado pelo Gabriel (também está no README do repositório).
+    apk: 'https://expo.dev/accounts/gabrieldotech/projects/sinalcerto-app/builds/2f70c8da-5365-4854-8e0c-24f30ff5b2b8',
     // TODO(gabriel): `demo` e `video`, se existirem.
     // As capturas vêm de docs/design/ do repositório. O botão azul de engrenagem nelas é do Expo Go, não do app.
     figure: {

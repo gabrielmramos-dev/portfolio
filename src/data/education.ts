@@ -7,8 +7,6 @@ export interface Subject {
   /** Período letivo em que consta no Moodle. */
   term: '2025-2' | '2026-1' | '2026-2';
   optional?: boolean;
-  /** Consta no site, mas não na lista do Moodle. Mantida até o Gabriel confirmar. */
-  confirm?: boolean;
 }
 
 // Fonte única da formação. Ao virar o semestre, mude `semester`, `currentTerm` e, se preciso, `subjects`: o resto do site acompanha.
@@ -58,10 +56,8 @@ export const education = {
       subjects: [
         { name: { pt: 'Matemática Aplicada', en: 'Applied Mathematics' }, term: '2025-2' },
         { name: { pt: 'Gestão de Projetos', en: 'Project Management' }, term: '2026-1' },
-        // TODO(gabriel): as duas disciplinas abaixo constavam no site, mas não estão na lista do Moodle (2025-2 a 2026-2).
-        // Confirme se você as cursou (ou cursa) e, se não, remova-as daqui.
-        { name: { pt: 'Técnicas e Desenvolvimento de Algoritmos', en: 'Algorithm Techniques and Development' }, term: '2025-2', confirm: true },
-        { name: { pt: 'Sistemas Operacionais', en: 'Operating Systems' }, term: '2025-2', confirm: true },
+        { name: { pt: 'Técnicas e Desenvolvimento de Algoritmos', en: 'Algorithm Techniques and Development' }, term: '2025-2' },
+        { name: { pt: 'Sistemas Operacionais', en: 'Operating Systems' }, term: '2025-2' },
       ],
     },
   ] as { title: Text; subjects: Subject[] }[],

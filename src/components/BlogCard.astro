@@ -11,7 +11,7 @@ const { post, lang = 'pt' } = Astro.props;
 const { title, description, date, tags } = post.data;
 
 function formatDate(date: Date): string {
-  return date.toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+  return date.toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 }
 ---
 

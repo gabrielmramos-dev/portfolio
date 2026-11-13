@@ -334,6 +334,10 @@ img {
   gap: 64px;
 }
 
+.container > h1 + * {
+  margin-top: -2rem;
+}
+
 .site-footer {
   width: 100%;
   max-width: 720px;

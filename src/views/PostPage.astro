@@ -16,7 +16,7 @@ const { title, description, date, tags } = post.data;
 const { Content } = await render(post);
 
 const formatDate = (d: Date) =>
-  d.toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+  d.toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 
 const ptPath = `${routes.blog.pt}${post.id}/`;
 const enPath = `${routes.blog.en}${post.id}/`;

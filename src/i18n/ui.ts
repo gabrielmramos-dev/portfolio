@@ -23,7 +23,7 @@ export const ui = {
     skip: 'Pular para o conteúdo',
     back: 'Voltar',
     siteDescription:
-      'Gabriel Ramos — Software Developer Intern na PRODAM (Prefeitura de São Paulo). Backend .NET/TypeScript, APIs, dados abertos e IA aplicada.',
+      'Gabriel Ramos — Software Developer Intern na PRODAM (Prefeitura de São Paulo). Desenvolvedor .NET: APIs, dados abertos e IA aplicada.',
     nav: {
       home: 'Início',
       projects: 'Projetos',
@@ -46,7 +46,7 @@ export const ui = {
     skip: 'Skip to content',
     back: 'Back',
     siteDescription:
-      'Gabriel Ramos — Software Developer Intern at PRODAM (São Paulo City Hall). .NET/TypeScript backend, APIs, open data and applied AI.',
+      'Gabriel Ramos — Software Developer Intern at PRODAM (São Paulo City Hall). .NET developer: APIs, open data and applied AI.',
     nav: {
       home: 'Home',
       projects: 'Projects',

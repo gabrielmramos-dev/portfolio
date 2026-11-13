@@ -17,5 +17,8 @@ export const site = {
   // Currículos. Enquanto `en` for null, a versão em inglês do site aponta para o PDF em português, com o rótulo "(PT)".
   // TODO(gabriel): gere o currículo em inglês, salve em public/curriculo-en.pdf (já existe um arquivo provisório lá)
   // e troque `en` por '/curriculo-en.pdf'.
+  // Itens entregues na PRODAM. Atualize `count` e `until` juntos: o texto sempre mostra o período a que o número se refere.
+  prodamWorkItems: { count: 70, from: '2026-03', until: '2026-11' },
+
   resume: { pt: '/curriculo.pdf', en: null as string | null },
 } as const;

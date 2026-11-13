@@ -2,6 +2,8 @@
 import { ClientRouter } from 'astro:transitions';
 import Sidebar from '../components/Sidebar.astro';
 import Controls from '../components/Controls.astro';
+import Email from '../components/Email.astro';
+import { site } from '../data/site';
 import '@fontsource-variable/schibsted-grotesk';
 import '@fontsource-variable/newsreader';
 import '@fontsource-variable/jetbrains-mono';
@@ -129,9 +131,9 @@ const defaultAlternate = alternates?.pt && hreflang ? new URL(alternates.pt, Ast
           <div class="site-footer-inner">
             <span>© {new Date().getFullYear()} Gabriel Ramos</span>
             <span class="site-footer-links">
-              <a href="https://github.com/gabrielmramos-dev" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only">{ui[lang].newTab}</span></a>
-              <a href="https://linkedin.com/in/ongabrielramos" target="_blank" rel="noopener noreferrer">LinkedIn<span class="sr-only">{ui[lang].newTab}</span></a>
-              <a href="mailto:gabrieldotech@gmail.com">{ui[lang].footerContact}</a>
+              <a href={site.social.github.url} target="_blank" rel="noopener noreferrer">{site.social.github.label}<span class="sr-only">{ui[lang].newTab}</span></a>
+              <a href={site.social.linkedin.url} target="_blank" rel="noopener noreferrer">{site.social.linkedin.label}<span class="sr-only">{ui[lang].newTab}</span></a>
+              <Email label={ui[lang].footerContact} />
               <a href={routes.accessibility[lang]}>{ui[lang].a11y}</a>
             </span>
           </div>

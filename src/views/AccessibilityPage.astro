@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import BackLink from '../components/BackLink.astro';
 import { routes, ui, type Lang } from '../i18n/ui';
+import Email from '../components/Email.astro';
 import { a11yReport } from '../data/a11y-report';
 
 interface Props {
@@ -9,7 +10,6 @@ interface Props {
 }
 
 const { lang } = Astro.props;
-const email = 'gabrieldotech@gmail.com';
 
 const copy = {
   pt: {
@@ -251,7 +251,7 @@ const report = a11yReport[lang];
     <section aria-labelledby="report-title">
       <h2 id="report-title">{copy.reportTitle}</h2>
       <p>{copy.reportText}</p>
-      <p><a href={`mailto:${email}`} class="button">{copy.reportLink}</a> <span>{email}</span></p>
+      <p><Email class="button" label={copy.reportLink} /> <Email /></p>
     </section>
 
     <p class="updated">{copy.updated}</p>

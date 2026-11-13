@@ -3,6 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import GithubActivity from '../components/GithubActivity.astro';
 import ProjectFigure from '../components/ProjectFigure.astro';
 import { visibleProjects } from '../data/projects';
+import Email from '../components/Email.astro';
+import { site } from '../data/site';
 import { routes, ui, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -12,6 +14,10 @@ interface Props {
 const { lang } = Astro.props;
 
 const newTab = ui[lang].newTab;
+
+// Currículo: no inglês, usa o PDF em inglês quando existir; senão, o PDF em português, avisando.
+const resumeHref = lang === 'en' && site.resume.en ? site.resume.en : site.resume.pt;
+const resumeLabel = lang === 'en' ? (site.resume.en ? 'Résumé' : 'Résumé (PT)') : 'Currículo';
 const repoNames = visibleProjects.map((p) => p.githubUrl.split('/').pop()!);
 
 const copy = {
@@ -22,7 +28,6 @@ const copy = {
     techLine: 'C#/.NET · ASP.NET Core MVC · GCP (Vertex AI, BigQuery) · RAG e embeddings · xUnit',
     subtitle: 'Análise e Desenvolvimento de Sistemas - Universidade Braz Cubas',
     lead: 'Software Developer Intern na PRODAM — empresa de tecnologia da Prefeitura de São Paulo. Trabalho com C#/.NET e IA generativa (Gemini/Vertex AI) em um squad ágil, desenvolvendo serviços digitais para a cidade. Fora do trabalho, construo projetos próprios de backend e sistemas distribuídos.',
-    cv: 'Currículo',
     contact: 'Falar comigo',
     seeProjects: 'Ver projetos',
     projects: 'Projetos',
@@ -36,8 +41,6 @@ const copy = {
     techLine: 'C#/.NET · ASP.NET Core MVC · GCP (Vertex AI, BigQuery) · RAG and embeddings · xUnit',
     subtitle: 'Systems Analysis and Development - Braz Cubas University',
     lead: 'Software Developer Intern at PRODAM, the technology company of the São Paulo City Hall. I work with C#/.NET and generative AI (Gemini/Vertex AI) in an agile squad, building digital services for the city. Outside work, I build my own backend and distributed-systems projects.',
-    // TODO(gabriel): o currículo ainda é só em português; gere uma versão em inglês e aponte aqui.
-    cv: 'Résumé (PT)',
     contact: 'Get in touch',
     seeProjects: 'See projects',
     projects: 'Projects',
@@ -59,12 +62,12 @@ const copy = {
     <p class="tech-line">{copy.techLine}</p>
     <div class="actions">
       <a href="#projetos" class="button button-primary">{copy.seeProjects}</a>
-      <a href="mailto:gabrieldotech@gmail.com" class="button">{copy.contact}</a>
+      <Email class="button" label={copy.contact} />
     </div>
     <p class="hero-links">
-      <a href="https://github.com/gabrielmramos-dev" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only">{newTab}</span></a>
-      <a href="https://linkedin.com/in/ongabrielramos" target="_blank" rel="noopener noreferrer">LinkedIn<span class="sr-only">{newTab}</span></a>
-      <a href="/curriculo.pdf" download>{copy.cv}</a>
+      <a href={site.social.github.url} target="_blank" rel="noopener noreferrer">{site.social.github.label}<span class="sr-only">{newTab}</span></a>
+      <a href={site.social.linkedin.url} target="_blank" rel="noopener noreferrer">{site.social.linkedin.label}<span class="sr-only">{newTab}</span></a>
+      <a href={resumeHref} download>{resumeLabel}</a>
     </p>
   </section>
 

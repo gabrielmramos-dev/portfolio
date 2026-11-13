@@ -1,0 +1,21 @@
+// Dados do site que se repetem em várias páginas. Mude aqui, e só aqui.
+export const site = {
+  name: 'Gabriel Ramos',
+  url: 'https://gabrielmramos.dev',
+
+  // E-mail de contato. Nunca aparece em texto puro no HTML: veja components/Email.astro.
+  email: 'gabrieldotech@gmail.com',
+  // TODO(gabriel): quando contato@gabrielmramos.dev existir e encaminhar para a sua caixa, troque `email` por ele.
+  emailCandidate: 'contato@gabrielmramos.dev',
+
+  // Mesmo rótulo e mesmo handle em todos os links externos.
+  social: {
+    github: { label: 'GitHub', handle: 'gabrielmramos-dev', url: 'https://github.com/gabrielmramos-dev' },
+    linkedin: { label: 'LinkedIn', handle: 'ongabrielramos', url: 'https://www.linkedin.com/in/ongabrielramos/' },
+  },
+
+  // Currículos. Enquanto `en` for null, a versão em inglês do site aponta para o PDF em português, com o rótulo "(PT)".
+  // TODO(gabriel): gere o currículo em inglês, salve em public/curriculo-en.pdf (já existe um arquivo provisório lá)
+  // e troque `en` por '/curriculo-en.pdf'.
+  resume: { pt: '/curriculo.pdf', en: null as string | null },
+} as const;

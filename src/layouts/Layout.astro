@@ -85,6 +85,11 @@ const defaultAlternate = alternates?.pt && hreflang ? new URL(alternates.pt, Ast
     <link rel="sitemap" href="/sitemap-index.xml" />
     <script is:inline>
       (function () {
+        var root = document.documentElement;
+        var saved = {};
+        try {
+          saved = JSON.parse(localStorage.getItem('a11y') || '{}') || {};
+        } catch (e) {}
         var theme;
         try {
           theme = localStorage.getItem('theme');
@@ -92,9 +97,19 @@ const defaultAlternate = alternates?.pt && hreflang ? new URL(alternates.pt, Ast
         if (theme !== 'light' && theme !== 'dark') {
           theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         }
-        document.documentElement.dataset.theme = theme;
+        root.dataset.theme = theme;
+        root.dataset.text = ['100', '115', '130', '150'].indexOf(saved.text) > -1 ? saved.text : '100';
+        var contrast = saved.contrast || (matchMedia('(prefers-contrast: more)').matches ? 'high' : 'normal');
+        if (contrast === 'high') root.dataset.contrast = 'high';
+        var motion = saved.motion || (matchMedia('(prefers-reduced-motion: reduce)').matches ? 'reduce' : 'normal');
+        if (motion === 'reduce') root.dataset.motion = 'reduce';
+        // Na navegação do ClientRouter, a página nova herda as preferências da atual.
         document.addEventListener('astro:before-swap', function (event) {
-          event.newDocument.documentElement.dataset.theme = document.documentElement.dataset.theme;
+          var next = event.newDocument.documentElement;
+          ['theme', 'text', 'contrast', 'motion'].forEach(function (key) {
+            if (root.dataset[key]) next.dataset[key] = root.dataset[key];
+            else delete next.dataset[key];
+          });
         });
       })();
     </script>

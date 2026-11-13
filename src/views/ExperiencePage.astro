@@ -42,9 +42,16 @@ const copy = {
             'Construí a gestão de prompts e parâmetros dos modelos (MongoDB) e migrei, funcionalidade por funcionalidade, os prompts que estavam no código para um cadastro em tela de administração, o que permite ajustar a IA sem novo deploy.',
             'Instrumentei no BigQuery o modelo, a temperatura e o nível de pensamento de cada geração, dando rastreabilidade às respostas.',
             'Estabilizei o streaming SSE com Gemini, eliminando repetições e buffering nas respostas.',
-            'Entreguei de ponta a ponta um formulário longo de levantamento de negócio: salvamento por campo, cálculo de completude e interface alinhada ao protótipo.',
-            'Tornei a integração com o Azure DevOps (Wiki) resistente a falhas de rede e SSL, com novas tentativas automáticas e mensagens claras para permissão negada, pasta inexistente e Wiki vazia.',
-            'Criei uma nova tela inicial que mostra o projeto por fases e etapas, e um botão para gerar um novo artefato a partir de cada etapa, com testes unitários.',
+          ],
+        },
+        {
+          label: 'Destaques técnicos',
+          items: [
+            'Criei a API de busca semântica por projeto, versionada e autenticada: gera o embedding da pergunta no Vertex AI, consulta um índice vetorial no Redis filtrado pelo projeto e devolve os documentos mais relevantes com o percentual de similaridade. Os parâmetros opcionais são validados, e um projeto sem base indexada responde 404.',
+            'Implementei o cálculo de completude de um formulário de levantamento de negócio, ponderado por peso: campos condicionais só entram na conta quando estão ativos, e o peso do campo pai é dividido com o condicional. O cálculo tem 18 testes.',
+            'Criei jobs agendados (Quartz) que arquivam iniciativas sem atualização e apagam as arquivadas. A exclusão remove antes os arquivos no Cloud Storage e preserva a iniciativa se algo falhar, para não deixar registros pela metade. Os jobs têm testes para os dois casos de falha.',
+            'Criei um mecanismo de retry com backoff exponencial e jitter para a integração com a Wiki do Azure DevOps. Ele reconhece falhas transitórias de rede e SSL, não repete erros que já vêm com status HTTP e mostra mensagens claras ao usuário (permissão negada, pasta inexistente, Wiki vazia).',
+            'Criei uma nova tela inicial que mostra o projeto por fases e etapas, com um botão "Gerar novo" em cada etapa. O modo do botão (direto, menu ou indisponível) vem de um catálogo de regras coberto por 23 testes unitários, e o menu funciona pelo teclado.',
           ],
         },
       ],
@@ -100,9 +107,16 @@ const copy = {
             'Built prompt and model-parameter management (MongoDB) and migrated, feature by feature, the prompts that lived in code into an admin screen, so the team can tune the AI without a new deploy.',
             'Instrumented BigQuery with the model, temperature and thinking level of every generation, making answers traceable.',
             'Stabilized SSE streaming with Gemini, removing repeated text and buffering in responses.',
-            'Delivered a long business-discovery form end to end: per-field saving, completeness calculation and a UI aligned with the prototype.',
-            'Made the Azure DevOps (Wiki) integration resilient to network and SSL failures, with automatic retries and clear messages for denied permission, a missing folder and an empty Wiki.',
-            'Built a new home screen that shows the project by phases and steps, and a button to generate a new artifact from each step, with unit tests.',
+          ],
+        },
+        {
+          label: 'Technical highlights',
+          items: [
+            'Built the versioned, authenticated semantic search API per project: it generates the question embedding in Vertex AI, queries a Redis vector index filtered by project and returns the most relevant documents with a similarity percentage. Optional parameters are validated, and a project with no indexed base answers 404.',
+            'Implemented the completeness calculation of a business-discovery form, weighted by field: conditional fields only count when active, and the parent field’s weight is split with the conditional one. The calculation has 18 tests.',
+            'Built scheduled jobs (Quartz) that archive stale initiatives and delete the archived ones. Deletion removes the Cloud Storage files first and keeps the initiative if anything fails, so no half-deleted records remain. The jobs have tests for both failure cases.',
+            'Built a retry mechanism with exponential backoff and jitter for the Azure DevOps Wiki integration. It recognizes transient network and SSL failures, does not retry errors that already carry an HTTP status and shows clear messages to the user (permission denied, missing folder, empty Wiki).',
+            'Built a new home screen that shows the project by phases and steps, with a "Generate new" button on each step. The button’s mode (direct, menu or unavailable) comes from a rule catalog covered by 23 unit tests, and the menu works from the keyboard.',
           ],
         },
       ],
@@ -159,6 +173,6 @@ const entries = [copy.prodam, copy.microlins];
     ))}
   </div>
   {/*
-    TODO(gabriel): as entregas novas da PRODAM estão em termos gerais (sem nome do sistema, códigos de tarefa ou nomes internos de componentes). Confirme com a PRODAM que descrições assim podem ser públicas.
+    TODO(gabriel): os "Destaques técnicos" da PRODAM descrevem a arquitetura de funcionalidades internas, em termos gerais (sem nome do sistema, códigos de tarefa, limites numéricos de regras de negócio ou nomes internos de componentes). Confirme com a PRODAM que descrições assim podem ser públicas.
   */}
 </Layout>

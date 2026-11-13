@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const axeSource = readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
 const BASE = process.env.BASE_URL ?? 'http://localhost:4399';
-const PAGES = ['/', '/projetos/', '/experiencia/', '/formacao/', '/blog/', '/blog/ensinar-para-programar-melhor/', '/acessibilidade/', '/en/', '/en/projects/', '/en/accessibility/'];
+const PAGES = ['/', '/projetos/', '/experiencia/', '/formacao/', '/blog/', '/blog/ensinar-para-programar-melhor/', '/acessibilidade/', '/en/', '/en/projects/', '/en/experience/', '/en/education/', '/en/blog/', '/en/blog/ensinar-para-programar-melhor/', '/en/accessibility/'];
 const MODES = [
   { name: 'claro', prefs: { theme: 'light' } },
   { name: 'escuro', prefs: { theme: 'dark' } },

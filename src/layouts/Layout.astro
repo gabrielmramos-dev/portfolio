@@ -87,7 +87,7 @@ const defaultAlternate = alternates?.pt && hreflang ? new URL(alternates.pt, Ast
     <meta name="twitter:image" content={imageUrl} />
     <meta name="twitter:image:alt" content={imageAlt} />
 
-    <link rel="alternate" type="application/rss+xml" title="Blog | Gabriel Ramos" href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Blog | Gabriel Ramos" href={lang === 'en' ? '/en/rss.xml' : '/rss.xml'} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <script is:inline>
       (function () {

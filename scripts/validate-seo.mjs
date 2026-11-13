@@ -54,7 +54,7 @@ for (const [pt, en] of pairs) {
 }
 
 // 2) hreflang nos dois sentidos (páginas traduzidas). Blog: o conteúdo é só em português, sem hreflang por decisão.
-const translated = pairs.filter(([pt]) => pt !== '/blog/');
+const translated = pairs;
 for (const [pt, en] of translated) {
   for (const [from, to, tag] of [[pt, en, 'en'], [en, pt, 'pt-BR']]) {
     const alt = info.get(from)?.alternates ?? [];
@@ -65,9 +65,24 @@ for (const [pt, en] of translated) {
     if (!alt.some(([lang, p]) => lang === 'x-default' && p === pt)) fail(`${from}: x-default deveria apontar para ${pt}`);
   }
 }
-const blogEnWithHreflang = [...info].filter(([p, i]) => p.startsWith('/en/blog') && i.alternates.length);
-if (blogEnWithHreflang.length) fail('páginas /en/blog não deveriam ter hreflang (conteúdo em português)');
-notes.push('Blog: /en/blog e /en/blog/<post> têm interface em inglês e conteúdo em português; canonical aponta para o original e não há hreflang.');
+// Posts: cada /blog/<slug>/ tem o par /en/blog/<slug>/, com hreflang nos dois sentidos.
+const ptPosts = [...info.keys()].filter((p) => /^\/blog\/[^/]+\/$/.test(p));
+const enPosts = [...info.keys()].filter((p) => /^\/en\/blog\/[^/]+\/$/.test(p));
+for (const pt of ptPosts) {
+  const en = '/en' + pt;
+  if (!info.has(en)) {
+    fail(`falta a tradução ${en}`);
+    continue;
+  }
+  for (const [from, to, tag] of [[pt, en, 'en'], [en, pt, 'pt-BR']]) {
+    const target = info.get(from).alternates.find(([lang]) => lang === tag)?.[1];
+    if (target !== to) fail(`${from}: hreflang="${tag}" deveria apontar para ${to}, aponta para ${target ?? 'nada'}`);
+  }
+  if (info.get(en).lang !== 'en') fail(`${en}: lang esperado en`);
+  if (info.get(en).canonical && pathOf(info.get(en).canonical) !== en) fail(`${en}: canonical deveria ser a própria página`);
+}
+for (const en of enPosts) if (!info.has(en.replace(/^\/en/, ''))) fail(`${en} não tem o original em português`);
+notes.push(`Blog: ${ptPosts.length} posts em PT e ${enPosts.length} em EN, com hreflang nos dois sentidos.`);
 
 // 3) Metadados de cada página.
 for (const [path, i] of info) {
@@ -120,7 +135,7 @@ const sitemapFiles = walk(DIST).filter((f) => /sitemap-\d+\.xml$/.test(f));
 const sitemapUrls = new Set();
 for (const f of sitemapFiles) for (const m of readFileSync(f, 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)) sitemapUrls.add(pathOf(m[1]));
 for (const [path] of info) {
-  const shouldBeListed = path !== '/404.html' && !path.startsWith('/en/blog');
+  const shouldBeListed = path !== '/404.html';
   if (shouldBeListed && !sitemapUrls.has(path)) fail(`sitemap sem ${path}`);
   if (!shouldBeListed && sitemapUrls.has(path)) fail(`sitemap não deveria listar ${path}`);
 }

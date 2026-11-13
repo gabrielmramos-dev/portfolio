@@ -22,7 +22,7 @@ const newTab = ui[lang].newTab;
 // Currículo: no inglês, usa o PDF em inglês quando existir; senão, o PDF em português, avisando.
 const resumeHref = lang === 'en' && site.resume.en ? site.resume.en : site.resume.pt;
 const resumeLabel = lang === 'en' ? (site.resume.en ? 'Résumé' : 'Résumé (PT)') : 'Currículo';
-const [latestPost] = await getAllPosts();
+const [latestPost] = await getAllPosts(lang);
 const postDate = latestPost.data.date.toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 const postHref = `${routes.blog[lang]}${latestPost.id}/`;
 
@@ -42,7 +42,6 @@ const copy = {
     latest: 'Último post',
     minRead: 'min de leitura',
     allPosts: 'Ver todos os posts',
-    ptNote: '',
   },
   en: {
     title: 'Gabriel Ramos | .NET Developer and Applied AI',
@@ -59,7 +58,6 @@ const copy = {
     latest: 'Latest post',
     minRead: 'min read',
     allPosts: 'See all posts',
-    ptNote: 'The post is written in Portuguese.',
   },
 }[lang];
 ---
@@ -113,14 +111,13 @@ const copy = {
       <h2 id="ultimo-post">{copy.latest}</h2>
       <a href={routes.blog[lang]}>{copy.allPosts}</a>
     </div>
-    <article lang="pt-BR">
+    <article>
       <h3><a href={postHref} class="post-title-link">{latestPost.data.title}</a></h3>
       <p class="post-desc">{latestPost.data.description}</p>
       <p class="post-meta">
         <time datetime={latestPost.data.date.toISOString()}>{postDate}</time> · {readingTime(latestPost)} {copy.minRead}
       </p>
     </article>
-    {copy.ptNote && <p class="section-note">{copy.ptNote}</p>}
   </section>
 
   <section class="about" aria-labelledby="sobre">

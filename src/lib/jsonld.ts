@@ -50,6 +50,7 @@ export function breadcrumbs(items: { name: string; url: string }[]): Json {
 export function blogPosting(args: {
   origin: string;
   url: string;
+  lang: Lang;
   title: string;
   description: string;
   date: Date;
@@ -63,7 +64,7 @@ export function blogPosting(args: {
     description: args.description,
     datePublished: args.date.toISOString().slice(0, 10),
     dateModified: args.date.toISOString().slice(0, 10),
-    inLanguage: 'pt-BR',
+    inLanguage: args.lang === 'pt' ? 'pt-BR' : 'en',
     url: args.url,
     mainEntityOfPage: args.url,
     image: args.image,

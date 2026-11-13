@@ -3,7 +3,7 @@ import PostPage from '../../../views/PostPage.astro';
 import { getAllPosts } from '../../../lib/posts';
 
 export async function getStaticPaths() {
-  const posts = await getAllPosts();
+  const posts = await getAllPosts('en');
   return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
 }
 

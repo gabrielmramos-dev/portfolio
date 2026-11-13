@@ -1,29 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import BackLink from "../components/BackLink.astro";
-import Project from "../components/Project.astro";
-import { projects } from "../data/projects";
+import ProjectsPage from '../views/ProjectsPage.astro';
 ---
 
-<Layout
-  title="Projetos | Gabriel Ramos"
-  description="Projetos de Gabriel Ramos: APIs com .NET e Clean Architecture, sistemas distribuídos, microsserviços e integrações com IA."
-  selectedItem="projetos"
->
-  <BackLink />
-  <div class="content-container">
-    <h1>Projetos</h1>
-    <section class="items-container">
-      <div class="resouce-items">
-        {projects.map((project) => (
-          <Project
-            title={project.title}
-            desc={project.desc}
-            tech={project.tech}
-            githubUrl={project.githubUrl}
-          />
-        ))}
-      </div>
-    </section>
-  </div>
-</Layout>
+<ProjectsPage lang="pt" />

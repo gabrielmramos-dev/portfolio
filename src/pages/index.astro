@@ -35,7 +35,7 @@ const sections = [
       {featured.map((p) => (
         <a href="/projetos" class="featured-item">
           <h3>{p.title}</h3>
-          <p>{p.summary}</p>
+          <p>{p.summary.pt}</p>
           <div class="chips-container chips-container-small-width">
             {p.tech.slice(0, 4).map((t) => <div class="single-chip small-chip">{t}</div>)}
           </div>

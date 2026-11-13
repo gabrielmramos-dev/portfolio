@@ -2,7 +2,7 @@
 title: "Seis meses com IA em produção: o difícil começa depois do Hello World"
 description: "Dois terços dos meus commits nos últimos seis meses foram correção, não funcionalidade nova. O que vi trabalhando com IA em ambiente corporativo, na ordem em que doeu."
 date: 2026-10-22
-tags: ["ia", "aprendizado", "carreira"]
+tags: ["ia", "carreira"]
 ---
 
 Dois terços dos meus commits nos últimos seis meses foram correção, não funcionalidade nova. Eu sabia que trabalhar com IA em ambiente corporativo seria difícil. Não sabia que a dificuldade seria tão pouco glamorosa.

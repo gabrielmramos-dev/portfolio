@@ -2,7 +2,7 @@
 title: "O que aprendi construindo um Microsserviço IAM (Gerenciamento de acesso e identidade) do zero"
 description: "Como encarei o desafio de projetar um serviço de identidade robusto, aplicando Clean Architecture, Refresh Token Rotation e testes E2E."
 date: 2025-12-27
-tags: ["estudos", "desafios técnicos", "aprendizado"]
+tags: ["desafios técnicos", "aprendizado"]
 ---
 
 Crescimento profissional exige desconforto. Por isso, nestas férias, decidi trocar o descanso por um desafio real: desenvolver um projeto que seguisse as métricas e padrões que o mercado de Engenharia de Software exige atualmente. Foquei em pilares como **Clean Architecture**, **JWT**, **Refresh Token com Rotation**, **Testes Unitários/E2E** e documentação rigorosa de API.
@@ -16,3 +16,5 @@ Lidar com **cookies httpOnly**, garantir a resiliência do sistema para o usuár
 No final das contas, o que restou não foi apenas mais um repositório no GitHub. Foi a clareza de que, para ser um bom dev, é preciso aprender a conviver com o desconforto de não saber tudo de primeira. Abaixo, apresento o fluxo final do sistema:
 
 ![Fluxo de autenticação: rotas de login e refresh, com emissão de access token (10 min) e refresh token (7 dias) em cookie](/blog/iam-fluxo.png)
+
+O código do projeto está em [gabrielmramos-dev/iam-microservice-node](https://github.com/gabrielmramos-dev/iam-microservice-node).

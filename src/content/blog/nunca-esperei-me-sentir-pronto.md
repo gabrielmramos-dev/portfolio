@@ -2,7 +2,7 @@
 title: "Se eu tivesse esperado me sentir pronto, nunca teria publicado nada"
 description: "Por que esperar estar pronto quase sempre atrasa o aprendizado."
 date: 2025-12-21
-tags: ["aprendizado", "processo", "carreira"]
+tags: ["aprendizado", "carreira"]
 ---
 
 Durante muito tempo, achei que só podia escrever quando tivesse certeza.

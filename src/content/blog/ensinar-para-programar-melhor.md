@@ -2,7 +2,7 @@
 title: "Didática: A competência técnica disfarçada que mudou minha forma de desenvolver software"
 description: "Como a didática, desenvolvida no dia a dia como educador, se tornou uma competência técnica que influencia diretamente a forma de estudar, projetar sistemas e escrever código mais claro e sustentável."
 date: 2026-01-14
-tags: ["didática", "desenvolvimento de software", "aprendizado"]
+tags: ["carreira", "aprendizado"]
 ---
 
 Como educador e instrutor, passo boa parte dos meus dias tentando fazer com que conceitos técnicos complexos façam sentido para quem está começando. Com o tempo, percebi que esse esforço para ensinar não é apenas uma "soft skill" educacional; é uma competência técnica disfarçada que mudou a forma como eu projeto sistemas e escrevo código.

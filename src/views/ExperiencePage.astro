@@ -1,0 +1,149 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BackLink from '../components/BackLink.astro';
+import { routes, ui, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+// Todos os textos entram em termos gerais: nada de nomes internos, IDs de nuvem ou códigos de tarefa.
+const copy = {
+  pt: {
+    title: 'Experiência Profissional | Gabriel Ramos',
+    description:
+      'Experiência de Gabriel Ramos: Software Developer Intern na PRODAM (C#/.NET, ASP.NET Core, IA generativa no GCP) e instrutor de informática na Microlins.',
+    heading: 'Experiência Profissional',
+    techLabel: 'Tecnologias & Práticas Utilizadas',
+    projectsLabel: 'Projetos',
+    prodam: {
+      role: 'Software Developer Intern',
+      place: 'PRODAM — Prefeitura de São Paulo',
+      period: 'março de 2026 — momento atual',
+      summary:
+        'Desenvolvimento de serviços digitais para a cidade, em um squad ágil com desenvolvedores, arquitetos, QA, analistas, PO e UX/UI.',
+      bullets: [
+        'Migrei a lista de modelos de IA generativa para a geração seguinte, mantendo um fallback para os prompts legados, para que nenhuma funcionalidade dependente da versão antiga parasse durante a transição.',
+        'Corrigi falhas em prompts cadastrados em banco (prompt não encontrado, texto antigo usado no refinamento, parâmetros gravados em branco ou nulos), para que cada funcionalidade use o prompt e a configuração cadastrados.',
+        'Passei a registrar modelo, nível de pensamento, temperatura e custo de cada geração, o que permite investigar reclamações sobre respostas ruins.',
+        'Ajustei funcionalidades com streaming de respostas (texto chegando de uma vez só, blocos de raciocínio repetidos, contexto adicional ausente), para a resposta aparecer em tempo real e sem repetição.',
+        'Escrevo testes automatizados com xUnit e testes de UI automatizados com o MCP do Playwright.',
+        'Atuo em funcionalidades de RAG e embeddings na plataforma de IA generativa, sobre o GCP (Vertex AI/Gemini).',
+      ],
+      tech: ['C#/.NET', 'ASP.NET Core', 'GCP (Vertex AI/Gemini, BigQuery)', 'RAG e embeddings', 'xUnit', 'Playwright MCP'],
+    },
+    microlins: {
+      role: 'Instrutor de Informática',
+      place: 'Microlins',
+      location: 'Suzano/SP',
+      summary:
+        'Formação técnica de alunos em desenvolvimento web, orientando projetos práticos focados em lógica de programação, APIs REST e boas práticas de código. Também construí ferramentas internas:',
+      projects: [
+        'Bot de automação Telegram–WhatsApp (Node.js, Baileys, Telegraf) para gestão de comunicação em massa, apresentado para equipes de múltiplas unidades e processando 500+ mensagens por semana em campanhas educacionais.',
+        'Gerador de exercícios com IA generativa (Groq API + RAG) que produz PDFs prontos para impressão, personalizados por disciplina e nível de dificuldade, reduzindo em horas o tempo de criação manual de materiais didáticos.',
+      ],
+      tech: ['Node.js', 'TypeScript', 'Groq API', 'RAG', 'Automação', 'Lógica de Programação'],
+    },
+  },
+  en: {
+    title: 'Professional Experience | Gabriel Ramos',
+    description:
+      'Gabriel Ramos’s experience: Software Developer Intern at PRODAM (C#/.NET, ASP.NET Core, generative AI on GCP) and IT instructor at Microlins.',
+    heading: 'Professional Experience',
+    techLabel: 'Technologies & Practices Used',
+    projectsLabel: 'Projects',
+    prodam: {
+      role: 'Software Developer Intern',
+      place: 'PRODAM — São Paulo City Hall',
+      period: 'March 2026 — present',
+      summary:
+        'Building digital services for the city in an agile squad with developers, architects, QA, analysts, a PO and UX/UI.',
+      bullets: [
+        'Migrated the generative AI model list to the next generation while keeping a fallback for legacy prompts, so no feature that depended on the old version broke during the transition.',
+        'Fixed failures in database-stored prompts (prompt not found, old text used when refining a result, parameters saved blank or null), so each feature uses the prompt and settings it has registered.',
+        'Started recording the model, thinking level, temperature and cost of every generation, which makes it possible to investigate complaints about bad answers.',
+        'Fixed streaming features (text arriving all at once, repeated reasoning blocks, missing extra context), so answers show up in real time without repetition.',
+        'Write automated tests with xUnit and automated UI tests with the Playwright MCP.',
+        'Work on RAG and embeddings features in the generative AI platform, on GCP (Vertex AI/Gemini).',
+      ],
+      tech: ['C#/.NET', 'ASP.NET Core', 'GCP (Vertex AI/Gemini, BigQuery)', 'RAG and embeddings', 'xUnit', 'Playwright MCP'],
+    },
+    microlins: {
+      role: 'IT Instructor',
+      place: 'Microlins',
+      location: 'Suzano, SP, Brazil',
+      summary:
+        'Taught web development, guiding hands-on projects focused on programming logic, REST APIs and good coding practices. I also built internal tools:',
+      projects: [
+        'Telegram–WhatsApp automation bot (Node.js, Baileys, Telegraf) for mass communication management, presented to teams across several units and handling 500+ messages per week in educational campaigns.',
+        'Generative AI exercise generator (Groq API + RAG) that produces print-ready PDFs, tailored by subject and difficulty level, cutting the manual effort of creating teaching material by hours.',
+      ],
+      tech: ['Node.js', 'TypeScript', 'Groq API', 'RAG', 'Automation', 'Programming logic'],
+    },
+  },
+}[lang];
+
+const { prodam, microlins } = copy;
+---
+
+<Layout
+  title={copy.title}
+  description={copy.description}
+  selectedItem="experiencia"
+  lang={lang}
+  alternates={{ pt: routes.experience.pt, en: routes.experience.en }}
+>
+  <BackLink href={routes.home[lang]} label={ui[lang].back} />
+  <div class="content-container">
+    <h1>{copy.heading}</h1>
+    <section class="items-container">
+      <div class="resouce-items">
+        <div class="single-item">
+          <h3>{prodam.role}</h3>
+          <p class="meta-line">
+            <strong>{prodam.place}</strong> · {prodam.period}
+          </p>
+          <p class="project-text">{prodam.summary}</p>
+          <div class="project-desc project-desc-list w-richtext">
+            <ul role="list">
+              {prodam.bullets.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+          {/*
+            TODO(gabriel): Azure DevOps saiu do site. Confirme se você realmente o usa no dia a dia; se sim, volte a listar.
+            TODO(gabriel): resultado concreto de cada bullet (ex.: quantos prompts/funcionalidades foram migrados ou corrigidos, que tipo de reclamação deixou de acontecer, quantos testes/fluxos de UI existem). Hoje cada bullet descreve só a ação e o objetivo.
+            TODO(gabriel): confirme que o registro de modelo/temperatura/custo e os ajustes de streaming foram feitos por você (o post do blog descreve os problemas, não quem os resolveu).
+            TODO(gabriel): BigQuery está só na linha de tecnologias. O que você fez com ele? (consultas, métricas de custo, tabelas de logs...) Vira um bullet "ação + resultado".
+            TODO(gabriel): RAG e embeddings: o que exatamente você implementou ou manteve?
+          */}
+          <div class="mini-label-white">{copy.techLabel}</div>
+          <div class="chips-container">
+            {prodam.tech.map((item) => <div class="single-chip">{item}</div>)}
+          </div>
+        </div>
+
+        <div class="single-item">
+          <h3>{microlins.role}</h3>
+          <p class="meta-line">
+            <strong>{microlins.place}</strong> · {microlins.location}
+          </p>
+          {/* TODO(gabriel): datas da Microlins (o LinkedIn mostra instrutor júnior desde 2023 e instrutor pleno de out/2024 a jan/2026; confirme). */}
+          <p class="project-text">{microlins.summary}</p>
+          <div class="mini-label-white">{copy.projectsLabel}</div>
+          <div class="project-desc project-desc-list w-richtext">
+            <ul role="list">
+              {microlins.projects.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+          {/* TODO(gabriel): "500+ mensagens por semana" e "reduzindo em horas" não têm fonte pública (os bots não estão no GitHub). Confirme os números ou troque por uma frase sem número. */}
+          <div class="mini-label-white">{copy.techLabel}</div>
+          <div class="chips-container">
+            {microlins.tech.map((item) => <div class="single-chip">{item}</div>)}
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>

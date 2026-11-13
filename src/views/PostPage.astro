@@ -38,6 +38,8 @@ const copy = {
   alternates={{ pt: ptPath, en: enPath }}
   hreflang={false}
   canonicalPath={ptPath}
+  image={`/og/${post.id}.png`}
+  imageAlt={`Imagem de compartilhamento do post: ${title}`}
   jsonLd={[
     blogPosting({
       origin,
@@ -46,7 +48,7 @@ const copy = {
       description,
       date,
       tags,
-      image: origin + '/assets/og-image.png',
+      image: origin + `/og/${post.id}.png`,
     }),
     breadcrumbs([
       { name: homeLabel(lang), url: origin + routes.home[lang] },

@@ -1,0 +1,67 @@
+---
+import type { Lang } from '../i18n/ui';
+import { visibleProjects } from '../data/projects';
+import { site } from '../data/site';
+import { getLastCommit } from '../lib/github';
+import { ui } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const copy = {
+  pt: {
+    title: 'Atividade nos projetos',
+    intro: 'Último commit de cada repositório público, na data em que o site foi publicado. Meu trabalho na PRODAM fica em repositórios privados e não aparece aqui.',
+    last: 'Último commit',
+    history: 'Ver o repositório no GitHub',
+    locale: 'pt-BR',
+  },
+  en: {
+    title: 'Project activity',
+    intro: 'Latest commit of each public repository, as of the date the site was published. My work at PRODAM lives in private repositories and does not appear here.',
+    last: 'Latest commit',
+    history: 'See the repository on GitHub',
+    locale: 'en-US',
+  },
+}[lang];
+
+const rows = await Promise.all(
+  visibleProjects.map(async (project) => ({
+    project,
+    commit: await getLastCommit(project.githubUrl),
+  })),
+);
+
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString(copy.locale, { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+---
+
+<section class="activity" aria-labelledby="atividade">
+  <div class="section-head">
+    <h2 id="atividade">{copy.title}</h2>
+    <a href={site.social.github.url} target="_blank" rel="noopener noreferrer">
+      {site.social.github.label}<span class="sr-only">{ui[lang].newTab}</span>
+    </a>
+  </div>
+  <p class="section-note">{copy.intro}</p>
+  <ul class="activity-list" role="list">
+    {rows.map(({ project, commit }) => (
+      <li>
+        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" class="activity-repo">
+          {project.githubUrl.split('/').pop()}<span class="sr-only">{ui[lang].newTab}</span>
+        </a>
+        {commit ? (
+          <span class="activity-commit">
+            {copy.last}: <time datetime={commit.date}>{formatDate(commit.date)}</time>
+            · <a href={commit.url} target="_blank" rel="noopener noreferrer">{commit.sha}<span class="sr-only">{ui[lang].newTab}</span></a>
+          </span>
+        ) : (
+          <span class="activity-commit">{copy.history}</span>
+        )}
+      </li>
+    ))}
+  </ul>
+</section>

@@ -4,14 +4,19 @@ import BackLink from '../components/BackLink.astro';
 import Project from '../components/Project.astro';
 import { visibleProjects } from '../data/projects';
 import { routes, ui, type Lang } from '../i18n/ui';
-import { terms } from '../lib/abbr';
+import { makeAbbr, terms } from '../lib/abbr';
 
 interface Props {
   lang: Lang;
 }
 
 const { lang } = Astro.props;
+// As siglas da lista são colhidas aqui, antes de renderizar: os componentes filhos só rodam depois desta página montar a lista.
 const used = new Set<string>();
+for (const project of visibleProjects) {
+  const collect = makeAbbr(lang, used);
+  [project.summary[lang], project.problem[lang], project.result[lang], ...project.decisions[lang], ...project.limits[lang]].forEach(collect);
+}
 
 const copy = {
   pt: {
@@ -41,7 +46,7 @@ const copy = {
   <BackLink href={routes.home[lang]} label={ui[lang].back} />
   <h1>{copy.heading}</h1>
   <div class="cases">
-    {visibleProjects.map((project) => <Project project={project} lang={lang} used={used} />)}
+    {visibleProjects.map((project) => <Project project={project} lang={lang} />)}
   </div>
   <section class="glossary" aria-labelledby="glossario">
     <h2 id="glossario">{copy.glossary}</h2>

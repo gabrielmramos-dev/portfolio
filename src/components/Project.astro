@@ -8,12 +8,10 @@ import { makeAbbr } from '../lib/abbr';
 interface Props {
   project: Project;
   lang?: Lang;
-  /** Recebe as siglas usadas, para a lista de termos da página. */
-  used?: Set<string>;
 }
 
-const { project, lang = 'pt', used } = Astro.props;
-const abbr = makeAbbr(lang, used);
+const { project, lang = 'pt' } = Astro.props;
+const abbr = makeAbbr(lang);
 
 const labels = {
   pt: { problem: 'Problema', decisions: 'Decisões técnicas', limits: 'Limites', result: 'Resultado', tech: 'Tecnologias', repo: 'no GitHub', newTab: ' (abre em nova aba)', demo: 'Demo', apk: 'Baixar APK', video: 'Vídeo', soon: 'Screenshot em breve' },

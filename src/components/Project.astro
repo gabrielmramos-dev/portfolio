@@ -20,7 +20,7 @@ const { title, badge, summary, problem, decisions, result, tech, githubUrl, medi
 <article class="single-item project-case" id={project.id}>
   <div class="project-header">
     <div class="project-title">
-      <h3>{title}</h3>
+      <h2 class="item-title">{title}</h2>
       {badge && <span class="project-badge">{badge[lang]}</span>}
     </div>
     <a href={githubUrl} target="_blank" rel="noopener noreferrer" class="project-github" aria-label={`${title} ${labels.repo}`}>

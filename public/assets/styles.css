@@ -85,7 +85,9 @@ img {
 
 h1,
 h3,
-h4 {
+h4,
+.item-title,
+.card-title {
   margin-bottom: 10px;
   font-weight: bold;
 }
@@ -96,13 +98,15 @@ h1 {
   line-height: 44px;
 }
 
-h3 {
+h3,
+.item-title {
   margin-top: 20px;
   font-size: 24px;
   line-height: 30px;
 }
 
-h4 {
+h4,
+.card-title {
   margin-top: 10px;
   font-size: 18px;
   line-height: 24px;
@@ -247,7 +251,8 @@ h1 {
   line-height: 72px;
 }
 
-h3 {
+h3,
+.item-title {
   color: #fff;
   margin-top: 0;
   margin-bottom: 12px;
@@ -256,7 +261,8 @@ h3 {
   line-height: 42px;
 }
 
-h4 {
+h4,
+.card-title {
   color: #fff;
   margin-top: 0;
   margin-bottom: 0;
@@ -636,7 +642,8 @@ p {
     line-height: 64px;
   }
 
-  h4 {
+  h4,
+  .card-title {
     font-size: 32px;
     font-weight: 300;
     line-height: 48px;
@@ -820,7 +827,7 @@ button.navbar-icon-button {
   margin-bottom: 1rem;
 }
 
-.project-header h3 {
+.project-header .item-title {
   margin: 0;
 }
 

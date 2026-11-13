@@ -6,7 +6,7 @@ import '@fontsource-variable/schibsted-grotesk';
 import '@fontsource-variable/newsreader';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
-import { htmlLang, ogLocale, ui, type Lang } from '../i18n/ui';
+import { htmlLang, ogLocale, routes, ui, type Lang } from '../i18n/ui';
 
 interface Props {
   title: string;
@@ -129,9 +129,10 @@ const defaultAlternate = alternates?.pt && hreflang ? new URL(alternates.pt, Ast
           <div class="site-footer-inner">
             <span>© {new Date().getFullYear()} Gabriel Ramos</span>
             <span class="site-footer-links">
-              <a href="https://github.com/gabrielmramos-dev" target="_blank" rel="noopener noreferrer">GitHub</a>
-              <a href="https://linkedin.com/in/ongabrielramos" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              <a href="https://github.com/gabrielmramos-dev" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only">{ui[lang].newTab}</span></a>
+              <a href="https://linkedin.com/in/ongabrielramos" target="_blank" rel="noopener noreferrer">LinkedIn<span class="sr-only">{ui[lang].newTab}</span></a>
               <a href="mailto:gabrieldotech@gmail.com">{ui[lang].footerContact}</a>
+              <a href={routes.accessibility[lang]}>{ui[lang].a11y}</a>
             </span>
           </div>
           <Controls lang={lang} alternates={alternates} class="page-controls" />

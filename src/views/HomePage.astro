@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import GithubActivity from '../components/GithubActivity.astro';
 import ProjectFigure from '../components/ProjectFigure.astro';
 import { visibleProjects } from '../data/projects';
-import { routes, type Lang } from '../i18n/ui';
+import { routes, ui, type Lang } from '../i18n/ui';
 
 interface Props {
   lang: Lang;
@@ -11,6 +11,7 @@ interface Props {
 
 const { lang } = Astro.props;
 
+const newTab = ui[lang].newTab;
 const repoNames = visibleProjects.map((p) => p.githubUrl.split('/').pop()!);
 
 const copy = {
@@ -61,22 +62,22 @@ const copy = {
       <a href="mailto:gabrieldotech@gmail.com" class="button">{copy.contact}</a>
     </div>
     <p class="hero-links">
-      <a href="https://github.com/gabrielmramos-dev" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a href="https://linkedin.com/in/ongabrielramos" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://github.com/gabrielmramos-dev" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only">{newTab}</span></a>
+      <a href="https://linkedin.com/in/ongabrielramos" target="_blank" rel="noopener noreferrer">LinkedIn<span class="sr-only">{newTab}</span></a>
       <a href="/curriculo.pdf" download>{copy.cv}</a>
     </p>
   </section>
 
   <section aria-labelledby="projetos-titulo" id="projetos" class="gallery">
-    <h2 id="projetos-titulo" class="sr-only">{copy.projects}</h2>
+    <h2 id="projetos-titulo" class="section-title">{copy.projects}</h2>
     {visibleProjects.map((p) => (
       <article class="gallery-item" aria-labelledby={`g-${p.id}`}>
         <div class="case-head">
           <div class="case-title">
-            <h2 id={`g-${p.id}`}>{p.title}</h2>
+            <h3 id={`g-${p.id}`} class="case-heading">{p.title}</h3>
             {p.badge && <span class:list={['badge', p.badgeTone === 'ok' && 'badge-ok']}>{p.badge[lang]}</span>}
           </div>
-          <a href={`${routes.projects[lang]}#${p.id}`}>{copy.caseStudy}</a>
+          <a href={`${routes.projects[lang]}#${p.id}`}>{copy.caseStudy}<span class="sr-only">: {p.title}</span></a>
         </div>
         <p class="case-summary">{p.summary[lang]}</p>
         <ProjectFigure project={p} lang={lang} />

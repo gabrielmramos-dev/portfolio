@@ -16,6 +16,14 @@ const otherTag = other === 'en' ? 'en' : 'pt-BR';
 ---
 
 <div class:list={['controls', className]}>
+  <a href={routes.accessibility[lang]} class="control">
+    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false" class="a11y-symbol">
+      <circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="1.6" />
+      <circle cx="12" cy="6.8" r="1.7" fill="currentColor" />
+      <path d="M6.5 9.6h11M12 9.6v4.2M9.2 18l2.8-4.2 2.8 4.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    {t.a11y}
+  </a>
   <a
     href={switchHref}
     class="control"

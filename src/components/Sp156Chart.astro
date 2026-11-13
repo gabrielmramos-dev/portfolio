@@ -24,6 +24,7 @@ const copy = {
     statusTitle: 'Status das mesmas linhas',
     note: 'Os dados não têm ID de protocolo, então não dá para deduplicar: a contagem é de linhas registradas, não de problemas distintos. O status é um retrato de data desconhecida.',
     source: 'Fonte: docs/DATA.md do projeto',
+    newTab: ' (abre em nova aba)',
     barAria: (dup: string, rest: string) => `Duplicatas exatas: ${dup}. Demais linhas: ${rest}.`,
     statusAria: 'Distribuição das linhas por status, com os valores listados abaixo.',
   },
@@ -35,6 +36,7 @@ const copy = {
     statusTitle: 'Status of the same rows',
     note: 'The data has no protocol ID, so it cannot be deduplicated: counts are registered rows, not distinct problems. The status is a snapshot of unknown date.',
     source: 'Source: the project’s docs/DATA.md',
+    newTab: ' (opens in a new tab)',
     barAria: (dup: string, rest: string) => `Exact duplicates: ${dup}. Other rows: ${rest}.`,
     statusAria: 'Distribution of rows by status, with the values listed below.',
   },
@@ -77,6 +79,6 @@ const restLabel = `${fmt(uniquePct, 2)}%`;
 
   <p class="dchart-note">
     {copy.note}
-    <a href={sp156Data.sourceUrl} target="_blank" rel="noopener noreferrer">{copy.source}</a>.
+    <a href={sp156Data.sourceUrl} target="_blank" rel="noopener noreferrer">{copy.source}<span class="sr-only">{copy.newTab}</span></a>.
   </p>
 </figure>

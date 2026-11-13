@@ -24,6 +24,7 @@ const copy = {
     branchCreated: 'Branch criado: {branch}',
     pullRequest: 'Pull request',
     locale: 'pt-BR',
+    newTab: ' (abre em nova aba)',
   },
   en: {
     title: 'GitHub activity',
@@ -38,6 +39,7 @@ const copy = {
     branchCreated: 'Branch created: {branch}',
     pullRequest: 'Pull request',
     locale: 'en',
+    newTab: ' (opens in a new tab)',
   },
 }[lang];
 ---
@@ -52,7 +54,7 @@ const copy = {
 >
   <div class="gh-header">
     <h2 id="gh-title">{copy.title}</h2>
-    <a href={`https://github.com/${user}`} target="_blank" rel="noopener noreferrer" class="section-note">@{user}</a>
+    <a href={`https://github.com/${user}`} target="_blank" rel="noopener noreferrer" class="section-note">@{user}<span class="sr-only">{copy.newTab}</span></a>
   </div>
   <p class="gh-summary" data-summary></p>
   <div class="gh-graph-scroll">
@@ -142,7 +144,10 @@ const copy = {
         const time = document.createElement('time');
         time.dateTime = e.created_at;
         time.textContent = timeAgo(e.created_at, copy.locale);
-        a.append(name, text, time);
+        const hint = document.createElement('span');
+        hint.className = 'sr-only';
+        hint.textContent = copy.newTab;
+        a.append(name, text, time, hint);
         li.append(a);
         return li;
       });

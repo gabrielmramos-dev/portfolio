@@ -1212,3 +1212,144 @@ img {
     display: none;
   }
 }
+
+.control .a11y-symbol {
+  margin-right: 8px;
+  flex: none;
+}
+
+/* --- Página de acessibilidade --- */
+
+.prose-page {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.prose-page section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.prose-page p,
+.prose-page li {
+  max-width: 68ch;
+}
+
+.prose-page ul,
+.prose-page ol {
+  padding-left: 20px;
+}
+
+.prose-page li + li {
+  margin-top: 6px;
+}
+
+.prose-page kbd {
+  padding: 1px 6px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+
+.prefs {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 20px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+}
+
+.prefs fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.prefs legend {
+  padding: 0;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.prefs label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+}
+
+.prefs input[type='radio'],
+.prefs input[type='checkbox'] {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  accent-color: var(--link);
+}
+
+.prefs .hint {
+  margin: -4px 0 0 32px;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.prefs-status {
+  min-height: 1.5em;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.updated {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+abbr[title] {
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+
+.glossary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.glossary dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 20px;
+  margin: 0;
+}
+
+.glossary dt {
+  font-weight: 600;
+}
+
+.glossary dd {
+  margin: 0;
+  color: var(--muted);
+}
+
+@media (max-width: 700px) {
+  .glossary dl {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .glossary dd {
+    margin-bottom: 12px;
+  }
+}
+
+.case-heading {
+  font-size: 1.375rem;
+  line-height: 1.3;
+}

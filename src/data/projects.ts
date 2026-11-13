@@ -45,8 +45,8 @@ export const projects: Project[] = [
     title: 'sp156-mcp',
     badge: { pt: 'Em andamento', en: 'In progress' },
     summary: {
-      pt: 'Servidor MCP não oficial, em C#, sobre os dados abertos do SP156 (central de atendimento da Prefeitura de São Paulo).',
-      en: 'Unofficial MCP server in C# over the SP156 open data (São Paulo City Hall service center).',
+      pt: 'Um programa que lê a planilha pública de pedidos da central de atendimento da Prefeitura de São Paulo (SP156) e a guarda num banco de dados organizado, sem endereços, para que um assistente de IA possa responder perguntas sobre esses pedidos. A primeira parte, organizar os dados, está pronta. O assistente ainda está em desenvolvimento.',
+      en: 'A program that reads the public spreadsheet of requests to the São Paulo City Hall service center (SP156) and stores it in an organized database, without addresses, so an AI assistant can answer questions about those requests. The first part, organizing the data, is done. The assistant is still in development.',
     },
     problem: {
       pt: 'Os dados abertos do SP156 vêm em planilhas XLSX enormes (742.904 linhas só no 1º trimestre de 2025). O objetivo é permitir que um assistente de IA responda perguntas agregadas sobre os pedidos, sempre com as ressalvas dos dados.',
@@ -110,8 +110,8 @@ export const projects: Project[] = [
     badge: { pt: 'v1.0.0', en: 'v1.0.0' },
     badgeTone: 'ok',
     summary: {
-      pt: 'App acessível que mostra, em linguagem simples, a qualidade prevista da internet por hora e região.',
-      en: 'Accessible app that shows, in plain language, the predicted internet quality by hour and region.',
+      pt: 'Um aplicativo que diz, em palavras simples, se a internet deve estar Boa, Regular ou Instável em cada hora do dia na sua região, para você escolher a melhor hora de uma chamada de vídeo ou de um envio de arquivo. Foi feito com foco em acessibilidade, num projeto em equipe da faculdade em que fui Product Owner e desenvolvedor.',
+      en: 'An app that tells you, in plain words, whether the internet should be Good, Fair or Unstable at each hour of the day in your region, so you can pick the best time for a video call or a file upload. It was built with a focus on accessibility, in a university team project where I was Product Owner and developer.',
     },
     problem: {
       pt: 'Quem não entende de redes não sabe a melhor hora para uma chamada de vídeo, um envio de arquivo ou uma aula on-line. O app traduz a previsão de uma API em Boa, Regular ou Instável. Projeto integrador em equipe (Braz Cubas), no qual atuei como Product Owner e desenvolvedor.',
@@ -186,8 +186,8 @@ export const projects: Project[] = [
     title: 'AsyncFlow',
     hidden: true,
     summary: {
-      pt: 'Processamento assíncrono de tarefas com Fastify, RabbitMQ e PostgreSQL.',
-      en: 'Asynchronous task processing with Fastify, RabbitMQ and PostgreSQL.',
+      pt: 'Um sistema que recebe pedidos de trabalho demorado pela internet, responde na hora que o pedido foi aceito e deixa outro programa fazer o trabalho em segundo plano.',
+      en: 'A system that receives requests for slow work over the internet, answers right away that the request was accepted and lets another program do the work in the background.',
     },
     problem: {
       pt: 'Tirar trabalho lento de dentro da requisição HTTP: a API registra a tarefa e responde 202, e um worker separado processa depois.',
@@ -245,8 +245,8 @@ export const projects: Project[] = [
     title: 'IAM Microservice',
     hidden: true,
     summary: {
-      pt: 'Microsserviço de identidade e acesso com Fastify, TypeScript e Clean Architecture.',
-      en: 'Identity and access microservice with Fastify, TypeScript and Clean Architecture.',
+      pt: 'Um serviço que cuida de cadastro e login de usuários e decide o que cada pessoa pode acessar.',
+      en: 'A service that handles user sign-up and login and decides what each person can access.',
     },
     problem: {
       pt: 'Um hub de autenticação desacoplado para um ecossistema, com regras de negócio independentes da infraestrutura (Fastify, Prisma). O próprio repositório o descreve como um protótipo focado em arquitetura.',
@@ -299,8 +299,8 @@ export const projects: Project[] = [
     id: 'zelasp',
     title: 'ZelaSP',
     summary: {
-      pt: 'Plataforma de reportes urbanos com .NET 9, Clean Architecture e PostGIS.',
-      en: 'Urban issue reporting platform with .NET 9, Clean Architecture and PostGIS.',
+      pt: 'Um sistema web em que a pessoa marca no mapa um problema de infraestrutura da cidade, com foto, e quem cuida da cidade acompanha e prioriza os pedidos. É um estudo de caso técnico.',
+      en: 'A web system where a person marks a city infrastructure problem on the map, with a photo, and city managers track and prioritize the requests. It is a technical case study.',
     },
     problem: {
       pt: 'Aproximar moradores de São Paulo dos serviços municipais: o cidadão marca um problema geolocalizado no mapa, e gestores fazem a triagem e o acompanhamento. Estudo de caso técnico.',

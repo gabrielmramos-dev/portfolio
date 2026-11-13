@@ -13,6 +13,7 @@ export const routes = {
   experience: { pt: '/experiencia/', en: '/en/experience/' },
   education: { pt: '/formacao/', en: '/en/education/' },
   blog: { pt: '/blog/', en: '/en/blog/' },
+  accessibility: { pt: '/acessibilidade/', en: '/en/accessibility/' },
 } as const;
 
 export type RouteId = keyof typeof routes;
@@ -37,6 +38,8 @@ export const ui = {
     switchLabel: 'Mudar idioma para inglês',
     footerContact: 'Email',
     menu: 'Menu',
+    a11y: 'Acessibilidade',
+    newTab: ' (abre em nova aba)',
     theme: { dark: 'Escuro', light: 'Claro', label: 'Tema', toLight: 'Mudar para o tema claro', toDark: 'Mudar para o tema escuro' },
   },
   en: {
@@ -58,6 +61,8 @@ export const ui = {
     switchLabel: 'Switch language to Portuguese',
     footerContact: 'Email',
     menu: 'Menu',
+    a11y: 'Accessibility',
+    newTab: ' (opens in a new tab)',
     theme: { dark: 'Dark', light: 'Light', label: 'Theme', toLight: 'Switch to the light theme', toDark: 'Switch to the dark theme' },
   },
 } as const;

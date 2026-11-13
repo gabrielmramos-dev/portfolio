@@ -4,12 +4,14 @@ import BackLink from '../components/BackLink.astro';
 import Project from '../components/Project.astro';
 import { visibleProjects } from '../data/projects';
 import { routes, ui, type Lang } from '../i18n/ui';
+import { terms } from '../lib/abbr';
 
 interface Props {
   lang: Lang;
 }
 
 const { lang } = Astro.props;
+const used = new Set<string>();
 
 const copy = {
   pt: {
@@ -17,12 +19,14 @@ const copy = {
     description:
       'Projetos de Gabriel Ramos como estudos de caso: problema, decisões técnicas, limites e resultado. Dados abertos com MCP, app acessível e geoprocessamento.',
     heading: 'Projetos',
+    glossary: 'Termos usados nesta página',
   },
   en: {
     title: 'Projects | Gabriel Ramos',
     description:
       'Gabriel Ramos’s projects as case studies: problem, technical decisions, limits and result. Open data with MCP, an accessible app and geospatial.',
     heading: 'Projects',
+    glossary: 'Terms used on this page',
   },
 }[lang];
 ---
@@ -37,6 +41,17 @@ const copy = {
   <BackLink href={routes.home[lang]} label={ui[lang].back} />
   <h1>{copy.heading}</h1>
   <div class="cases">
-    {visibleProjects.map((project) => <Project project={project} lang={lang} />)}
+    {visibleProjects.map((project) => <Project project={project} lang={lang} used={used} />)}
   </div>
+  <section class="glossary" aria-labelledby="glossario">
+    <h2 id="glossario">{copy.glossary}</h2>
+    <dl>
+      {[...used].sort().map((key) => (
+        <>
+          <dt>{key}</dt>
+          <dd>{terms[key][lang]}</dd>
+        </>
+      ))}
+    </dl>
+  </section>
 </Layout>
